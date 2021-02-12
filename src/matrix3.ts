@@ -92,7 +92,7 @@ export class Matrix3 {
 
   static lookToLh(dir: Vector3, up: Vector3): Matrix3 {
     dir = dir.normal();
-    let side = up.cross(dir).normal();
+    const side = up.cross(dir).normal();
     up = dir.cross(side).normal();
 
     return new Matrix3(side, up, dir).transpose();
@@ -103,12 +103,12 @@ export class Matrix3 {
   }
 
   static lookAtLh(eye: Vector2, center: Vector2, up: Vector2): Matrix3 {
-    let dir = center.sub(eye);
+    const dir = center.sub(eye);
     return Matrix3.fromMatrix2(Matrix2.lookAt(dir, up));
   }
 
   static lookAtRh(eye: Vector2, center: Vector2, up: Vector2): Matrix3 {
-    let dir = eye.sub(center);
+    const dir = eye.sub(center);
     return Matrix3.fromMatrix2(Matrix2.lookAt(dir, up));
   }
 
