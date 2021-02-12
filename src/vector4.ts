@@ -178,4 +178,8 @@ export class Vector4 {
     return this.x === other.x && this.y === other.y && this.z === other.z &&
       this.w === other.w;
   }
+
+  isFinite(): boolean {
+    return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) && isFinite(this.w);
+  }
 }

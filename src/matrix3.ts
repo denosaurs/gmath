@@ -1,4 +1,3 @@
-import { Angle } from "./angle.ts";
 import { Vector3 } from "./vector3.ts";
 import { Vector2 } from "./vector2.ts";
 import { Matrix2 } from "./matrix2.ts";
@@ -136,5 +135,9 @@ export class Matrix3 {
 
   eq(other: Matrix3): boolean {
     return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z);
+  }
+  
+  isFinite(): boolean {
+    return this.x.isFinite() && this.y.isFinite() && this.z.isFinite();
   }
 }

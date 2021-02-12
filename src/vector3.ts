@@ -202,4 +202,8 @@ export class Vector3 {
   eq(other: Vector3): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
+  
+  isFinite(): boolean {
+    return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
+  }
 }

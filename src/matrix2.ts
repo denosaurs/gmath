@@ -36,11 +36,6 @@ export class Matrix2 {
     this.#internal[1] = val;
   }
 
-  static fromAngle(angle: Angle): Matrix2 {
-    const [s, c] = angle.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
-  }
-
   static fromCols(
     c0r0: number,
     c0r1: number,
@@ -48,6 +43,11 @@ export class Matrix2 {
     c1r1: number,
   ) {
     return new Matrix2(new Vector2(c0r0, c0r1), new Vector2(c1r0, c1r1));
+  }
+  
+  static fromAngle(angle: Angle): Matrix2 {
+    const [s, c] = angle.sincos();
+    return Matrix2.fromCols(c, s, -s, c);
   }
 
   static lookAt(dir: Vector2, up: Vector2): Matrix2 {
@@ -77,5 +77,9 @@ export class Matrix2 {
 
   eq(other: Matrix2): boolean {
     return this.x.eq(other.x) && this.y.eq(other.y);
+  }
+
+  isFinite(): boolean {
+    return this.x.isFinite() && this.y.isFinite();
   }
 }
