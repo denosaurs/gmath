@@ -129,7 +129,7 @@ export class Vector4 {
 
     return this;
   }
-  
+
   neg(): Vector4 {
     return new Vector4(-this.x, -this.y, -this.z, -this.w);
   }

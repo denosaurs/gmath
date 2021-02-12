@@ -58,7 +58,7 @@ export class Matrix2 {
 
     return new Matrix2(basis1, basis2);
   }
-  
+
   constructor();
   constructor(x: Vector2, y: Vector2);
   constructor(x?: Vector2, y?: Vector2) {
@@ -68,8 +68,10 @@ export class Matrix2 {
 
   transpose(): Matrix2 {
     return Matrix2.fromCols(
-      this[0][0], this[1][0],
-      this[0][1], this[1][1],
+      this[0][0],
+      this[1][0],
+      this[0][1],
+      this[1][1],
     );
   }
 
