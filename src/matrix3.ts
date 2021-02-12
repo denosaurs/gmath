@@ -77,15 +77,9 @@ export class Matrix3 {
 
   static fromMatrix2(matrix: Matrix2) {
     return Matrix3.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      0,
-      0,
-      0,
-      0,
+      matrix[0][0], matrix[0][1], 0,
+      matrix[1][0], matrix[1][1], 0,
+      0, 0, 1,
     );
   }
 

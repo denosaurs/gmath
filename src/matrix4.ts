@@ -103,43 +103,19 @@ export class Matrix4 {
 
   static fromMatrix2(matrix: Matrix2): Matrix4 {
     return Matrix4.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      0,
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      matrix[0][0], matrix[0][1], 0, 0,
+      matrix[1][0], matrix[1][1], 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
     );
   }
 
   static fromMatrix3(matrix: Matrix3): Matrix4 {
     return Matrix4.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      matrix[0][2],
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      matrix[1][2],
-      0,
-      matrix[2][0],
-      matrix[2][1],
-      matrix[2][2],
-      0,
-      0,
-      0,
-      0,
-      0,
+      matrix[0][0], matrix[0][1], matrix[0][2], 0,
+      matrix[1][0], matrix[1][1], matrix[1][2], 0,
+      matrix[2][0], matrix[2][1], matrix[2][2], 0,
+      0, 0, 0, 1,
     );
   }
 
