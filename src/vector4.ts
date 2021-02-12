@@ -117,6 +117,20 @@ export class Vector4 {
     return this.set(this.normal().mul(length));
   }
 
+  dot(other: Vector4): number {
+    const { x, y, z, w } = this.mul(other);
+    return x + y + z + w;
+  }
+
+  cross(other: Vector4): Vector4 {
+    return new Vector4(
+      this.y * other.z - this.z * other.y,
+      this.z * other.x - this.x * other.z,
+      this.x * other.y - this.y * other.x,
+      this.w * other.w - this.w * other.w,
+    );
+  }
+
   lerp(other: Vector4, alpha: number): Vector4 {
     return this.set(this.add(other.sub(this).mul(alpha)));
   }

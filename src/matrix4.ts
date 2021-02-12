@@ -196,4 +196,28 @@ export class Matrix4 {
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite() && this.z.isFinite() && this.w.isFinite();
   }
+
+  mul(other: Matrix4): Matrix4 {
+    return Matrix4.fromCols(
+      this.x.dot(other.x),
+      this.y.dot(other.x),
+      this.z.dot(other.x),
+      this.w.dot(other.x),
+      
+      this.x.dot(other.y),
+      this.y.dot(other.y),
+      this.z.dot(other.y),
+      this.w.dot(other.y),
+      
+      this.x.dot(other.z),
+      this.y.dot(other.z),
+      this.z.dot(other.z),
+      this.w.dot(other.z),
+      
+      this.x.dot(other.w),
+      this.y.dot(other.w),
+      this.z.dot(other.w),
+      this.w.dot(other.w),
+    );
+  }
 }

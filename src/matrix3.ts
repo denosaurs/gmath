@@ -136,8 +136,24 @@ export class Matrix3 {
   eq(other: Matrix3): boolean {
     return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z);
   }
-  
+
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite() && this.z.isFinite();
+  }
+
+  mul(other: Matrix3): Matrix3 {
+    return Matrix3.fromCols(
+      this.x.dot(other.x),
+      this.y.dot(other.x),
+      this.z.dot(other.x),
+
+      this.x.dot(other.y),
+      this.y.dot(other.y),
+      this.z.dot(other.y),
+      
+      this.x.dot(other.z),
+      this.y.dot(other.z),
+      this.z.dot(other.z),
+    );
   }
 }

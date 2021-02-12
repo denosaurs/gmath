@@ -44,7 +44,7 @@ export class Matrix2 {
   ) {
     return new Matrix2(new Vector2(c0r0, c0r1), new Vector2(c1r0, c1r1));
   }
-  
+
   static fromAngle(angle: Angle): Matrix2 {
     const [s, c] = angle.sincos();
     return Matrix2.fromCols(c, s, -s, c);
@@ -81,5 +81,15 @@ export class Matrix2 {
 
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite();
+  }
+
+  mul(other: Matrix2): Matrix2 {
+    return Matrix2.fromCols(
+      this.x.dot(other.x),
+      this.y.dot(other.x),
+      
+      this.x.dot(other.y),
+      this.y.dot(other.y),
+    );
   }
 }
