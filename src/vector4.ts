@@ -194,6 +194,7 @@ export class Vector4 {
   }
 
   isFinite(): boolean {
-    return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) && isFinite(this.w);
+    return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) &&
+      isFinite(this.w);
   }
 }

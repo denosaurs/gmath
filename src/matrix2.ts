@@ -87,7 +87,6 @@ export class Matrix2 {
     return Matrix2.fromCols(
       this.x.dot(other.x),
       this.y.dot(other.x),
-      
       this.x.dot(other.y),
       this.y.dot(other.y),
     );

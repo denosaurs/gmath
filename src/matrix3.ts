@@ -77,9 +77,15 @@ export class Matrix3 {
 
   static fromMatrix2(matrix: Matrix2) {
     return Matrix3.fromCols(
-      matrix[0][0], matrix[0][1], 0,
-      matrix[1][0], matrix[1][1], 0,
-      0, 0, 1,
+      matrix[0][0],
+      matrix[0][1],
+      0,
+      matrix[1][0],
+      matrix[1][1],
+      0,
+      0,
+      0,
+      1,
     );
   }
 
@@ -140,11 +146,9 @@ export class Matrix3 {
       this.x.dot(other.x),
       this.y.dot(other.x),
       this.z.dot(other.x),
-
       this.x.dot(other.y),
       this.y.dot(other.y),
       this.z.dot(other.y),
-      
       this.x.dot(other.z),
       this.y.dot(other.z),
       this.z.dot(other.z),
