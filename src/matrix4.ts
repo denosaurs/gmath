@@ -1,6 +1,7 @@
 import { Vector4 } from "./vector4.ts";
 import { Vector3 } from "./Vector3.ts";
 import { Matrix2 } from "./matrix2.ts";
+import { Matrix3 } from "./matrix3.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
@@ -100,7 +101,7 @@ export class Matrix4 {
     );
   }
 
-  static fromMatrix2(matrix: Matrix2) {
+  static fromMatrix2(matrix: Matrix2): Matrix4 {
     return Matrix4.fromCols(
       matrix[0][0],
       matrix[0][1],
@@ -113,6 +114,27 @@ export class Matrix4 {
       0,
       0,
       0,
+      0,
+      0,
+      0,
+      0,
+      0,
+    );
+  }
+
+  static fromMatrix3(matrix: Matrix3): Matrix4 {
+    return Matrix4.fromCols(
+      matrix[0][0],
+      matrix[0][1],
+      matrix[0][2],
+      0,
+      matrix[1][0],
+      matrix[1][1],
+      matrix[1][2],
+      0,
+      matrix[2][0],
+      matrix[2][1],
+      matrix[2][2],
       0,
       0,
       0,
@@ -192,9 +214,10 @@ export class Matrix4 {
     return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z) &&
       this.w.eq(other.w);
   }
-  
+
   isFinite(): boolean {
-    return this.x.isFinite() && this.y.isFinite() && this.z.isFinite() && this.w.isFinite();
+    return this.x.isFinite() && this.y.isFinite() && this.z.isFinite() &&
+      this.w.isFinite();
   }
 
   mul(other: Matrix4): Matrix4 {
@@ -203,17 +226,14 @@ export class Matrix4 {
       this.y.dot(other.x),
       this.z.dot(other.x),
       this.w.dot(other.x),
-      
       this.x.dot(other.y),
       this.y.dot(other.y),
       this.z.dot(other.y),
       this.w.dot(other.y),
-      
       this.x.dot(other.z),
       this.y.dot(other.z),
       this.z.dot(other.z),
       this.w.dot(other.z),
-      
       this.x.dot(other.w),
       this.y.dot(other.w),
       this.z.dot(other.w),
