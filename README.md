@@ -31,4 +31,4 @@ Pull request, issues and feedback are very welcome. Code style is formatted with
 
 ### Licence
 
-Copyright 2020-present, the denosaurs team. All rights reserved. MIT license.
+Copyright 2021, the denosaurs team. All rights reserved. MIT license.
