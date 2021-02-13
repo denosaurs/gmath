@@ -1,6 +1,7 @@
 import { Vector3 } from "./vector3.ts";
 import { Vector2 } from "./vector2.ts";
 import { Matrix2 } from "./matrix2.ts";
+import { Matrix4 } from "./matrix4.ts";
 
 export class Matrix3 {
   #internal: [Vector3, Vector3, Vector3] = Object.seal([
@@ -75,20 +76,6 @@ export class Matrix3 {
     );
   }
 
-  static fromMatrix2(matrix: Matrix2) {
-    return Matrix3.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      0,
-      0,
-      0,
-      1,
-    );
-  }
-
   static lookToLh(dir: Vector3, up: Vector3): Matrix3 {
     dir = dir.normal();
     const side = up.cross(dir).normal();
@@ -103,12 +90,12 @@ export class Matrix3 {
 
   static lookAtLh(eye: Vector2, center: Vector2, up: Vector2): Matrix3 {
     const dir = center.sub(eye);
-    return Matrix3.fromMatrix2(Matrix2.lookAt(dir, up));
+    return Matrix2.lookAt(dir, up).toMatrix3();
   }
 
   static lookAtRh(eye: Vector2, center: Vector2, up: Vector2): Matrix3 {
     const dir = eye.sub(center);
-    return Matrix3.fromMatrix2(Matrix2.lookAt(dir, up));
+    return Matrix2.lookAt(dir, up).toMatrix3();
   }
 
   constructor();
@@ -152,6 +139,27 @@ export class Matrix3 {
       this.x.dot(other.z),
       this.y.dot(other.z),
       this.z.dot(other.z),
+    );
+  }
+
+  toMatrix4(): Matrix4 {
+    return Matrix4.fromCols(
+      this[0][0],
+      this[0][1],
+      this[0][2],
+      0,
+      this[1][0],
+      this[1][1],
+      this[1][2],
+      0,
+      this[2][0],
+      this[2][1],
+      this[2][2],
+      0,
+      0,
+      0,
+      0,
+      1,
     );
   }
 }

@@ -1,4 +1,5 @@
-import { Angle } from "./angle.ts";
+import { Matrix3 } from "./matrix3.ts";
+import { Matrix4 } from "./matrix4.ts";
 import { Vector2 } from "./vector2.ts";
 
 export class Matrix2 {
@@ -45,11 +46,6 @@ export class Matrix2 {
     return new Matrix2(new Vector2(c0r0, c0r1), new Vector2(c1r0, c1r1));
   }
 
-  static fromAngle(angle: Angle): Matrix2 {
-    const [s, c] = angle.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
-  }
-
   static lookAt(dir: Vector2, up: Vector2): Matrix2 {
     const basis1 = dir.normal();
     const basis2 = up.x * dir.y >= up.y * dir.x
@@ -89,6 +85,41 @@ export class Matrix2 {
       this.y.dot(other.x),
       this.x.dot(other.y),
       this.y.dot(other.y),
+    );
+  }
+
+  toMatrix3(): Matrix3 {
+    return Matrix3.fromCols(
+      this[0][0],
+      this[0][1],
+      0,
+      this[1][0],
+      this[1][1],
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
+  toMatrix4(): Matrix4 {
+    return Matrix4.fromCols(
+      this[0][0],
+      this[0][1],
+      0,
+      0,
+      this[1][0],
+      this[1][1],
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
     );
   }
 }

@@ -1,7 +1,6 @@
 import { Vector4 } from "./vector4.ts";
-import { Vector3 } from "./Vector3.ts";
-import { Matrix2 } from "./matrix2.ts";
-import { Matrix3 } from "./matrix3.ts";
+import { Vector3 } from "./vector3.ts";
+import { Perspective } from "./projection.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
@@ -101,45 +100,66 @@ export class Matrix4 {
     );
   }
 
-  static fromMatrix2(matrix: Matrix2): Matrix4 {
-    return Matrix4.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      0,
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-    );
-  }
+  static fromPerspective(perspective: Perspective): Matrix4 {
+    if (perspective.left <= perspective.right) {
+      throw new RangeError(
+        `perspective.left (${perspective.right}) cannot be greater than perspective.right (${perspective.right})`,
+      );
+    }
+    if (perspective.bottom <= perspective.top) {
+      throw new RangeError(
+        `perspective.bottom (${perspective.bottom}) cannot be greater than perspective.top (${perspective.top})`,
+      );
+    }
+    if (perspective.near <= perspective.far) {
+      throw new RangeError(
+        `perspective.near (${perspective.near}) cannot be greater than perspective.far (${perspective.far})`,
+      );
+    }
 
-  static fromMatrix3(matrix: Matrix3): Matrix4 {
+    const c0r0 = (2 * perspective.near) /
+      (perspective.right - perspective.left);
+    const c0r1 = 0;
+    const c0r2 = 0;
+    const c0r3 = 0;
+
+    const c1r0 = 0;
+    const c1r1 = (2 * perspective.near) /
+      (perspective.top - perspective.bottom);
+    const c1r2 = 0;
+    const c1r3 = 0;
+
+    const c2r0 = (perspective.right + perspective.left) /
+      (perspective.right - perspective.left);
+    const c2r1 = (perspective.top + perspective.bottom) /
+      (perspective.top - perspective.bottom);
+    const c2r2 = -(perspective.far + perspective.near) /
+      (perspective.far - perspective.near);
+    const c2r3 = -1;
+
+    const c3r0 = 0;
+    const c3r1 = 0;
+    const c3r2 = -(2 * perspective.far * perspective.near) /
+      (perspective.far - perspective.near);
+    const c3r3 = 0;
+
     return Matrix4.fromCols(
-      matrix[0][0],
-      matrix[0][1],
-      matrix[0][2],
-      0,
-      matrix[1][0],
-      matrix[1][1],
-      matrix[1][2],
-      0,
-      matrix[2][0],
-      matrix[2][1],
-      matrix[2][2],
-      0,
-      0,
-      0,
-      0,
-      1,
+      c0r0,
+      c0r1,
+      c0r2,
+      c0r3,
+      c1r0,
+      c1r1,
+      c1r2,
+      c1r3,
+      c2r0,
+      c2r1,
+      c2r2,
+      c2r3,
+      c3r0,
+      c3r1,
+      c3r2,
+      c3r3,
     );
   }
 
