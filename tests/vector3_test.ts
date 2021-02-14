@@ -2,7 +2,7 @@ import { assert, assertEquals } from "./deps.ts";
 import { Vector3 } from "../src/vector3.ts";
 
 Deno.test("Vector3.clone", () => {
-  const orig = new Vector3(1);
+  const orig = Vector3.one;
   const clone = orig.clone();
   orig.x = 0;
   orig.y = 0;
@@ -29,6 +29,7 @@ Deno.test("Vector3.mag2", () => {
 Deno.test("Vector3.normal", () => {
   assertEquals(Vector3.zero.normal().x, NaN);
   assertEquals(Vector3.zero.normal().y, NaN);
+  assertEquals(Vector3.zero.normal().z, NaN);
   assert(Vector3.right.normal().eq(Vector3.right));
   assert(Vector3.one.normal().eq(new Vector3(0.5773502691896258)));
 });

@@ -3,7 +3,7 @@ import { Deg } from "../src/angle.ts";
 import { Vector2 } from "../src/vector2.ts";
 
 Deno.test("Vector2.clone", () => {
-  const orig = new Vector2(1);
+  const orig = Vector2.one;
   const clone = orig.clone();
   orig.x = 0;
   orig.y = 0;
