@@ -1,7 +1,7 @@
 import { Rad } from "./angle.ts";
 
 export class Vector2 {
-  #internal = new Float64Array(2);
+  #internal = new Float32Array(2);
 
   get [0](): number {
     return this.#internal[0];
@@ -103,7 +103,7 @@ export class Vector2 {
   }
 
   angle(): Rad {
-    return new Rad(Math.atan2(this.x, this.y));
+    return new Rad(Math.atan2(this.y, this.x));
   }
 
   clamp(length: number): Vector2 {
@@ -113,11 +113,6 @@ export class Vector2 {
   dot(other: Vector2): number {
     const { x, y } = this.mul(other);
     return x + y;
-  }
-
-  cross(other: Vector2): number {
-    const { x, y } = this.mul(other);
-    return x - y;
   }
 
   lerp(other: Vector2, alpha: number): Vector2 {
@@ -135,32 +130,24 @@ export class Vector2 {
     return new Vector2(-this.x, -this.y);
   }
 
-  add(other: number): Vector2;
-  add(other: Vector2): Vector2;
   add(other: number | Vector2): Vector2 {
     const { x, y } = typeof other === "number" ? { x: other, y: other } : other;
 
     return new Vector2(this.x + x, this.y + y);
   }
 
-  sub(other: number): Vector2;
-  sub(other: Vector2): Vector2;
   sub(other: number | Vector2): Vector2 {
     const { x, y } = typeof other === "number" ? { x: other, y: other } : other;
 
     return new Vector2(this.x - x, this.y - y);
   }
 
-  mul(other: number): Vector2;
-  mul(other: Vector2): Vector2;
   mul(other: number | Vector2): Vector2 {
     const { x, y } = typeof other === "number" ? { x: other, y: other } : other;
 
     return new Vector2(this.x * x, this.y * y);
   }
-
-  div(other: number): Vector2;
-  div(other: Vector2): Vector2;
+  
   div(other: number | Vector2): Vector2 {
     const { x, y } = typeof other === "number" ? { x: other, y: other } : other;
 
@@ -173,5 +160,13 @@ export class Vector2 {
 
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y);
+  }
+
+  toArray(): [number, number] {
+    return [this[0], this[1]];
+  }
+  
+  toFloat32Array(): Float32Array {
+    return this.#internal;
   }
 }
