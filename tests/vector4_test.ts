@@ -55,7 +55,11 @@ Deno.test("Vector4.dot", () => {
 Deno.test("Vector4.lerp", () => {
   assert(Vector4.zero.lerp(Vector4.one, 0.5).eq(new Vector4(0.5)));
   assert(Vector4.zero.lerp(Vector4.one, 0.25).eq(new Vector4(0.25)));
-  assert(Vector4.zero.lerp(new Vector4(1, 0, 0, 0), 0.5).eq(new Vector4(0.5, 0, 0, 0)));
+  assert(
+    Vector4.zero.lerp(new Vector4(1, 0, 0, 0), 0.5).eq(
+      new Vector4(0.5, 0, 0, 0),
+    ),
+  );
 });
 
 Deno.test("Vector4.set", () => {
@@ -105,5 +109,8 @@ Deno.test("Vector4.toArray", () => {
 Deno.test("Vector4.toFloat32Array", () => {
   assertEquals(Vector4.zero.toFloat32Array(), new Float32Array([0, 0, 0, 0]));
   assertEquals(Vector4.one.toFloat32Array(), new Float32Array([1, 1, 1, 1]));
-  assertEquals(new Vector4(1, 2, 3, 4).toFloat32Array(), new Float32Array([1, 2, 3, 4]));
+  assertEquals(
+    new Vector4(1, 2, 3, 4).toFloat32Array(),
+    new Float32Array([1, 2, 3, 4]),
+  );
 });
