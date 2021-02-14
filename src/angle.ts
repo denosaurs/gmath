@@ -1,133 +1,62 @@
 import { Matrix2 } from "./matrix2.ts";
 
-export type Angle = Deg | Rad;
-
-export class Deg {
+export abstract class Angle {
+  static turn: number;
   value: number;
-
-  static turn = 360;
 
   constructor(value = 0) {
     this.value = value;
   }
 
-  sin(): number {
-    return this.toRad().sin();
-  }
+  /** The sine of the Angle */
+  abstract sin(): number;
+  /** The cosine of the Angle */
+  abstract cos(): number;
+  /** The tangent of the Angle */
+  abstract tan(): number;
+  /** Both the sine and cosine of the Angle */
+  abstract sincos(): [number, number];
+  /** The cosecant of the Angle */
+  abstract csc(): number;
+  /** The cotangent of the Angle */
+  abstract cot(): number;
+  /** The secant of the Angle */
+  abstract sec(): number;
+  /** The arcsine of the Angle */
+  abstract asin(): number;
+  /** The arccosine of the Angle */
+  abstract acos(): number;
+  /** The arctangent of the Angle */
+  abstract atan(): number;
 
-  cos(): number {
-    return this.toRad().cos();
-  }
+  /** Adds this Angle to another */
+  abstract add(other: Angle | number): Angle;
+  /** Subtracts this Angle to another */
+  abstract sub(other: Angle | number): Angle;
+  /** Multiplies this Angle to another */
+  abstract mul(other: Angle | number): Angle;
+  /** Divides this Angle to another */
+  abstract div(other: Angle | number): Angle;
+  /** Negates this Angle */
+  abstract neg(): Angle;
 
-  tan(): number {
-    return this.toRad().tan();
-  }
+  /** Returns a new Angle normalized to to a range of 0 to a full turn */
+  abstract normal(): Angle;
+  /** Normalizes this Angle to a range of 0 to a full turn */
+  abstract normalize(): Angle;
 
-  sincos(): [number, number] {
-    return this.toRad().sincos();
-  }
-
-  csc(): number {
-    return this.toRad().csc();
-  }
-
-  cot(): number {
-    return this.toRad().cot();
-  }
-
-  sec(): number {
-    return this.toRad().sec();
-  }
-
-  asin(): number {
-    return this.toRad().asin();
-  }
-
-  acos(): number {
-    return this.toRad().acos();
-  }
-
-  atan(): number {
-    return this.toRad().atan();
-  }
-
-  atan2(scalar: number): number;
-  atan2(other: Angle): number;
-  atan2(other: Angle | number): number {
-    return this.toRad().atan2(other);
-  }
-
-  add(scalar: number): Deg;
-  add(other: Deg): Deg;
-  add(other: Deg | number): Deg {
-    return new Deg(
-      this.value + (typeof other === "number" ? other : other.value),
-    );
-  }
-
-  sub(scalar: number): Deg;
-  sub(other: Deg): Deg;
-  sub(other: Deg | number): Deg {
-    return new Deg(
-      this.value - (typeof other === "number" ? other : other.value),
-    );
-  }
-
-  mul(scalar: number): Deg;
-  mul(other: Deg): Deg;
-  mul(other: Deg | number): Deg {
-    return new Deg(
-      this.value * (typeof other === "number" ? other : other.value),
-    );
-  }
-
-  div(scalar: number): Deg;
-  div(other: Deg): Deg;
-  div(other: Deg | number): Deg {
-    return new Deg(
-      this.value / (typeof other === "number" ? other : other.value),
-    );
-  }
-
-  neg(): Deg {
-    return new Deg(-this.value);
-  }
-
-  normal(): Deg {
-    const rem = this.value % Deg.turn;
-
-    return new Deg(rem < 0 ? rem + Deg.turn : rem);
-  }
-
-  normalize(): Deg {
-    const rem = this.value % Deg.turn;
-    this.value = rem < 0 ? rem + Deg.turn : rem;
-
-    return this;
-  }
-
-  toMatrix2(): Matrix2 {
-    const [s, c] = this.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
-  }
-
-  toRad(): Rad {
-    return new Rad(this.value * (Math.PI / 180));
-  }
-
-  toString(): string {
-    return `${this.value} deg`;
-  }
+  /** Converts this Angle to a Matrix2 */
+  abstract toMatrix2(): Matrix2;
+  /** Converts this Angle to a Rad */
+  abstract toRad(): Rad;
+  /** Converts this Angle to a Deg */
+  abstract toDeg(): Deg;
+  /** Converts this Angle to its string representation */
+  abstract toString(): string;
 }
 
-export class Rad {
-  value: number;
-
+export class Rad extends Angle {
   static turn = 2 * Math.PI;
-
-  constructor(value = 0) {
-    this.value = value;
-  }
 
   sin(): number {
     return Math.sin(this.value);
@@ -169,50 +98,28 @@ export class Rad {
     return Math.atan(this.value);
   }
 
-  atan2(scalar: number): number;
-  atan2(other: Angle): number;
-  atan2(other: Angle | number): number;
-  atan2(other: Angle | number): number {
-    if (other instanceof Deg) {
-      other = other.toRad();
-    }
+  add(other: Angle | number): Rad {
+    const value = other instanceof Angle ? other.toRad().value : other;
 
-    return Math.atan2(
-      this.value,
-      typeof other === "number" ? other : other.value,
-    );
+    return new Rad(this.value + value);
   }
 
-  add(scalar: number): Rad;
-  add(other: Rad): Rad;
-  add(other: Rad | number): Rad {
-    return new Rad(
-      this.value + (typeof other === "number" ? other : other.value),
-    );
+  sub(other: Angle | number): Rad {
+    const value = other instanceof Angle ? other.toRad().value : other;
+
+    return new Rad(this.value - value);
   }
 
-  sub(scalar: number): Rad;
-  sub(other: Rad): Rad;
-  sub(other: Rad | number): Rad {
-    return new Rad(
-      this.value - (typeof other === "number" ? other : other.value),
-    );
+  mul(other: Angle | number): Rad {
+    const value = other instanceof Angle ? other.toRad().value : other;
+
+    return new Rad(this.value * value);
   }
 
-  mul(scalar: number): Rad;
-  mul(other: Rad): Rad;
-  mul(other: Rad | number): Rad {
-    return new Rad(
-      this.value * (typeof other === "number" ? other : other.value),
-    );
-  }
+  div(other: Angle | number): Rad {
+    const value = other instanceof Angle ? other.toRad().value : other;
 
-  div(scalar: number): Rad;
-  div(other: Rad): Rad;
-  div(other: Rad | number): Rad {
-    return new Rad(
-      this.value / (typeof other === "number" ? other : other.value),
-    );
+    return new Rad(this.value / value);
   }
 
   neg(): Rad {
@@ -237,11 +144,117 @@ export class Rad {
     return Matrix2.fromCols(c, s, -s, c);
   }
 
+  toRad(): Rad {
+    return this;
+  }
+
   toDeg(): Deg {
     return new Deg(this.value * (180 / Math.PI));
   }
 
   toString(): string {
     return `${this.value} rad`;
+  }
+}
+
+export class Deg extends Angle {
+  static turn = 360;
+
+  sin(): number {
+    return this.toRad().sin();
+  }
+
+  cos(): number {
+    return this.toRad().cos();
+  }
+
+  tan(): number {
+    return this.toRad().tan();
+  }
+
+  sincos(): [number, number] {
+    return this.toRad().sincos();
+  }
+
+  csc(): number {
+    return this.toRad().csc();
+  }
+
+  cot(): number {
+    return this.toRad().cot();
+  }
+
+  sec(): number {
+    return this.toRad().sec();
+  }
+
+  asin(): number {
+    return this.toRad().asin();
+  }
+
+  acos(): number {
+    return this.toRad().acos();
+  }
+
+  atan(): number {
+    return this.toRad().atan();
+  }
+
+  add(other: Angle | number): Deg {
+    const value = other instanceof Angle ? other.toDeg().value : other;
+
+    return new Deg(this.value + value);
+  }
+
+  sub(other: Angle | number): Deg {
+    const value = other instanceof Angle ? other.toDeg().value : other;
+
+    return new Deg(this.value - value);
+  }
+
+  mul(other: Angle | number): Deg {
+    const value = other instanceof Angle ? other.toDeg().value : other;
+
+    return new Deg(this.value * value);
+  }
+
+  div(other: Angle | number): Deg {
+    const value = other instanceof Angle ? other.toDeg().value : other;
+
+    return new Deg(this.value / value);
+  }
+
+  neg(): Deg {
+    return new Deg(-this.value);
+  }
+
+  normal(): Deg {
+    const rem = this.value % Deg.turn;
+
+    return new Deg(rem < 0 ? rem + Deg.turn : rem);
+  }
+
+  normalize(): Deg {
+    const rem = this.value % Deg.turn;
+    this.value = rem < 0 ? rem + Deg.turn : rem;
+
+    return this;
+  }
+
+  toMatrix2(): Matrix2 {
+    const [s, c] = this.sincos();
+    return Matrix2.fromCols(c, s, -s, c);
+  }
+
+  toRad(): Rad {
+    return new Rad(this.value * (Math.PI / 180));
+  }
+
+  toDeg(): Deg {
+    return this;
+  }
+
+  toString(): string {
+    return `${this.value} deg`;
   }
 }
