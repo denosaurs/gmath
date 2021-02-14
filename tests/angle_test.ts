@@ -75,6 +75,13 @@ Deno.test("Rad.neg", () => {
   assertEquals(new Rad(Rad.turn).neg().value, -Rad.turn);
 });
 
+Deno.test("Rad.eq", () => {
+  assert(new Rad(0).eq(new Deg(0)));
+  assert(new Rad(Rad.turn).eq(new Deg(Deg.turn)));
+  assert(new Rad(0).eq(0));
+  assert(new Rad(Rad.turn).eq(Rad.turn));
+});
+
 Deno.test("Rad.normal", () => {
   assertEquals(new Rad(Rad.turn).normal().value, 0);
   assertEquals(new Rad(Rad.turn * 1.5).normal().value, Rad.turn / 2);
@@ -196,6 +203,13 @@ Deno.test("Deg.div", () => {
 Deno.test("Deg.neg", () => {
   assertEquals(new Deg(0).neg().value, -0);
   assertEquals(new Deg(Deg.turn).neg().value, -Deg.turn);
+});
+
+Deno.test("Deg.eq", () => {
+  assert(new Deg(0).eq(new Rad(0)));
+  assert(new Deg(Deg.turn).eq(new Rad(Rad.turn)));
+  assert(new Deg(0).eq(0));
+  assert(new Deg(Deg.turn).eq(Deg.turn));
 });
 
 Deno.test("Deg.normal", () => {

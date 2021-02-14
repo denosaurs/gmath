@@ -39,6 +39,8 @@ export abstract class Angle {
   abstract div(other: Angle | number): Angle;
   /** Negates this Angle */
   abstract neg(): Angle;
+  /** Checks if the angles are equal */
+  abstract eq(other: Angle | number): boolean;
 
   /** Returns a new Angle normalized to to a range of 0 to a full turn */
   abstract normal(): Angle;
@@ -124,6 +126,12 @@ export class Rad extends Angle {
 
   neg(): Rad {
     return new Rad(-this.value);
+  }
+
+  eq(other: Angle | number): boolean {
+    const value = other instanceof Angle ? other.toRad().value : other;
+
+    return this.value === value;
   }
 
   normal(): Rad {
@@ -226,6 +234,12 @@ export class Deg extends Angle {
 
   neg(): Deg {
     return new Deg(-this.value);
+  }
+
+  eq(other: Angle | number): boolean {
+    const value = other instanceof Angle ? other.toDeg().value : other;
+
+    return this.value === value;
   }
 
   normal(): Deg {
