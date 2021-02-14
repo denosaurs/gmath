@@ -1,5 +1,5 @@
 export class Vector3 {
-  #internal = new Float64Array(3);
+  #internal = new Float32Array(3);
 
   get [0](): number {
     return this.#internal[0];
@@ -159,8 +159,6 @@ export class Vector3 {
     return new Vector3(-this.x, -this.y, -this.z);
   }
 
-  add(other: number): Vector3;
-  add(other: Vector3): Vector3;
   add(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -169,8 +167,6 @@ export class Vector3 {
     return new Vector3(this.x + x, this.y + y, this.z + z);
   }
 
-  sub(other: number): Vector3;
-  sub(other: Vector3): Vector3;
   sub(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -179,8 +175,6 @@ export class Vector3 {
     return new Vector3(this.x - x, this.y - y, this.z - z);
   }
 
-  mul(other: number): Vector3;
-  mul(other: Vector3): Vector3;
   mul(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -189,8 +183,6 @@ export class Vector3 {
     return new Vector3(this.x * x, this.y * y, this.z * z);
   }
 
-  div(other: number): Vector3;
-  div(other: Vector3): Vector3;
   div(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -205,5 +197,13 @@ export class Vector3 {
 
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
+  }
+
+  toArray(): [number, number, number] {
+    return [this[0], this[1], this[2]];
+  }
+
+  toFloat32Array(): Float32Array {
+    return this.#internal;
   }
 }

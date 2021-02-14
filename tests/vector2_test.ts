@@ -2,7 +2,6 @@ import { assert, assertEquals } from "./deps.ts";
 import { Deg } from "../src/angle.ts";
 import { Vector2 } from "../src/vector2.ts";
 
-
 Deno.test("Vector2.clone", () => {
   const orig = new Vector2(1);
   const clone = orig.clone();
