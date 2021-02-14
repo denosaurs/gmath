@@ -147,7 +147,7 @@ export class Vector2 {
 
     return new Vector2(this.x * x, this.y * y);
   }
-  
+
   div(other: number | Vector2): Vector2 {
     const { x, y } = typeof other === "number" ? { x: other, y: other } : other;
 
@@ -165,7 +165,7 @@ export class Vector2 {
   toArray(): [number, number] {
     return [this[0], this[1]];
   }
-  
+
   toFloat32Array(): Float32Array {
     return this.#internal;
   }

@@ -1,5 +1,5 @@
 export class Vector4 {
-  #internal = new Float64Array(4);
+  #internal = new Float32Array(4);
 
   get [0](): number {
     return this.#internal[0];
@@ -196,5 +196,13 @@ export class Vector4 {
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) &&
       isFinite(this.w);
+  }
+
+  toArray(): [number, number, number, number] {
+    return [this[0], this[1], this[2], this[3]];
+  }
+
+  toFloat32Array(): Float32Array {
+    return this.#internal;
   }
 }

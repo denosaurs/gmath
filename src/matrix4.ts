@@ -260,4 +260,27 @@ export class Matrix4 {
       this.w.dot(other.w),
     );
   }
+
+  toArray(): [
+    [number, number, number, number],
+    [number, number, number, number],
+    [number, number, number, number],
+    [number, number, number, number],
+  ] {
+    return [
+      this[0].toArray(),
+      this[1].toArray(),
+      this[2].toArray(),
+      this[3].toArray(),
+    ];
+  }
+
+  toFloat32Array(): Float32Array {
+    return new Float32Array([
+      ...this[0].toFloat32Array(),
+      ...this[1].toFloat32Array(),
+      ...this[2].toFloat32Array(),
+      ...this[3].toFloat32Array(),
+    ]);
+  }
 }
