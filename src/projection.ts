@@ -1,4 +1,4 @@
-import { Angle, Deg, Rad } from "./angle.ts";
+import { Angle, Rad } from "./angle.ts";
 import { Matrix4 } from "./matrix4.ts";
 import { absDiffEq, absDiffNe } from "./util.ts";
 

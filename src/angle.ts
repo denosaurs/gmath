@@ -1,7 +1,3 @@
-import { Matrix2 } from "./matrix2.ts";
-import { Matrix3 } from "./matrix3.ts";
-import { Matrix4 } from "./matrix4.ts";
-
 export abstract class Angle {
   static turn: number;
   value: number;
@@ -145,11 +141,6 @@ export class Rad extends Angle {
     this.value = rem < 0 ? rem + Rad.turn : rem;
 
     return this;
-  }
-
-  toMatrix2(): Matrix2 {
-    const [s, c] = this.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
   }
 
   toRad(): Rad {
