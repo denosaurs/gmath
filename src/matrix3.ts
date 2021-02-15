@@ -2,6 +2,7 @@ import { Vector3 } from "./vector3.ts";
 import { Vector2 } from "./vector2.ts";
 import { Matrix2 } from "./matrix2.ts";
 import { Matrix4 } from "./matrix4.ts";
+import { Angle } from "./angle.ts";
 
 export class Matrix3 {
   #internal: [Vector3, Vector3, Vector3] = Object.seal([
@@ -110,6 +111,103 @@ export class Matrix3 {
   static lookAtRh(eye: Vector2, center: Vector2, up: Vector2): Matrix3 {
     const dir = eye.sub(center);
     return Matrix2.lookAt(dir, up).toMatrix3();
+  }
+
+  static fromAngleX(theta: Angle): Matrix3 {
+    const [s, c] = theta.sincos();
+
+    return Matrix3.fromCols(
+      1,
+      0,
+      0,
+      0,
+      c,
+      s,
+      0,
+      -s,
+      c,
+    );
+  }
+
+  static fromAngleY(theta: Angle): Matrix3 {
+    const [s, c] = theta.sincos();
+
+    return Matrix3.fromCols(
+      c,
+      0,
+      -s,
+      0,
+      1,
+      0,
+      s,
+      0,
+      c,
+    );
+  }
+
+  static fromAngleZ(theta: Angle): Matrix3 {
+    const [s, c] = theta.sincos();
+
+    return Matrix3.fromCols(
+      c,
+      s,
+      0,
+      -s,
+      c,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
+  static fromAxisAngle(axis: Vector3, angle: Angle): Matrix3 {
+    const [s, c] = angle.sincos();
+    const c1 = 1 - c;
+
+    return Matrix3.fromCols(
+      c1 * axis.x * axis.x + c,
+      c1 * axis.x * axis.y + s * axis.z,
+      c1 * axis.x * axis.z - s * axis.y,
+      c1 * axis.x * axis.y - s * axis.z,
+      c1 * axis.y * axis.y + c,
+      c1 * axis.y * axis.z + s * axis.x,
+      c1 * axis.x * axis.z + s * axis.y,
+      c1 * axis.y * axis.z - s * axis.x,
+      c1 * axis.z * axis.z + c,
+    );
+  }
+
+  static fromTranslation(translation: Vector2): Matrix3 {
+    return Matrix3.fromCols(
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      translation.x,
+      translation.y,
+      1,
+    );
+  }
+
+  static fromScale(scale: number): Matrix3 {
+    return this.fromNonuniformScale(scale, scale);
+  }
+
+  static fromNonuniformScale(x: number, y: number): Matrix3 {
+    return Matrix3.fromCols(
+      x,
+      0,
+      0,
+      0,
+      y,
+      0,
+      0,
+      0,
+      1,
+    );
   }
 
   constructor();

@@ -1,4 +1,6 @@
 import { Matrix2 } from "./matrix2.ts";
+import { Matrix3 } from "./matrix3.ts";
+import { Matrix4 } from "./matrix4.ts";
 
 export abstract class Angle {
   static turn: number;
@@ -47,8 +49,6 @@ export abstract class Angle {
   /** Normalizes this Angle to a range of 0 to a full turn */
   abstract normalize(): Angle;
 
-  /** Converts this Angle to a Matrix2 */
-  abstract toMatrix2(): Matrix2;
   /** Converts this Angle to a Rad */
   abstract toRad(): Rad;
   /** Converts this Angle to a Deg */
@@ -253,11 +253,6 @@ export class Deg extends Angle {
     this.value = rem < 0 ? rem + Deg.turn : rem;
 
     return this;
-  }
-
-  toMatrix2(): Matrix2 {
-    const [s, c] = this.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
   }
 
   toRad(): Rad {

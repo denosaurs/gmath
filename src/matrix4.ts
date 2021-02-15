@@ -1,6 +1,7 @@
 import { Vector4 } from "./vector4.ts";
 import { Vector3 } from "./vector3.ts";
 import { Perspective } from "./projection.ts";
+import { Angle } from "./angle.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
@@ -184,6 +185,52 @@ export class Matrix4 {
     );
   }
 
+  static fromTranslation(translation: Vector3): Matrix4 {
+    return Matrix4.fromCols(
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      translation.x,
+      translation.y,
+      translation.z,
+      1,
+    );
+  }
+
+  static fromScale(scale: number): Matrix4 {
+    return this.fromNonuniformScale(scale, scale);
+  }
+
+  static fromNonuniformScale(x: number, y: number): Matrix4 {
+    return Matrix4.fromCols(
+      x,
+      0,
+      0,
+      0,
+      0,
+      y,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
   static lookToRh(eye: Vector3, dir: Vector3, up: Vector3): Matrix4 {
     const f = dir.normal();
     const s = f.cross(up).normal();
@@ -219,6 +266,99 @@ export class Matrix4 {
 
   static lookAtLh(eye: Vector3, center: Vector3, up: Vector3): Matrix4 {
     return Matrix4.lookToLh(eye, center.sub(eye), up);
+  }
+
+  static fromAngleX(theta: Angle): Matrix4 {
+    const [s, c] = theta.sincos();
+
+    return Matrix4.fromCols(
+      1,
+      0,
+      0,
+      0,
+      0,
+      c,
+      s,
+      0,
+      0,
+      -s,
+      c,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
+  static fromAngleY(theta: Angle): Matrix4 {
+    const [s, c] = theta.sincos();
+
+    return Matrix4.fromCols(
+      c,
+      0,
+      -s,
+      0,
+      0,
+      1,
+      0,
+      0,
+      s,
+      0,
+      c,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
+  static fromAngleZ(theta: Angle): Matrix4 {
+    const [s, c] = theta.sincos();
+
+    return Matrix4.fromCols(
+      c,
+      s,
+      0,
+      0,
+      -s,
+      c,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
+  static fromAxisAngle(axis: Vector3, angle: Angle): Matrix4 {
+    const [s, c] = angle.sincos();
+    const c1 = 1 - c;
+
+    return Matrix4.fromCols(
+      c1 * axis.x * axis.x + c,
+      c1 * axis.x * axis.y + s * axis.z,
+      c1 * axis.x * axis.z - s * axis.y,
+      0,
+      c1 * axis.x * axis.y - s * axis.z,
+      c1 * axis.y * axis.y + c,
+      c1 * axis.y * axis.z + s * axis.x,
+      0,
+      c1 * axis.x * axis.z + s * axis.y,
+      c1 * axis.y * axis.z - s * axis.x,
+      c1 * axis.z * axis.z + c,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
   }
 
   constructor();
