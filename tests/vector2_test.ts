@@ -33,13 +33,6 @@ Deno.test("Vector2.normal", () => {
   assert(Vector2.one.normal().eq(new Vector2(0.7071067690849304)));
 });
 
-Deno.test("Vector2.normalize", () => {
-  assertEquals(Vector2.zero.normalize().x, NaN);
-  assertEquals(Vector2.zero.normalize().y, NaN);
-  assert(Vector2.right.normalize().eq(Vector2.right));
-  assert(Vector2.one.normalize().eq(new Vector2(0.7071067690849304)));
-});
-
 Deno.test("Vector2.angle", () => {
   assert(Vector2.zero.angle().eq(0));
   assert(Vector2.one.angle().eq(new Deg(45)));

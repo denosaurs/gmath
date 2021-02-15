@@ -34,13 +34,6 @@ Deno.test("Vector3.normal", () => {
   assert(Vector3.one.normal().eq(new Vector3(0.5773502691896258)));
 });
 
-Deno.test("Vector3.normalize", () => {
-  assertEquals(Vector3.zero.normalize().x, NaN);
-  assertEquals(Vector3.zero.normalize().y, NaN);
-  assert(Vector3.right.normalize().eq(Vector3.right));
-  assert(Vector3.one.normalize().eq(new Vector3(0.5773502691896258)));
-});
-
 Deno.test("Vector3.clamp", () => {
   assertEquals(Vector3.zero.clamp(1).x, NaN);
   assertEquals(Vector3.zero.clamp(1).y, NaN);
