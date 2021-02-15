@@ -128,17 +128,19 @@ export class Matrix3 {
     return this.x.isFinite() && this.y.isFinite() && this.z.isFinite();
   }
 
+  row(n: 0 | 1 | 2): Vector3 {
+    return new Vector3(this[0][n], this[1][n], this[2][n]);
+  }
+  
+  col(n: 0 | 1 | 2): Vector3 {
+    return this[n];
+  }
+
   mul(other: Matrix3): Matrix3 {
     return Matrix3.fromCols(
-      this.x.dot(other.x),
-      this.y.dot(other.x),
-      this.z.dot(other.x),
-      this.x.dot(other.y),
-      this.y.dot(other.y),
-      this.z.dot(other.y),
-      this.x.dot(other.z),
-      this.y.dot(other.z),
-      this.z.dot(other.z),
+      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),
+      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]),
+      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]),
     );
   }
 

@@ -169,22 +169,10 @@ export class Matrix4 {
     const u = s.cross(f);
 
     return Matrix4.fromCols(
-      s.x,
-      u.x,
-      -f.x,
-      0,
-      s.y,
-      u.y,
-      -f.y,
-      0,
-      s.z,
-      u.z,
-      -f.z,
-      0,
-      -eye.dot(s),
-      -eye.dot(u),
-      eye.dot(f),
-      1,
+      s.x, u.x, -f.x, 0,
+      s.y, u.y, -f.y, 0,
+      s.z, u.z, -f.z, 0,
+      -eye.dot(s), -eye.dot(u), eye.dot(f), 1,
     );
   }
 
@@ -240,24 +228,20 @@ export class Matrix4 {
       this.w.isFinite();
   }
 
+  row(n: 0 | 1 | 2 | 3): Vector4 {
+    return new Vector4(this[0][n], this[1][n], this[2][n], this[3][n]);
+  }
+
+  col(n: 0 | 1 | 2 | 3): Vector4 {
+    return this[n];
+  }
+
   mul(other: Matrix4): Matrix4 {
     return Matrix4.fromCols(
-      this.x.dot(other.x),
-      this.y.dot(other.x),
-      this.z.dot(other.x),
-      this.w.dot(other.x),
-      this.x.dot(other.y),
-      this.y.dot(other.y),
-      this.z.dot(other.y),
-      this.w.dot(other.y),
-      this.x.dot(other.z),
-      this.y.dot(other.z),
-      this.z.dot(other.z),
-      this.w.dot(other.z),
-      this.x.dot(other.w),
-      this.y.dot(other.w),
-      this.z.dot(other.w),
-      this.w.dot(other.w),
+      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]), this.row(3).dot(other[0]),
+      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]), this.row(3).dot(other[1]),
+      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]), this.row(3).dot(other[2]),
+      this.row(0).dot(other[3]), this.row(1).dot(other[3]), this.row(2).dot(other[3]), this.row(3).dot(other[3]),
     );
   }
 

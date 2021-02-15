@@ -43,49 +43,31 @@ export class Perspective {
       );
     }
 
-    const c0r0 = (2 * this.near) /
-      (this.right - this.left);
+    const c0r0 = (2 * this.near) / (this.right - this.left);
     const c0r1 = 0;
     const c0r2 = 0;
     const c0r3 = 0;
 
     const c1r0 = 0;
-    const c1r1 = (2 * this.near) /
-      (this.top - this.bottom);
+    const c1r1 = (2 * this.near) / (this.top - this.bottom);
     const c1r2 = 0;
     const c1r3 = 0;
 
-    const c2r0 = (this.right + this.left) /
-      (this.right - this.left);
-    const c2r1 = (this.top + this.bottom) /
-      (this.top - this.bottom);
-    const c2r2 = -(this.far + this.near) /
-      (this.far - this.near);
+    const c2r0 = (this.right + this.left) / (this.right - this.left);
+    const c2r1 = (this.top + this.bottom) / (this.top - this.bottom);
+    const c2r2 = -(this.far + this.near) / (this.far - this.near);
     const c2r3 = -1;
 
     const c3r0 = 0;
     const c3r1 = 0;
-    const c3r2 = -(2 * this.far * this.near) /
-      (this.far - this.near);
+    const c3r2 = -(2 * this.far * this.near) / (this.far - this.near);
     const c3r3 = 0;
 
     return Matrix4.fromCols(
-      c0r0,
-      c0r1,
-      c0r2,
-      c0r3,
-      c1r0,
-      c1r1,
-      c1r2,
-      c1r3,
-      c2r0,
-      c2r1,
-      c2r2,
-      c2r3,
-      c3r0,
-      c3r1,
-      c3r2,
-      c3r3,
+      c0r0, c0r1, c0r2, c0r3,
+      c1r0, c1r1, c1r2, c1r3,
+      c2r0, c2r1, c2r2, c2r3,
+      c3r0, c3r1, c3r2, c3r3,
     );
   }
 }
@@ -102,9 +84,7 @@ export class PerspectiveFov {
     near: number,
     far: number,
   ) {
-    if (fovy instanceof Deg) {
-      fovy = fovy.toRad();
-    }
+    fovy = fovy.toRad();
 
     this.fovy = fovy;
     this.aspect = aspect;

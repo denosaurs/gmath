@@ -79,12 +79,32 @@ export class Matrix2 {
     return this.x.isFinite() && this.y.isFinite();
   }
 
+  row(n: 0 | 1): Vector2 {
+    return new Vector2(this[0][n], this[1][n]);
+  }
+  
+  col(n: 0 | 1): Vector2 {
+    return this[n];
+  }
+  
+  add(other: Matrix2): Matrix2 {
+    return new Matrix2(
+      this[0].add(other[0]),
+      this[1].add(other[1]),
+    );
+  }
+
+  sub(other: Matrix2): Matrix2 {
+    return new Matrix2(
+      this[0].sub(other[0]),
+      this[1].sub(other[1]),
+    );
+  }
+
   mul(other: Matrix2): Matrix2 {
     return Matrix2.fromCols(
-      this.x.dot(other.x),
-      this.y.dot(other.x),
-      this.x.dot(other.y),
-      this.y.dot(other.y),
+      this.row(0).dot(other[0]), this.row(1).dot(other[0]),
+      this.row(0).dot(other[1]), this.row(1).dot(other[1]),
     );
   }
 
