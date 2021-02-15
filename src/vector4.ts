@@ -139,8 +139,6 @@ export class Vector4 {
     return new Vector4(-this.x, -this.y, -this.z, -this.w);
   }
 
-  add(other: number): Vector4;
-  add(other: Vector4): Vector4;
   add(other: number | Vector4): Vector4 {
     const { x, y, z, w } = typeof other === "number"
       ? { x: other, y: other, z: other, w: other }
@@ -149,8 +147,6 @@ export class Vector4 {
     return new Vector4(this.x + x, this.y + y, this.z + z, this.w + w);
   }
 
-  sub(other: number): Vector4;
-  sub(other: Vector4): Vector4;
   sub(other: number | Vector4): Vector4 {
     const { x, y, z, w } = typeof other === "number"
       ? { x: other, y: other, z: other, w: other }
@@ -159,8 +155,6 @@ export class Vector4 {
     return new Vector4(this.x - x, this.y - y, this.z - z, this.w - w);
   }
 
-  mul(other: number): Vector4;
-  mul(other: Vector4): Vector4;
   mul(other: number | Vector4): Vector4 {
     const { x, y, z, w } = typeof other === "number"
       ? { x: other, y: other, z: other, w: other }
@@ -169,8 +163,6 @@ export class Vector4 {
     return new Vector4(this.x * x, this.y * y, this.z * z, this.w * w);
   }
 
-  div(other: number): Vector4;
-  div(other: Vector4): Vector4;
   div(other: number | Vector4): Vector4 {
     const { x, y, z, w } = typeof other === "number"
       ? { x: other, y: other, z: other, w: other }
