@@ -1,4 +1,6 @@
-export class Vector4 {
+import { Vector } from "./vector.ts";
+
+export class Vector4 extends Vector<Vector4> {
   #internal = new Float32Array(4);
 
   get [0](): number {
@@ -85,6 +87,8 @@ export class Vector4 {
   constructor(x: number);
   constructor(x: number, y: number, z: number, w: number);
   constructor(x?: number, y?: number, z?: number, w?: number) {
+    super();
+
     if (x !== undefined) {
       this.x = x;
       this.y = y ?? x;
@@ -109,12 +113,8 @@ export class Vector4 {
     return this.div(this.mag());
   }
 
-  normalize(): Vector4 {
-    return this.set(this.normal());
-  }
-
   clamp(length: number): Vector4 {
-    return this.set(this.normal().mul(length));
+    return this.normal().mul(length);
   }
 
   dot(other: Vector4): number {
@@ -123,7 +123,7 @@ export class Vector4 {
   }
 
   lerp(other: Vector4, alpha: number): Vector4 {
-    return this.set(this.add(other.sub(this).mul(alpha)));
+    return this.add(other.sub(this).mul(alpha));
   }
 
   set(other: Vector4): Vector4 {
@@ -133,10 +133,6 @@ export class Vector4 {
     this.w = other.w;
 
     return this;
-  }
-
-  neg(): Vector4 {
-    return new Vector4(-this.x, -this.y, -this.z, -this.w);
   }
 
   add(other: number | Vector4): Vector4 {
@@ -171,6 +167,10 @@ export class Vector4 {
     return new Vector4(this.x / x, this.y / y, this.z / z, this.w / w);
   }
 
+  neg(): Vector4 {
+    return new Vector4(-this.x, -this.y, -this.z, -this.w);
+  }
+
   eq(other: Vector4): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z &&
       this.w === other.w;
@@ -179,6 +179,12 @@ export class Vector4 {
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) &&
       isFinite(this.w);
+  }
+
+  toString(): string {
+    return `Vector4 { x: ${this[0]}, y: ${this[1]}, z: ${this[2]}, w: ${
+      this[3]
+    } }`;
   }
 
   toArray(): [number, number, number, number] {

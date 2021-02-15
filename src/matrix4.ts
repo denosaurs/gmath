@@ -165,10 +165,22 @@ export class Matrix4 {
 
   static identity(): Matrix4 {
     return Matrix4.fromCols(
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
     );
   }
 

@@ -48,8 +48,10 @@ export class Matrix2 {
 
   static identity(): Matrix2 {
     return Matrix2.fromCols(
-      1, 0,
-      0, 1,
+      1,
+      0,
+      0,
+      1,
     );
   }
 

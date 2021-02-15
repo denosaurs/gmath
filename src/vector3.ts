@@ -1,4 +1,6 @@
-export class Vector3 {
+import { Vector } from "./vector.ts";
+
+export class Vector3 extends Vector<Vector3> {
   #internal = new Float32Array(3);
 
   get [0](): number {
@@ -93,6 +95,8 @@ export class Vector3 {
   constructor(x: number);
   constructor(x: number, y: number, z: number);
   constructor(x?: number, y?: number, z?: number) {
+    super();
+
     if (x !== undefined) {
       this.x = x;
 
@@ -122,12 +126,8 @@ export class Vector3 {
     return this.div(this.mag());
   }
 
-  normalize(): Vector3 {
-    return this.set(this.normal());
-  }
-
   clamp(length: number): Vector3 {
-    return this.set(this.normal().mul(length));
+    return this.normal().mul(length);
   }
 
   dot(other: Vector3): number {
@@ -135,6 +135,7 @@ export class Vector3 {
     return x + y + z;
   }
 
+  /** Calculates the cross product of this and specified Vector3 */
   cross(other: Vector3): Vector3 {
     return new Vector3(
       this.y * other.z - this.z * other.y,
@@ -144,7 +145,7 @@ export class Vector3 {
   }
 
   lerp(other: Vector3, alpha: number): Vector3 {
-    return this.set(this.add(other.sub(this).mul(alpha)));
+    return this.add(other.sub(this).mul(alpha));
   }
 
   set(other: Vector3): Vector3 {
@@ -153,10 +154,6 @@ export class Vector3 {
     this.z = other.z;
 
     return this;
-  }
-
-  neg(): Vector3 {
-    return new Vector3(-this.x, -this.y, -this.z);
   }
 
   add(other: number | Vector3): Vector3 {
@@ -191,12 +188,20 @@ export class Vector3 {
     return new Vector3(this.x / x, this.y / y, this.z / z);
   }
 
+  neg(): Vector3 {
+    return new Vector3(-this.x, -this.y, -this.z);
+  }
+
   eq(other: Vector3): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
 
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
+  }
+
+  toString(): string {
+    return `Vector3 { x: ${this[0]}, y: ${this[1]}, z: ${this[2]} }`;
   }
 
   toArray(): [number, number, number] {

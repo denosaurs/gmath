@@ -1,6 +1,7 @@
 import { Rad } from "./angle.ts";
+import { Vector } from "./vector.ts";
 
-export class Vector2 {
+export class Vector2 extends Vector<Vector2> {
   #internal = new Float32Array(2);
 
   get [0](): number {
@@ -71,6 +72,8 @@ export class Vector2 {
   constructor(x: number);
   constructor(x: number, y: number);
   constructor(x?: number, y?: number) {
+    super();
+
     if (x !== undefined) {
       this.x = x;
 
@@ -98,16 +101,13 @@ export class Vector2 {
     return this.div(this.mag());
   }
 
-  normalize(): Vector2 {
-    return this.set(this.normal());
-  }
-
+  /** Returns the angle of this Vector2 */
   angle(): Rad {
     return new Rad(Math.atan2(this.y, this.x));
   }
 
   clamp(length: number): Vector2 {
-    return this.set(this.normal().mul(length));
+    return this.normal().mul(length);
   }
 
   dot(other: Vector2): number {
@@ -116,7 +116,7 @@ export class Vector2 {
   }
 
   lerp(other: Vector2, alpha: number): Vector2 {
-    return this.set(this.add(other.sub(this).mul(alpha)));
+    return this.add(other.sub(this).mul(alpha));
   }
 
   set(other: Vector2): Vector2 {
@@ -124,10 +124,6 @@ export class Vector2 {
     this.y = other.y;
 
     return this;
-  }
-
-  neg(): Vector2 {
-    return new Vector2(-this.x, -this.y);
   }
 
   add(other: number | Vector2): Vector2 {
@@ -154,12 +150,20 @@ export class Vector2 {
     return new Vector2(this.x / x, this.y / y);
   }
 
+  neg(): Vector2 {
+    return new Vector2(-this.x, -this.y);
+  }
+
   eq(other: Vector2): boolean {
     return this.x === other.x && this.y === other.y;
   }
 
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y);
+  }
+
+  toString(): string {
+    return `Vector2 { x: ${this[0]}, y: ${this[1]} }`;
   }
 
   toArray(): [number, number] {
