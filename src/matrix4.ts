@@ -248,6 +248,24 @@ export class Matrix4 {
     return this[n];
   }
 
+  add(other: Matrix4): Matrix4 {
+    return new Matrix4(
+      this[0].add(other[0]),
+      this[1].add(other[1]),
+      this[2].add(other[2]),
+      this[3].add(other[3]),
+    );
+  }
+
+  sub(other: Matrix4): Matrix4 {
+    return new Matrix4(
+      this[0].sub(other[0]),
+      this[1].sub(other[1]),
+      this[2].sub(other[2]),
+      this[3].sub(other[3]),
+    );
+  }
+
   mul(other: Matrix4): Matrix4 {
     return Matrix4.fromCols(
       this.row(0).dot(other[0]),

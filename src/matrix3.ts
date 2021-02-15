@@ -136,6 +136,22 @@ export class Matrix3 {
     return this[n];
   }
 
+  add(other: Matrix3): Matrix3 {
+    return new Matrix3(
+      this[0].add(other[0]),
+      this[1].add(other[1]),
+      this[2].add(other[2]),
+    );
+  }
+
+  sub(other: Matrix3): Matrix3 {
+    return new Matrix3(
+      this[0].sub(other[0]),
+      this[1].sub(other[1]),
+      this[2].sub(other[2]),
+    );
+  }
+
   mul(other: Matrix3): Matrix3 {
     return Matrix3.fromCols(
       this.row(0).dot(other[0]),
