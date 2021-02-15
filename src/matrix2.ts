@@ -82,11 +82,11 @@ export class Matrix2 {
   row(n: 0 | 1): Vector2 {
     return new Vector2(this[0][n], this[1][n]);
   }
-  
+
   col(n: 0 | 1): Vector2 {
     return this[n];
   }
-  
+
   add(other: Matrix2): Matrix2 {
     return new Matrix2(
       this[0].add(other[0]),
@@ -103,8 +103,10 @@ export class Matrix2 {
 
   mul(other: Matrix2): Matrix2 {
     return Matrix2.fromCols(
-      this.row(0).dot(other[0]), this.row(1).dot(other[0]),
-      this.row(0).dot(other[1]), this.row(1).dot(other[1]),
+      this.row(0).dot(other[0]),
+      this.row(1).dot(other[0]),
+      this.row(0).dot(other[1]),
+      this.row(1).dot(other[1]),
     );
   }
 

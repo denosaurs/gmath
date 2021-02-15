@@ -131,16 +131,22 @@ export class Matrix3 {
   row(n: 0 | 1 | 2): Vector3 {
     return new Vector3(this[0][n], this[1][n], this[2][n]);
   }
-  
+
   col(n: 0 | 1 | 2): Vector3 {
     return this[n];
   }
 
   mul(other: Matrix3): Matrix3 {
     return Matrix3.fromCols(
-      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),
-      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]),
-      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]),
+      this.row(0).dot(other[0]),
+      this.row(1).dot(other[0]),
+      this.row(2).dot(other[0]),
+      this.row(0).dot(other[1]),
+      this.row(1).dot(other[1]),
+      this.row(2).dot(other[1]),
+      this.row(0).dot(other[2]),
+      this.row(1).dot(other[2]),
+      this.row(2).dot(other[2]),
     );
   }
 
