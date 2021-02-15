@@ -163,6 +163,15 @@ export class Matrix4 {
     );
   }
 
+  static identity(): Matrix4 {
+    return Matrix4.fromCols(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+    );
+  }
+
   static lookToRh(eye: Vector3, dir: Vector3, up: Vector3): Matrix4 {
     const f = dir.normal();
     const s = f.cross(up).normal();

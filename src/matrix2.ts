@@ -46,6 +46,13 @@ export class Matrix2 {
     return new Matrix2(new Vector2(c0r0, c0r1), new Vector2(c1r0, c1r1));
   }
 
+  static identity(): Matrix2 {
+    return Matrix2.fromCols(
+      1, 0,
+      0, 1,
+    );
+  }
+
   static lookAt(dir: Vector2, up: Vector2): Matrix2 {
     const basis1 = dir.normal();
     const basis2 = up.x * dir.y >= up.y * dir.x

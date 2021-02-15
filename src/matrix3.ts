@@ -76,6 +76,14 @@ export class Matrix3 {
     );
   }
 
+  static identity(): Matrix3 {
+    return Matrix3.fromCols(
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1
+    );
+  }
+
   static lookToLh(dir: Vector3, up: Vector3): Matrix3 {
     dir = dir.normal();
     const side = up.cross(dir).normal();
