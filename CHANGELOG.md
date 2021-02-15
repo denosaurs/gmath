@@ -2,8 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog], and this project adheres to
-[Semantic Versioning].
+The format is based on [Keep a Changelog],
+and this project adheres to [Semantic Versioning].
+
+## [0.0.4] - 2021-02-15
+
+### Features
+
+- fromAngle methods and other static from methods for matrices ([`90d536e`])
+- add abstract Vector class and documentation ([`08198b3`])
+- identity matrices ([`766bf5c`])
+- Matrix4 tests ([`8d92ab9`])
+- Matrix3 tests ([`1ae3345`])
+- add and sub methods for Matrix3 and Matrix4 ([`838c822`])
+- Matrix2 tests ([`f733ad5`])
+
+### Bug Fixes
+
+- Vector tests ([`f17079a`])
 
 ## [0.0.3] - 2021-02-15
 
@@ -47,6 +63,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.0.4]: https://github.com/denosaurs/gmath/compare/0.0.3...0.0.4
+[`90d536e`]: https://github.com/denosaurs/gmath/commit/90d536e3f54855994cd97dbcd06b2d311f109475
+[`08198b3`]: https://github.com/denosaurs/gmath/commit/08198b3181d3a6f4a1fe8b393f52a00a07bb5ea2
+[`766bf5c`]: https://github.com/denosaurs/gmath/commit/766bf5cfa9f63e6251cbd3a20cffec134aef3107
+[`8d92ab9`]: https://github.com/denosaurs/gmath/commit/8d92ab92465a516b5e7c585a50ab3ac35a020746
+[`1ae3345`]: https://github.com/denosaurs/gmath/commit/1ae3345c8fd9f2347be169b25577b33a1c8743f1
+[`838c822`]: https://github.com/denosaurs/gmath/commit/838c8220fa313bf633da833d1383738e7faf9530
+[`f733ad5`]: https://github.com/denosaurs/gmath/commit/f733ad5cb4d9b0baebd770585b1738d582a7ddfc
+[`f17079a`]: https://github.com/denosaurs/gmath/commit/f17079a755db89728c89de952fe06f722a2eaf0e
 [0.0.3]: https://github.com/denosaurs/gmath/compare/0.0.2...0.0.3
 [`cfa415f`]: https://github.com/denosaurs/gmath/commit/cfa415fd50b1a33fc194213506264d0b02a2e76b
 [`bdd622a`]: https://github.com/denosaurs/gmath/commit/bdd622aacc873f1bd1234c6fe51627befaa2d307
