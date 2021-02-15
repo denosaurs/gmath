@@ -1,4 +1,6 @@
 import { Vector } from "./vector.ts";
+import { Vector2 } from "./vector2.ts";
+import { Vector4 } from "./vector4.ts";
 
 export class Vector3 extends Vector<Vector3> {
   #internal = new Float32Array(3);
@@ -91,6 +93,10 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(0, 0, 1);
   }
 
+  static fromHomogeneous(vector: Vector4): Vector3 {
+    return vector.trunc().mul(1 / vector.w)
+  }
+
   constructor();
   constructor(x: number);
   constructor(x: number, y: number, z: number);
@@ -124,6 +130,18 @@ export class Vector3 extends Vector<Vector3> {
 
   normal(): Vector3 {
     return this.div(this.mag());
+  }
+
+  truncN(n: 0 | 1 | 2): Vector2 {
+    switch(n) {
+      case 0: return new Vector2(this.y, this.z);
+      case 1: return new Vector2(this.x, this.z);
+      case 2: return new Vector2(this.x, this.y);
+    }
+  }
+
+  trunc(): Vector2 {
+    return new Vector2(this.x, this.y);
   }
 
   clamp(length: number): Vector3 {
@@ -198,6 +216,10 @@ export class Vector3 extends Vector<Vector3> {
 
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
+  }
+
+  toHomogeneous(): Vector4 {
+    return new Vector4(this.x, this.y, this.z, 1);
   }
 
   toString(): string {

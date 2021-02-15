@@ -1,4 +1,5 @@
 import { Vector } from "./vector.ts";
+import { Vector3 } from "./vector3.ts";
 
 export class Vector4 extends Vector<Vector4> {
   #internal = new Float32Array(4);
@@ -111,6 +112,19 @@ export class Vector4 extends Vector<Vector4> {
 
   normal(): Vector4 {
     return this.div(this.mag());
+  }
+
+  truncN(n: 0 | 1 | 2 | 3): Vector3 {
+    switch(n) {
+      case 0: return new Vector3(this.y, this.z, this.w);
+      case 1: return new Vector3(this.x, this.z, this.w);
+      case 2: return new Vector3(this.x, this.y, this.w);
+      case 3: return new Vector3(this.x, this.y, this.z);
+    }
+  }
+
+  trunc(): Vector3 {
+    return new Vector3(this.x, this.y, this.z);
   }
 
   clamp(length: number): Vector4 {
