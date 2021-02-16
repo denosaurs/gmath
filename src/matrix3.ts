@@ -3,6 +3,7 @@ import { Vector2 } from "./vector2.ts";
 import { Matrix2 } from "./matrix2.ts";
 import { Matrix4 } from "./matrix4.ts";
 import { Angle } from "./angle.ts";
+import { Quaternion } from "./quaternion.ts";
 
 export class Matrix3 {
   #internal: [Vector3, Vector3, Vector3] = Object.seal([
@@ -210,6 +211,30 @@ export class Matrix3 {
     );
   }
 
+  static fromQuaternion(quaternion: Quaternion): Matrix3 {
+    const x2 = quaternion.vector.x * 2;
+    const y2 = quaternion.vector.y * 2;
+    const z2 = quaternion.vector.z * 2;
+    
+    const xx2 = x2 * quaternion.vector.x;
+    const xy2 = x2 * quaternion.vector.y;
+    const xz2 = x2 * quaternion.vector.z;
+
+    const yy2 = y2 * quaternion.vector.y;
+    const yz2 = y2 * quaternion.vector.z;
+    const zz2 = z2 * quaternion.vector.z;
+
+    const sy2 = y2 * quaternion.scalar;
+    const sz2 = z2 * quaternion.scalar;
+    const sx2 = x2 * quaternion.scalar;
+
+    return Matrix3.fromCols(
+      1 - yy2 - zz2, xy2 + sz2, xz2 - sy2,
+      xy2 - sz2, 1 - xx2 - zz2, yz2 + sx2,
+      xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2,
+    );
+  }
+
   constructor();
   constructor(x: Vector3, y: Vector3, z: Vector3);
   constructor(x?: Vector3, y?: Vector3, z?: Vector3) {
@@ -231,7 +256,7 @@ export class Matrix3 {
       this[2][2],
     );
   }
-
+  
   eq(other: Matrix3): boolean {
     return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z);
   }
@@ -246,6 +271,14 @@ export class Matrix3 {
 
   col(n: 0 | 1 | 2): Vector3 {
     return this[n];
+  }
+
+  diag(): [number, number, number] {
+    return [this[0][0], this[1][1], this[2][2]];
+  }
+
+  trace(): number {
+    return this[0][0] + this[1][1] + this[2][2];
   }
 
   add(other: Matrix3): Matrix3 {

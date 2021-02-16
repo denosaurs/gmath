@@ -102,6 +102,14 @@ export class Matrix2 {
     return this[n];
   }
 
+  diag(): [number, number] {
+    return [this[0][0], this[1][1]];
+  }
+
+  trace(): number {
+    return this[0][0] + this[1][1];
+  }
+
   add(other: Matrix2): Matrix2 {
     return new Matrix2(
       this[0].add(other[0]),

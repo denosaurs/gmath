@@ -2,6 +2,7 @@ import { Vector4 } from "./vector4.ts";
 import { Vector3 } from "./vector3.ts";
 import { Perspective } from "./projection.ts";
 import { Angle } from "./angle.ts";
+import { Quaternion } from "./quaternion.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
@@ -361,6 +362,43 @@ export class Matrix4 {
     );
   }
 
+  static fromQuaternion(quaternion: Quaternion): Matrix4 {
+    const x2 = quaternion.vector.x + quaternion.vector.x;
+    const y2 = quaternion.vector.y + quaternion.vector.y;
+    const z2 = quaternion.vector.z + quaternion.vector.z;
+
+    const xx2 = x2 * quaternion.vector.x;
+    const xy2 = x2 * quaternion.vector.y;
+    const xz2 = x2 * quaternion.vector.z;
+
+    const yy2 = y2 * quaternion.vector.y;
+    const yz2 = y2 * quaternion.vector.z;
+    const zz2 = z2 * quaternion.vector.z;
+
+    const sy2 = y2 * quaternion.scalar;
+    const sz2 = z2 * quaternion.scalar;
+    const sx2 = x2 * quaternion.scalar;
+
+    return Matrix4.fromCols(
+      1 - yy2 - zz2,
+      xy2 + sz2,
+      xz2 - sy2,
+      0,
+      xy2 - sz2,
+      1 - xx2 - zz2,
+      yz2 + sx2,
+      0,
+      xz2 + sy2,
+      yz2 - sx2,
+      1 - xx2 - yy2,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+  }
+
   constructor();
   constructor(x: Vector4, y: Vector4, z: Vector4, w: Vector4);
   constructor(x?: Vector4, y?: Vector4, z?: Vector4, w?: Vector4) {
@@ -407,6 +445,14 @@ export class Matrix4 {
 
   col(n: 0 | 1 | 2 | 3): Vector4 {
     return this[n];
+  }
+
+  diag(): [number, number, number, number] {
+    return [this[0][0], this[1][1], this[2][2], this[3][3]];
+  }
+
+  trace(): number {
+    return this[0][0] + this[1][1] + this[2][2] + this[3][3];
   }
 
   add(other: Matrix4): Matrix4 {
