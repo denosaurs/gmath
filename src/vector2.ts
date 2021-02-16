@@ -154,6 +154,10 @@ export class Vector2 extends Vector<Vector2> {
     return new Vector2(-this.x, -this.y);
   }
 
+  midpoint(other: Vector2): Vector2 {
+    return other.sub(this).div(2).add(this);
+  }
+
   eq(other: Vector2): boolean {
     return this.x === other.x && this.y === other.y;
   }

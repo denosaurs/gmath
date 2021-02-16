@@ -210,6 +210,10 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(-this.x, -this.y, -this.z);
   }
 
+  midpoint(other: Vector3): Vector3 {
+    return other.sub(this).div(2).add(this);
+  }
+
   eq(other: Vector3): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
