@@ -115,11 +115,15 @@ export class Vector4 extends Vector<Vector4> {
   }
 
   truncN(n: 0 | 1 | 2 | 3): Vector3 {
-    switch(n) {
-      case 0: return new Vector3(this.y, this.z, this.w);
-      case 1: return new Vector3(this.x, this.z, this.w);
-      case 2: return new Vector3(this.x, this.y, this.w);
-      case 3: return new Vector3(this.x, this.y, this.z);
+    switch (n) {
+      case 0:
+        return new Vector3(this.y, this.z, this.w);
+      case 1:
+        return new Vector3(this.x, this.z, this.w);
+      case 2:
+        return new Vector3(this.x, this.y, this.w);
+      case 3:
+        return new Vector3(this.x, this.y, this.z);
     }
   }
 

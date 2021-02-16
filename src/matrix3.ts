@@ -215,7 +215,7 @@ export class Matrix3 {
     const x2 = quaternion.vector.x * 2;
     const y2 = quaternion.vector.y * 2;
     const z2 = quaternion.vector.z * 2;
-    
+
     const xx2 = x2 * quaternion.vector.x;
     const xy2 = x2 * quaternion.vector.y;
     const xz2 = x2 * quaternion.vector.z;
@@ -229,9 +229,15 @@ export class Matrix3 {
     const sx2 = x2 * quaternion.scalar;
 
     return Matrix3.fromCols(
-      1 - yy2 - zz2, xy2 + sz2, xz2 - sy2,
-      xy2 - sz2, 1 - xx2 - zz2, yz2 + sx2,
-      xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2,
+      1 - yy2 - zz2,
+      xy2 + sz2,
+      xz2 - sy2,
+      xy2 - sz2,
+      1 - xx2 - zz2,
+      yz2 + sx2,
+      xz2 + sy2,
+      yz2 - sx2,
+      1 - xx2 - yy2,
     );
   }
 
@@ -256,7 +262,7 @@ export class Matrix3 {
       this[2][2],
     );
   }
-  
+
   eq(other: Matrix3): boolean {
     return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z);
   }

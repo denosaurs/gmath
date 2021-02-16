@@ -94,7 +94,7 @@ export class Vector3 extends Vector<Vector3> {
   }
 
   static fromHomogeneous(vector: Vector4): Vector3 {
-    return vector.trunc().mul(1 / vector.w)
+    return vector.trunc().mul(1 / vector.w);
   }
 
   constructor();
@@ -133,10 +133,13 @@ export class Vector3 extends Vector<Vector3> {
   }
 
   truncN(n: 0 | 1 | 2): Vector2 {
-    switch(n) {
-      case 0: return new Vector2(this.y, this.z);
-      case 1: return new Vector2(this.x, this.z);
-      case 2: return new Vector2(this.x, this.y);
+    switch (n) {
+      case 0:
+        return new Vector2(this.y, this.z);
+      case 1:
+        return new Vector2(this.x, this.z);
+      case 2:
+        return new Vector2(this.x, this.y);
     }
   }
 
