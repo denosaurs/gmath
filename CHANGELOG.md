@@ -2,8 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog], and this project adheres to
-[Semantic Versioning].
+The format is based on [Keep a Changelog],
+and this project adheres to [Semantic Versioning].
+
+## [0.0.6] - 2021-02-16
+
+### Features
+
+- quaternions ([`7c5f102`])
+- vector midpoint method ([`171c11e`])
+- add to and from homogenous ([`78d8b4d`])
 
 ## [0.0.5] - 2021-02-15
 
@@ -69,6 +77,10 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.0.6]: https://github.com/denosaurs/gmath/compare/0.0.5...0.0.6
+[`7c5f102`]: https://github.com/denosaurs/gmath/commit/7c5f102ae6bdf0f4b73b4cf0a87c60a26db63304
+[`171c11e`]: https://github.com/denosaurs/gmath/commit/171c11efdff32acaa4522ae4496058c37eea4b4b
+[`78d8b4d`]: https://github.com/denosaurs/gmath/commit/78d8b4dccafe2a45354cbfff79490e00c092e1d6
 [0.0.5]: https://github.com/denosaurs/gmath/compare/0.0.4...0.0.5
 [`d0dea04`]: https://github.com/denosaurs/gmath/commit/d0dea041bb44d818aeadf6c371cf2154308d8a43
 [0.0.4]: https://github.com/denosaurs/gmath/compare/0.0.3...0.0.4
