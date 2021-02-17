@@ -35,35 +35,43 @@ export class Vector2 {
     this.#internal[1] = val;
   }
 
-  static get negativeInfinity(): Vector2 {
+  /** A Vector2 with all values set to Number.NEGATIVE_INFINITY */
+  static negativeInfinity(): Vector2 {
     return new Vector2(Number.NEGATIVE_INFINITY);
   }
 
-  static get positiveInfinity(): Vector2 {
+  /** A Vector2 with all values set to Number.POSITIVE_INFINITY */
+  static positiveInfinity(): Vector2 {
     return new Vector2(Number.POSITIVE_INFINITY);
   }
 
-  static get zero(): Vector2 {
+  /** A Vector2 with all values set to 0 */
+  static zero(): Vector2 {
     return new Vector2(0);
   }
 
-  static get one(): Vector2 {
+  /** A Vector2 with all values set to 1 */
+  static one(): Vector2 {
     return new Vector2(1);
   }
 
-  static get up(): Vector2 {
+  /** Shorthand for writing Vector2(0, 1) */
+  static up(): Vector2 {
     return new Vector2(0, 1);
   }
 
-  static get down(): Vector2 {
+  /** Shorthand for writing Vector2(0, -1) */
+  static down(): Vector2 {
     return new Vector2(0, -1);
   }
 
-  static get left(): Vector2 {
+  /** Shorthand for writing Vector2(-1, 0) */
+  static left(): Vector2 {
     return new Vector2(-1, 0);
   }
 
-  static get right(): Vector2 {
+  /** Shorthand for writing Vector2(1, 0) */
+  static right(): Vector2 {
     return new Vector2(1, 0);
   }
 
@@ -164,6 +172,7 @@ export class Vector2 {
     return new Vector2(-this.x, -this.y);
   }
 
+  /** Calculates the midpoint between two Vector2 */
   midpoint(other: Vector2): Vector2 {
     return other.sub(this).div(2).add(this);
   }

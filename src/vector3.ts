@@ -52,43 +52,53 @@ export class Vector3 {
     this.#internal[2] = val;
   }
 
-  static get negativeInfinity(): Vector3 {
+  /** A Vector3 with all values set to Number.NEGATIVE_INFINITY */
+  static negativeInfinity(): Vector3 {
     return new Vector3(Number.NEGATIVE_INFINITY);
   }
 
-  static get positiveInfinity(): Vector3 {
+  /** A Vector3 with all values set to Number.POSITIVE_INFINITY */
+  static positiveInfinity(): Vector3 {
     return new Vector3(Number.POSITIVE_INFINITY);
   }
 
-  static get zero(): Vector3 {
+  /** A Vector2 with all values set to 0 */
+  static zero(): Vector3 {
     return new Vector3(0);
   }
 
-  static get one(): Vector3 {
+  /** A Vector2 with all values set to 1 */
+  static one(): Vector3 {
     return new Vector3(1);
   }
 
-  static get up(): Vector3 {
+  /** Shorthand for writing Vector3(0, 1, 0) */
+  static up(): Vector3 {
     return new Vector3(0, 1, 0);
   }
 
-  static get down(): Vector3 {
+  /** Shorthand for writing Vector3(0, -1, 0) */
+  static down(): Vector3 {
     return new Vector3(0, -1, 0);
   }
 
-  static get left(): Vector3 {
+  /** Shorthand for writing Vector3(-1, 0, 0) */
+  static left(): Vector3 {
     return new Vector3(-1, 0, 0);
   }
 
-  static get right(): Vector3 {
+  /** Shorthand for writing Vector3(1, 0, 0) */
+  static right(): Vector3 {
     return new Vector3(1, 0, 0);
   }
 
-  static get back(): Vector3 {
+  /** Shorthand for writing Vector3(0, 0, -1) */
+  static back(): Vector3 {
     return new Vector3(0, 0, -1);
   }
 
-  static get forward(): Vector3 {
+  /** Shorthand for writing Vector3(0, 0, 1) */
+  static forward(): Vector3 {
     return new Vector3(0, 0, 1);
   }
 
@@ -225,6 +235,7 @@ export class Vector3 {
     return new Vector3(-this.x, -this.y, -this.z);
   }
 
+  /** Calculates the midpoint between two Vector3 */
   midpoint(other: Vector3): Vector3 {
     return other.sub(this).div(2).add(this);
   }

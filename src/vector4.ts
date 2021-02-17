@@ -67,19 +67,23 @@ export class Vector4 {
     this.#internal[3] = val;
   }
 
-  static get negativeInfinity(): Vector4 {
+  /** A Vector4 with all values set to Number.NEGATIVE_INFINITY */
+  static negativeInfinity(): Vector4 {
     return new Vector4(Number.NEGATIVE_INFINITY);
   }
 
-  static get positiveInfinity(): Vector4 {
+  /** A Vector4 with all values set to Number.POSITIVE_INFINITY */
+  static positiveInfinity(): Vector4 {
     return new Vector4(Number.POSITIVE_INFINITY);
   }
 
-  static get zero(): Vector4 {
+  /** A Vector4 with all values set to 0 */
+  static zero(): Vector4 {
     return new Vector4(0);
   }
 
-  static get one(): Vector4 {
+  /** A Vector4 with all values set to 1 */
+  static one(): Vector4 {
     return new Vector4(1);
   }
 
@@ -200,6 +204,7 @@ export class Vector4 {
     return new Vector4(-this.x, -this.y, -this.z, -this.w);
   }
 
+  /** Calculates the midpoint between two Vector4 */
   midpoint(other: Vector4): Vector4 {
     return other.sub(this).div(2).add(this);
   }
