@@ -408,6 +408,11 @@ export class Matrix4 {
     this.w = w ?? Vector4.zero;
   }
 
+  /** Creates a new Matrix4 with the same values */
+  clone(): Matrix4 {
+    return new Matrix4(this.x, this.y, this.z, this.w);
+  }
+
   transpose(): Matrix4 {
     return Matrix4.fromCols(
       this[0][0],

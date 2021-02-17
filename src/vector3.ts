@@ -1,8 +1,7 @@
-import { Vector } from "./vector.ts";
 import { Vector2 } from "./vector2.ts";
 import { Vector4 } from "./vector4.ts";
 
-export class Vector3 extends Vector<Vector3> {
+export class Vector3 {
   #internal = new Float32Array(3);
 
   get [0](): number {
@@ -101,8 +100,6 @@ export class Vector3 extends Vector<Vector3> {
   constructor(x: number);
   constructor(x: number, y: number, z: number);
   constructor(x?: number, y?: number, z?: number) {
-    super();
-
     if (x !== undefined) {
       this.x = x;
 
@@ -116,22 +113,27 @@ export class Vector3 extends Vector<Vector3> {
     }
   }
 
+  /** Creates a new Vector3 with the same values */
   clone(): Vector3 {
     return new Vector3(this.x, this.y, this.z);
   }
 
+  /** The magnitude of this Vector3 */
   mag(): number {
     return Math.hypot(this.x, this.y, this.z);
   }
 
+  /** The squared magnitude of this Vector2 */
   mag2(): number {
     return this.x ** 2 + this.y ** 2 + this.z ** 2;
   }
 
+  /** Returns a new Vector2 with the same direction, but with a magnitude of 1 */
   normal(): Vector3 {
     return this.div(this.mag());
   }
 
+  /** Truncates this Vector3 to a Vector2 dropping the nth value */
   truncN(n: 0 | 1 | 2): Vector2 {
     switch (n) {
       case 0:
@@ -143,14 +145,17 @@ export class Vector3 extends Vector<Vector3> {
     }
   }
 
+  /** Truncates this Vector3 to a Vector2 dropping the z value */
   trunc(): Vector2 {
     return new Vector2(this.x, this.y);
   }
 
+  /** Returns a new Vector2 with the same direction, but clamped to the specified length */
   clamp(length: number): Vector3 {
     return this.normal().mul(length);
   }
 
+  /** Calculates the dot product of this Vector3 */
   dot(other: Vector3): number {
     const { x, y, z } = this.mul(other);
     return x + y + z;
@@ -165,10 +170,12 @@ export class Vector3 extends Vector<Vector3> {
     );
   }
 
+  /** Linearly interpolates between this and the specified Vector3 */
   lerp(other: Vector3, alpha: number): Vector3 {
     return this.add(other.sub(this).mul(alpha));
   }
 
+  /** Sets the x, y and z of this Vector3 to the specified Vector3 x, y and z values */
   set(other: Vector3): Vector3 {
     this.x = other.x;
     this.y = other.y;
@@ -177,6 +184,7 @@ export class Vector3 extends Vector<Vector3> {
     return this;
   }
 
+  /** Adds this Vector3 to the specified Vector3 or scalar */
   add(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -185,6 +193,7 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(this.x + x, this.y + y, this.z + z);
   }
 
+  /** Subtracts this Vector3 from the specified Vector3 or scalar */
   sub(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -193,6 +202,7 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(this.x - x, this.y - y, this.z - z);
   }
 
+  /** Multiplies this Vector3 with the specified Vector3 or scalar */
   mul(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -201,6 +211,7 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(this.x * x, this.y * y, this.z * z);
   }
 
+  /** Divides this Vector3 with the specified Vector3 or scalar */
   div(other: number | Vector3): Vector3 {
     const { x, y, z } = typeof other === "number"
       ? { x: other, y: other, z: other }
@@ -209,6 +220,7 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector3(this.x / x, this.y / y, this.z / z);
   }
 
+  /** Negates the values of this Vector3 */
   neg(): Vector3 {
     return new Vector3(-this.x, -this.y, -this.z);
   }
@@ -217,10 +229,12 @@ export class Vector3 extends Vector<Vector3> {
     return other.sub(this).div(2).add(this);
   }
 
+  /** Checks equality between two Vector3 */
   eq(other: Vector3): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
 
+  /** Checks if the Vector3 is finite */
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
   }
@@ -229,14 +243,17 @@ export class Vector3 extends Vector<Vector3> {
     return new Vector4(this.x, this.y, this.z, 1);
   }
 
+  /** Converts the Vector3 to a string */
   toString(): string {
     return `Vector3 { x: ${this[0]}, y: ${this[1]}, z: ${this[2]} }`;
   }
 
+  /** Converts the Vector3 to a tuple of numbers */
   toArray(): [number, number, number] {
     return [this[0], this[1], this[2]];
   }
 
+  /** Converts the Vector to a Float32Array */
   toFloat32Array(): Float32Array {
     return this.#internal;
   }

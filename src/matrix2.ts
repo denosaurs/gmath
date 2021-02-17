@@ -77,6 +77,11 @@ export class Matrix2 {
     this.y = y ?? Vector2.zero;
   }
 
+  /** Creates a new Matrix2 with the same values */
+  clone(): Matrix2 {
+    return new Matrix2(this.x, this.y);
+  }
+
   transpose(): Matrix2 {
     return Matrix2.fromCols(
       this[0][0],

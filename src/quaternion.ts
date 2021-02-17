@@ -121,6 +121,11 @@ export class Quaternion {
     this.vector = vector ?? Vector3.zero;
   }
 
+  /** Creates a new Quaternion with the same values */
+  clone(): Quaternion {
+    return new Quaternion(this.scalar, this.vector);
+  }
+
   mag(): number {
     return Math.hypot(this.scalar, this.vector.x, this.vector.y, this.vector.z);
   }

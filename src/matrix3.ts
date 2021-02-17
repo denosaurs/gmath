@@ -249,6 +249,11 @@ export class Matrix3 {
     this.z = z ?? Vector3.zero;
   }
 
+  /** Creates a new Matrix3 with the same values */
+  clone(): Matrix3 {
+    return new Matrix3(this.x, this.y, this.z);
+  }
+
   transpose(): Matrix3 {
     return Matrix3.fromCols(
       this[0][0],
