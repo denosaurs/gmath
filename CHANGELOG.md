@@ -2,8 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog], and this project adheres to
-[Semantic Versioning].
+The format is based on [Keep a Changelog],
+and this project adheres to [Semantic Versioning].
+
+## [0.0.8] - 2021-02-17
 
 ## [0.0.7] - 2021-02-17
 
@@ -83,6 +85,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.0.8]: https://github.com/denosaurs/gmath/compare/0.0.7...0.0.8
 [0.0.7]: https://github.com/denosaurs/gmath/compare/0.0.6...0.0.7
 [`f9ef686`]: https://github.com/denosaurs/gmath/commit/f9ef6867c5f69bad952f3659d2f6aa74f41a1185
 [0.0.6]: https://github.com/denosaurs/gmath/compare/0.0.5...0.0.6
