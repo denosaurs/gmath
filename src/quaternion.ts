@@ -7,11 +7,11 @@ export class Quaternion {
   vector: Vector3;
 
   static zero(): Quaternion {
-    return new Quaternion(0, Vector3.zero);
+    return new Quaternion(0, Vector3.zero());
   }
 
   static one(): Quaternion {
-    return new Quaternion(1, Vector3.one);
+    return new Quaternion(1, Vector3.one());
   }
 
   static fromArc(src: Vector3, dst: Vector3, fallback?: Vector3): Quaternion {
@@ -25,10 +25,10 @@ export class Quaternion {
     if (dot === -avgMag) {
       let axis = fallback;
       if (axis === undefined) {
-        let vector = Vector3.up.cross(src);
+        let vector = Vector3.up().cross(src);
 
-        if (vector.eq(Vector3.zero)) {
-          vector = Vector3.right.cross(src);
+        if (vector.eq(Vector3.zero())) {
+          vector = Vector3.right().cross(src);
         }
 
         axis = vector.normal();
@@ -102,10 +102,10 @@ export class Quaternion {
     const k = Math.sqrt(a.mag2() * b.mag2());
 
     if (kCosTheta / k === -1) {
-      let orthogonal = a.cross(Vector3.right);
+      let orthogonal = a.cross(Vector3.right());
 
       if (orthogonal.mag2() === 0) {
-        orthogonal = a.cross(Vector3.up);
+        orthogonal = a.cross(Vector3.up());
       }
 
       return new Quaternion(0, orthogonal.normal());
@@ -118,7 +118,7 @@ export class Quaternion {
   constructor(scalar: number, vector: Vector3);
   constructor(scalar?: number, vector?: Vector3) {
     this.scalar = scalar ?? 0;
-    this.vector = vector ?? Vector3.zero;
+    this.vector = vector ?? Vector3.zero();
   }
 
   /** Creates a new Quaternion with the same values */

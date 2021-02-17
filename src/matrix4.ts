@@ -6,10 +6,10 @@ import { Quaternion } from "./quaternion.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
-    Vector4.zero,
-    Vector4.zero,
-    Vector4.zero,
-    Vector4.zero,
+    Vector4.zero(),
+    Vector4.zero(),
+    Vector4.zero(),
+    Vector4.zero(),
   ]);
 
   get [0](): Vector4 {
@@ -76,23 +76,13 @@ export class Matrix4 {
     this.#internal[3] = val;
   }
 
+  /** Constructs a Matrix4 from individual elements */
+  // deno-fmt-ignore
   static fromCols(
-    c0r0: number,
-    c0r1: number,
-    c0r2: number,
-    c0r3: number,
-    c1r0: number,
-    c1r1: number,
-    c1r2: number,
-    c1r3: number,
-    c2r0: number,
-    c2r1: number,
-    c2r2: number,
-    c2r3: number,
-    c3r0: number,
-    c3r1: number,
-    c3r2: number,
-    c3r3: number,
+    c0r0: number, c0r1: number, c0r2: number, c0r3: number,
+    c1r0: number, c1r1: number, c1r2: number, c1r3: number,
+    c2r0: number, c2r1: number, c2r2: number, c2r3: number,
+    c3r0: number, c3r1: number, c3r2: number, c3r3: number,
   ) {
     return new Matrix4(
       new Vector4(c0r0, c0r1, c0r2, c0r3),
@@ -145,65 +135,32 @@ export class Matrix4 {
       (perspective.far - perspective.near);
     const c3r3 = 0;
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      c0r0,
-      c0r1,
-      c0r2,
-      c0r3,
-      c1r0,
-      c1r1,
-      c1r2,
-      c1r3,
-      c2r0,
-      c2r1,
-      c2r2,
-      c2r3,
-      c3r0,
-      c3r1,
-      c3r2,
-      c3r3,
+      c0r0, c0r1, c0r2, c0r3,
+      c1r0, c1r1, c1r2, c1r3,
+      c2r0, c2r1, c2r2, c2r3,
+      c3r0, c3r1, c3r2, c3r3,
     );
   }
 
   static identity(): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
     );
   }
 
   static fromTranslation(translation: Vector3): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      translation.x,
-      translation.y,
-      translation.z,
-      1,
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      translation.x, translation.y, translation.z, 1,
     );
   }
 
@@ -212,23 +169,12 @@ export class Matrix4 {
   }
 
   static fromNonuniformScale(x: number, y: number): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      x,
-      0,
-      0,
-      0,
-      0,
-      y,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
+      x, 0, 0, 0,
+      0, y, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
     );
   }
 
@@ -237,23 +183,12 @@ export class Matrix4 {
     const s = f.cross(up).normal();
     const u = s.cross(f);
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      s.x,
-      u.x,
-      -f.x,
-      0,
-      s.y,
-      u.y,
-      -f.y,
-      0,
-      s.z,
-      u.z,
-      -f.z,
-      0,
-      -eye.dot(s),
-      -eye.dot(u),
-      eye.dot(f),
-      1,
+      s.x, u.x, -f.x, 0,
+      s.y, u.y, -f.y, 0,
+      s.z, u.z, -f.z, 0,
+      -eye.dot(s), -eye.dot(u), eye.dot(f), 1,
     );
   }
 
@@ -272,69 +207,36 @@ export class Matrix4 {
   static fromAngleX(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      1,
-      0,
-      0,
-      0,
-      0,
-      c,
-      s,
-      0,
-      0,
-      -s,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1,
+      1, 0, 0, 0,
+      0, c, s, 0,
+      0, -s, c, 0,
+      0, 0, 0, 1,
     );
   }
 
   static fromAngleY(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      c,
-      0,
-      -s,
-      0,
-      0,
-      1,
-      0,
-      0,
-      s,
-      0,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1,
+      c, 0, -s, 0,
+      0, 1, 0, 0,
+      s, 0, c, 0,
+      0, 0, 0, 1,
     );
   }
 
   static fromAngleZ(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      c,
-      s,
-      0,
-      0,
-      -s,
-      c,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
+      c, s, 0, 0,
+      -s, c, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
     );
   }
 
@@ -342,23 +244,12 @@ export class Matrix4 {
     const [s, c] = angle.sincos();
     const c1 = 1 - c;
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      c1 * axis.x * axis.x + c,
-      c1 * axis.x * axis.y + s * axis.z,
-      c1 * axis.x * axis.z - s * axis.y,
-      0,
-      c1 * axis.x * axis.y - s * axis.z,
-      c1 * axis.y * axis.y + c,
-      c1 * axis.y * axis.z + s * axis.x,
-      0,
-      c1 * axis.x * axis.z + s * axis.y,
-      c1 * axis.y * axis.z - s * axis.x,
-      c1 * axis.z * axis.z + c,
-      0,
-      0,
-      0,
-      0,
-      1,
+      c1 * axis.x * axis.x + c, c1 * axis.x * axis.y + s * axis.z, c1 * axis.x * axis.z - s * axis.y, 0,
+      c1 * axis.x * axis.y - s * axis.z, c1 * axis.y * axis.y + c, c1 * axis.y * axis.z + s * axis.x, 0,
+      c1 * axis.x * axis.z + s * axis.y, c1 * axis.y * axis.z - s * axis.x, c1 * axis.z * axis.z + c, 0,
+      0, 0, 0, 1,
     );
   }
 
@@ -379,33 +270,22 @@ export class Matrix4 {
     const sz2 = z2 * quaternion.scalar;
     const sx2 = x2 * quaternion.scalar;
 
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      1 - yy2 - zz2,
-      xy2 + sz2,
-      xz2 - sy2,
-      0,
-      xy2 - sz2,
-      1 - xx2 - zz2,
-      yz2 + sx2,
-      0,
-      xz2 + sy2,
-      yz2 - sx2,
-      1 - xx2 - yy2,
-      0,
-      0,
-      0,
-      0,
-      1,
+      1 - yy2 - zz2, xy2 + sz2, xz2 - sy2, 0,
+      xy2 - sz2, 1 - xx2 - zz2, yz2 + sx2, 0,
+      xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2, 0,
+      0, 0, 0, 1,
     );
   }
 
   constructor();
   constructor(x: Vector4, y: Vector4, z: Vector4, w: Vector4);
   constructor(x?: Vector4, y?: Vector4, z?: Vector4, w?: Vector4) {
-    this.x = x ?? Vector4.zero;
-    this.y = y ?? Vector4.zero;
-    this.z = z ?? Vector4.zero;
-    this.w = w ?? Vector4.zero;
+    this.x = x ?? Vector4.zero();
+    this.y = y ?? Vector4.zero();
+    this.z = z ?? Vector4.zero();
+    this.w = w ?? Vector4.zero();
   }
 
   /** Creates a new Matrix4 with the same values */
@@ -414,23 +294,12 @@ export class Matrix4 {
   }
 
   transpose(): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      this[0][0],
-      this[1][0],
-      this[2][0],
-      this[3][0],
-      this[0][1],
-      this[1][1],
-      this[2][1],
-      this[3][1],
-      this[0][2],
-      this[1][2],
-      this[2][2],
-      this[3][2],
-      this[0][3],
-      this[1][3],
-      this[2][3],
-      this[3][3],
+      this[0][0], this[1][0], this[2][0], this[3][0],
+      this[0][1], this[1][1], this[2][1], this[3][1],
+      this[0][2], this[1][2], this[2][2], this[3][2],
+      this[0][3], this[1][3], this[2][3], this[3][3],
     );
   }
 
@@ -479,23 +348,12 @@ export class Matrix4 {
   }
 
   mul(other: Matrix4): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      this.row(0).dot(other[0]),
-      this.row(1).dot(other[0]),
-      this.row(2).dot(other[0]),
-      this.row(3).dot(other[0]),
-      this.row(0).dot(other[1]),
-      this.row(1).dot(other[1]),
-      this.row(2).dot(other[1]),
-      this.row(3).dot(other[1]),
-      this.row(0).dot(other[2]),
-      this.row(1).dot(other[2]),
-      this.row(2).dot(other[2]),
-      this.row(3).dot(other[2]),
-      this.row(0).dot(other[3]),
-      this.row(1).dot(other[3]),
-      this.row(2).dot(other[3]),
-      this.row(3).dot(other[3]),
+      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]), this.row(3).dot(other[0]),
+      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]), this.row(3).dot(other[1]),
+      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]), this.row(3).dot(other[2]),
+      this.row(0).dot(other[3]), this.row(1).dot(other[3]), this.row(2).dot(other[3]), this.row(3).dot(other[3]),
     );
   }
 

@@ -4,7 +4,7 @@ import { Matrix4 } from "./matrix4.ts";
 import { Vector2 } from "./vector2.ts";
 
 export class Matrix2 {
-  #internal: [Vector2, Vector2] = Object.seal([Vector2.zero, Vector2.zero]);
+  #internal: [Vector2, Vector2] = Object.seal([Vector2.zero(), Vector2.zero()]);
 
   get [0](): Vector2 {
     return this.#internal[0];
@@ -38,26 +38,29 @@ export class Matrix2 {
     this.#internal[1] = val;
   }
 
+  /** Constructs a Matrix2 from individual elements */
+  // deno-fmt-ignore
   static fromCols(
-    c0r0: number,
-    c0r1: number,
-    c1r0: number,
-    c1r1: number,
+    c0r0: number, c0r1: number,
+    c1r0: number, c1r1: number,
   ) {
     return new Matrix2(new Vector2(c0r0, c0r1), new Vector2(c1r0, c1r1));
   }
 
   static fromAngle(theta: Angle): Matrix2 {
     const [s, c] = theta.sincos();
-    return Matrix2.fromCols(c, s, -s, c);
+    // deno-fmt-ignore
+    return Matrix2.fromCols(
+      c, s,
+      -s, c
+    );
   }
 
   static identity(): Matrix2 {
+    // deno-fmt-ignore
     return Matrix2.fromCols(
-      1,
-      0,
-      0,
-      1,
+      1, 0,
+      0, 1,
     );
   }
 
@@ -73,8 +76,8 @@ export class Matrix2 {
   constructor();
   constructor(x: Vector2, y: Vector2);
   constructor(x?: Vector2, y?: Vector2) {
-    this.x = x ?? Vector2.zero;
-    this.y = y ?? Vector2.zero;
+    this.x = x ?? Vector2.zero();
+    this.y = y ?? Vector2.zero();
   }
 
   /** Creates a new Matrix2 with the same values */
@@ -83,11 +86,10 @@ export class Matrix2 {
   }
 
   transpose(): Matrix2 {
+    // deno-fmt-ignore
     return Matrix2.fromCols(
-      this[0][0],
-      this[1][0],
-      this[0][1],
-      this[1][1],
+      this[0][0], this[1][0],
+      this[0][1], this[1][1],
     );
   }
 
@@ -130,46 +132,29 @@ export class Matrix2 {
   }
 
   mul(other: Matrix2): Matrix2 {
+    // deno-fmt-ignore
     return Matrix2.fromCols(
-      this.row(0).dot(other[0]),
-      this.row(1).dot(other[0]),
-      this.row(0).dot(other[1]),
-      this.row(1).dot(other[1]),
+      this.row(0).dot(other[0]), this.row(1).dot(other[0]),
+      this.row(0).dot(other[1]), this.row(1).dot(other[1]),
     );
   }
 
   toMatrix3(): Matrix3 {
+    // deno-fmt-ignore
     return Matrix3.fromCols(
-      this[0][0],
-      this[0][1],
-      0,
-      this[1][0],
-      this[1][1],
-      0,
-      0,
-      0,
-      1,
+      this[0][0], this[0][1], 0,
+      this[1][0], this[1][1], 0,
+      0, 0, 1,
     );
   }
 
   toMatrix4(): Matrix4 {
+    // deno-fmt-ignore
     return Matrix4.fromCols(
-      this[0][0],
-      this[0][1],
-      0,
-      0,
-      this[1][0],
-      this[1][1],
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      0,
-      1,
+      this[0][0], this[0][1], 0, 0,
+      this[1][0], this[1][1], 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
     );
   }
 
