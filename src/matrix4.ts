@@ -3,6 +3,7 @@ import { Vector3 } from "./vector3.ts";
 import { Perspective } from "./projection.ts";
 import { Angle } from "./angle.ts";
 import { Quaternion } from "./quaternion.ts";
+import { Matrix3 } from "./matrix3.ts";
 
 export class Matrix4 {
   #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
@@ -78,7 +79,7 @@ export class Matrix4 {
 
   /** Constructs a Matrix4 from individual elements */
   // deno-fmt-ignore
-  static fromCols(
+  static from(
     c0r0: number, c0r1: number, c0r2: number, c0r3: number,
     c1r0: number, c1r1: number, c1r2: number, c1r3: number,
     c2r0: number, c2r1: number, c2r2: number, c2r3: number,
@@ -136,7 +137,7 @@ export class Matrix4 {
     const c3r3 = 0;
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c0r0, c0r1, c0r2, c0r3,
       c1r0, c1r1, c1r2, c1r3,
       c2r0, c2r1, c2r2, c2r3,
@@ -146,7 +147,7 @@ export class Matrix4 {
 
   static identity(): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
@@ -156,7 +157,7 @@ export class Matrix4 {
 
   static fromTranslation(translation: Vector3): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
@@ -170,7 +171,7 @@ export class Matrix4 {
 
   static fromNonuniformScale(x: number, y: number): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       x, 0, 0, 0,
       0, y, 0, 0,
       0, 0, 1, 0,
@@ -184,7 +185,7 @@ export class Matrix4 {
     const u = s.cross(f);
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       s.x, u.x, -f.x, 0,
       s.y, u.y, -f.y, 0,
       s.z, u.z, -f.z, 0,
@@ -208,7 +209,7 @@ export class Matrix4 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       1, 0, 0, 0,
       0, c, s, 0,
       0, -s, c, 0,
@@ -220,7 +221,7 @@ export class Matrix4 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c, 0, -s, 0,
       0, 1, 0, 0,
       s, 0, c, 0,
@@ -232,7 +233,7 @@ export class Matrix4 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c, s, 0, 0,
       -s, c, 0, 0,
       0, 0, 1, 0,
@@ -245,7 +246,7 @@ export class Matrix4 {
     const c1 = 1 - c;
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c1 * axis.x * axis.x + c, c1 * axis.x * axis.y + s * axis.z, c1 * axis.x * axis.z - s * axis.y, 0,
       c1 * axis.x * axis.y - s * axis.z, c1 * axis.y * axis.y + c, c1 * axis.y * axis.z + s * axis.x, 0,
       c1 * axis.x * axis.z + s * axis.y, c1 * axis.y * axis.z - s * axis.x, c1 * axis.z * axis.z + c, 0,
@@ -271,7 +272,7 @@ export class Matrix4 {
     const sx2 = x2 * quaternion.scalar;
 
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       1 - yy2 - zz2, xy2 + sz2, xz2 - sy2, 0,
       xy2 - sz2, 1 - xx2 - zz2, yz2 + sx2, 0,
       xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2, 0,
@@ -295,7 +296,7 @@ export class Matrix4 {
 
   transpose(): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       this[0][0], this[1][0], this[2][0], this[3][0],
       this[0][1], this[1][1], this[2][1], this[3][1],
       this[0][2], this[1][2], this[2][2], this[3][2],
@@ -329,6 +330,140 @@ export class Matrix4 {
     return this[0][0] + this[1][1] + this[2][2] + this[3][3];
   }
 
+  determinant(): number {
+    return (
+      this[0][3] * this[1][2] * this[2][1] * this[3][0] -
+      this[0][2] * this[1][3] * this[2][1] * this[3][0] -
+      this[0][3] * this[1][1] * this[2][2] * this[3][0] +
+      this[0][1] * this[1][3] * this[2][2] * this[3][0] +
+      this[0][2] * this[1][1] * this[2][3] * this[3][0] -
+      this[0][1] * this[1][2] * this[2][3] * this[3][0] -
+      this[0][3] * this[1][2] * this[2][0] * this[3][1] +
+      this[0][2] * this[1][3] * this[2][0] * this[3][1] +
+      this[0][3] * this[1][0] * this[2][2] * this[3][1] -
+      this[0][0] * this[1][3] * this[2][2] * this[3][1] -
+      this[0][2] * this[1][0] * this[2][3] * this[3][1] +
+      this[0][0] * this[1][2] * this[2][3] * this[3][1] +
+      this[0][3] * this[1][1] * this[2][0] * this[3][2] -
+      this[0][1] * this[1][3] * this[2][0] * this[3][2] -
+      this[0][3] * this[1][0] * this[2][1] * this[3][2] +
+      this[0][0] * this[1][3] * this[2][1] * this[3][2] +
+      this[0][1] * this[1][0] * this[2][3] * this[3][2] -
+      this[0][0] * this[1][1] * this[2][3] * this[3][2] -
+      this[0][2] * this[1][1] * this[2][0] * this[3][3] +
+      this[0][1] * this[1][2] * this[2][0] * this[3][3] +
+      this[0][2] * this[1][0] * this[2][1] * this[3][3] -
+      this[0][0] * this[1][2] * this[2][1] * this[3][3] -
+      this[0][1] * this[1][0] * this[2][2] * this[3][3] +
+      this[0][0] * this[1][1] * this[2][2] * this[3][3]
+    );
+  }
+
+  invert(): Matrix4 | undefined {
+    const det = this.determinant();
+    if (det !== 0) {
+      const detInv = 1 / det;
+      return Matrix4.from(
+        (this[1][2] * this[2][3] * this[3][1] -
+          this[1][3] * this[2][2] * this[3][1] +
+          this[1][3] * this[2][1] * this[3][2] -
+          this[1][1] * this[2][3] * this[3][2] -
+          this[1][2] * this[2][1] * this[3][3] +
+          this[1][1] * this[2][2] * this[3][3]) * detInv,
+        (this[1][3] * this[2][2] * this[3][0] -
+          this[1][2] * this[2][3] * this[3][0] -
+          this[1][3] * this[2][0] * this[3][2] +
+          this[1][0] * this[2][3] * this[3][2] +
+          this[1][2] * this[2][0] * this[3][3] -
+          this[1][0] * this[2][2] * this[3][3]) * detInv,
+        (this[1][1] * this[2][3] * this[3][0] -
+          this[1][3] * this[2][1] * this[3][0] +
+          this[1][3] * this[2][0] * this[3][1] -
+          this[1][0] * this[2][3] * this[3][1] -
+          this[1][1] * this[2][0] * this[3][3] +
+          this[1][0] * this[2][1] * this[3][3]) * detInv,
+        (this[1][2] * this[2][1] * this[3][0] -
+          this[1][1] * this[2][2] * this[3][0] -
+          this[1][2] * this[2][0] * this[3][1] +
+          this[1][0] * this[2][2] * this[3][1] +
+          this[1][1] * this[2][0] * this[3][2] -
+          this[1][0] * this[2][1] * this[3][2]) * detInv,
+        (this[0][3] * this[2][2] * this[3][1] -
+          this[0][2] * this[2][3] * this[3][1] -
+          this[0][3] * this[2][1] * this[3][2] +
+          this[0][1] * this[2][3] * this[3][2] +
+          this[0][2] * this[2][1] * this[3][3] -
+          this[0][1] * this[2][2] * this[3][3]) * detInv,
+        (this[0][2] * this[2][3] * this[3][0] -
+          this[0][3] * this[2][2] * this[3][0] +
+          this[0][3] * this[2][0] * this[3][2] -
+          this[0][0] * this[2][3] * this[3][2] -
+          this[0][2] * this[2][0] * this[3][3] +
+          this[0][0] * this[2][2] * this[3][3]) * detInv,
+        (this[0][3] * this[2][1] * this[3][0] -
+          this[0][1] * this[2][3] * this[3][0] -
+          this[0][3] * this[2][0] * this[3][1] +
+          this[0][0] * this[2][3] * this[3][1] +
+          this[0][1] * this[2][0] * this[3][3] -
+          this[0][0] * this[2][1] * this[3][3]) * detInv,
+        (this[0][1] * this[2][2] * this[3][0] -
+          this[0][2] * this[2][1] * this[3][0] +
+          this[0][2] * this[2][0] * this[3][1] -
+          this[0][0] * this[2][2] * this[3][1] -
+          this[0][1] * this[2][0] * this[3][2] +
+          this[0][0] * this[2][1] * this[3][2]) * detInv,
+        (this[0][2] * this[1][3] * this[3][1] -
+          this[0][3] * this[1][2] * this[3][1] +
+          this[0][3] * this[1][1] * this[3][2] -
+          this[0][1] * this[1][3] * this[3][2] -
+          this[0][2] * this[1][1] * this[3][3] +
+          this[0][1] * this[1][2] * this[3][3]) * detInv,
+        (this[0][3] * this[1][2] * this[3][0] -
+          this[0][2] * this[1][3] * this[3][0] -
+          this[0][3] * this[1][0] * this[3][2] +
+          this[0][0] * this[1][3] * this[3][2] +
+          this[0][2] * this[1][0] * this[3][3] -
+          this[0][0] * this[1][2] * this[3][3]) * detInv,
+        (this[0][1] * this[1][3] * this[3][0] -
+          this[0][3] * this[1][1] * this[3][0] +
+          this[0][3] * this[1][0] * this[3][1] -
+          this[0][0] * this[1][3] * this[3][1] -
+          this[0][1] * this[1][0] * this[3][3] +
+          this[0][0] * this[1][1] * this[3][3]) * detInv,
+        (this[0][2] * this[1][1] * this[3][0] -
+          this[0][1] * this[1][2] * this[3][0] -
+          this[0][2] * this[1][0] * this[3][1] +
+          this[0][0] * this[1][2] * this[3][1] +
+          this[0][1] * this[1][0] * this[3][2] -
+          this[0][0] * this[1][1] * this[3][2]) * detInv,
+        (this[0][3] * this[1][2] * this[2][1] -
+          this[0][2] * this[1][3] * this[2][1] -
+          this[0][3] * this[1][1] * this[2][2] +
+          this[0][1] * this[1][3] * this[2][2] +
+          this[0][2] * this[1][1] * this[2][3] -
+          this[0][1] * this[1][2] * this[2][3]) * detInv,
+        (this[0][2] * this[1][3] * this[2][0] -
+          this[0][3] * this[1][2] * this[2][0] +
+          this[0][3] * this[1][0] * this[2][2] -
+          this[0][0] * this[1][3] * this[2][2] -
+          this[0][2] * this[1][0] * this[2][3] +
+          this[0][0] * this[1][2] * this[2][3]) * detInv,
+        (this[0][3] * this[1][1] * this[2][0] -
+          this[0][1] * this[1][3] * this[2][0] -
+          this[0][3] * this[1][0] * this[2][1] +
+          this[0][0] * this[1][3] * this[2][1] +
+          this[0][1] * this[1][0] * this[2][3] -
+          this[0][0] * this[1][1] * this[2][3]) * detInv,
+        (this[0][1] * this[1][2] * this[2][0] -
+          this[0][2] * this[1][1] * this[2][0] +
+          this[0][2] * this[1][0] * this[2][1] -
+          this[0][0] * this[1][2] * this[2][1] -
+          this[0][1] * this[1][0] * this[2][2] +
+          this[0][0] * this[1][1] * this[2][2]) * detInv,
+      );
+    }
+  }
+
   add(other: Matrix4): Matrix4 {
     return new Matrix4(
       this[0].add(other[0]),
@@ -349,7 +484,7 @@ export class Matrix4 {
 
   mul(other: Matrix4): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]), this.row(3).dot(other[0]),
       this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]), this.row(3).dot(other[1]),
       this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]), this.row(3).dot(other[2]),

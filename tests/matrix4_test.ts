@@ -6,21 +6,21 @@ import { Vector4 } from "../src/vector4.ts";
 
 Deno.test("Matrix4.transpose", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
       .transpose().eq(
-        Matrix4.fromCols(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16),
+        Matrix4.from(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16),
       ),
   );
 });
 
 Deno.test("Matrix4.eq", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).eq(
-      Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).eq(
+      Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
     ),
   );
   assert(
-    !Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).eq(
+    !Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).eq(
       new Matrix4(),
     ),
   );
@@ -28,11 +28,11 @@ Deno.test("Matrix4.eq", () => {
 
 Deno.test("Matrix4.isFinite", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
       .isFinite(),
   );
   assert(
-    !Matrix4.fromCols(
+    !Matrix4.from(
       Infinity,
       2,
       3,
@@ -55,22 +55,22 @@ Deno.test("Matrix4.isFinite", () => {
 
 Deno.test("Matrix4.row", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       0,
     ).eq(new Vector4(1, 5, 9, 13)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       1,
     ).eq(new Vector4(2, 6, 10, 14)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       2,
     ).eq(new Vector4(3, 7, 11, 15)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       3,
     ).eq(new Vector4(4, 8, 12, 16)),
   );
@@ -78,22 +78,22 @@ Deno.test("Matrix4.row", () => {
 
 Deno.test("Matrix4.col", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       0,
     ).eq(new Vector4(1, 2, 3, 4)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       1,
     ).eq(new Vector4(5, 6, 7, 8)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       2,
     ).eq(new Vector4(9, 10, 11, 12)),
   );
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       3,
     ).eq(new Vector4(13, 14, 15, 16)),
   );
@@ -101,24 +101,24 @@ Deno.test("Matrix4.col", () => {
 
 Deno.test("Matrix4.add", () => {
   assert(
-    Matrix4.fromCols(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).add(
-      Matrix4.fromCols(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-    ).eq(Matrix4.fromCols(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)),
+    Matrix4.from(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).add(
+      Matrix4.from(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    ).eq(Matrix4.from(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2)),
   );
 });
 
 Deno.test("Matrix4.sub", () => {
   assert(
-    Matrix4.fromCols(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2).sub(
-      Matrix4.fromCols(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-    ).eq(Matrix4.fromCols(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
+    Matrix4.from(2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2).sub(
+      Matrix4.from(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    ).eq(Matrix4.from(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
   );
 });
 
 Deno.test("Matrix4.mul", () => {
   assert(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).mul(
-      Matrix4.fromCols(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).mul(
+      Matrix4.from(
         17,
         18,
         19,
@@ -137,7 +137,7 @@ Deno.test("Matrix4.mul", () => {
         32,
       ),
     ).eq(
-      Matrix4.fromCols(
+      Matrix4.from(
         538,
         612,
         686,
@@ -159,10 +159,10 @@ Deno.test("Matrix4.mul", () => {
   );
 
   assert(
-    Matrix4.fromCols(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16).mul(
-      Matrix4.fromCols(2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16, 5, 9, 13, 17),
+    Matrix4.from(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16).mul(
+      Matrix4.from(2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16, 5, 9, 13, 17),
     ).eq(
-      Matrix4.fromCols(
+      Matrix4.from(
         100,
         228,
         356,
@@ -186,7 +186,7 @@ Deno.test("Matrix4.mul", () => {
 
 Deno.test("Matrix4.toArray", () => {
   assertEquals(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
       .toArray(),
     [
       [1, 2, 3, 4],
@@ -199,7 +199,7 @@ Deno.test("Matrix4.toArray", () => {
 
 Deno.test("Matrix4.toFloat32Array", () => {
   assertEquals(
-    Matrix4.fromCols(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
       .toFloat32Array(),
     new Float32Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
   );

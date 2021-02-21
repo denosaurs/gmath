@@ -98,10 +98,10 @@ Deno.test("Rad.normalize", () => {
 
 // TODO: move to matrix2_test
 // Deno.test("Rad.toMatrix2", () => {
-//   assert(new Rad(0).toMatrix2().eq(Matrix2.fromCols(1, 0, -0, 1)));
+//   assert(new Rad(0).toMatrix2().eq(Matrix2.from(1, 0, -0, 1)));
 //   assert(
 //     new Rad(1).toMatrix2().eq(
-//       Matrix2.fromCols(
+//       Matrix2.from(
 //         0.5403023058681398,
 //         0.8414709848078965,
 //         -0.8414709848078965,
@@ -111,7 +111,7 @@ Deno.test("Rad.normalize", () => {
 //   );
 //   assert(
 //     new Rad(Rad.turn).toMatrix2().eq(
-//       Matrix2.fromCols(1, -2.4492935982947064e-16, 2.4492935982947064e-16, 1),
+//       Matrix2.from(1, -2.4492935982947064e-16, 2.4492935982947064e-16, 1),
 //     ),
 //   );
 // });
@@ -229,10 +229,10 @@ Deno.test("Deg.normalize", () => {
 
 // TODO: move to matrix2_test
 // Deno.test("Deg.toMatrix2", () => {
-//   assert(new Deg(0).toMatrix2().eq(Matrix2.fromCols(1, 0, -0, 1)));
+//   assert(new Deg(0).toMatrix2().eq(Matrix2.from(1, 0, -0, 1)));
 //   assert(
 //     new Deg(1).toMatrix2().eq(
-//       Matrix2.fromCols(
+//       Matrix2.from(
 //         0.9998476951563913,
 //         0.01745240643728351,
 //         -0.01745240643728351,
@@ -242,7 +242,7 @@ Deno.test("Deg.normalize", () => {
 //   );
 //   assert(
 //     new Deg(Deg.turn).toMatrix2().eq(
-//       Matrix2.fromCols(1, -2.4492935982947064e-16, 2.4492935982947064e-16, 1),
+//       Matrix2.from(1, -2.4492935982947064e-16, 2.4492935982947064e-16, 1),
 //     ),
 //   );
 // });

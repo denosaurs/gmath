@@ -62,7 +62,7 @@ export class Matrix3 {
 
   /** Constructs a Matrix3 from individual elements */
   // deno-fmt-ignore
-  static fromCols(
+  static from(
     c0r0: number, c0r1: number, c0r2: number,
     c1r0: number, c1r1: number, c1r2: number,
     c2r0: number, c2r1: number, c2r2: number,
@@ -76,7 +76,7 @@ export class Matrix3 {
 
   static identity(): Matrix3 {
     // deno-fmt-ig
-    return Matrix3.fromCols(
+    return Matrix3.from(
       1,
       0,
       0,
@@ -115,7 +115,7 @@ export class Matrix3 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       1, 0, 0,
       0, c, s,
       0, -s, c,
@@ -126,7 +126,7 @@ export class Matrix3 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       c, 0, -s,
       0, 1, 0,
       s, 0, c,
@@ -137,7 +137,7 @@ export class Matrix3 {
     const [s, c] = theta.sincos();
 
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       c, s, 0,
       -s, c, 0,
       0, 0, 1,
@@ -148,7 +148,7 @@ export class Matrix3 {
     const [s, c] = angle.sincos();
     const c1 = 1 - c;
 
-    return Matrix3.fromCols(
+    return Matrix3.from(
       c1 * axis.x * axis.x + c,
       c1 * axis.x * axis.y + s * axis.z,
       c1 * axis.x * axis.z - s * axis.y,
@@ -163,7 +163,7 @@ export class Matrix3 {
 
   static fromTranslation(translation: Vector2): Matrix3 {
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       1, 0, 0,
       0, 1, 0,
       translation.x, translation.y, 1,
@@ -176,7 +176,7 @@ export class Matrix3 {
 
   static fromNonuniformScale(x: number, y: number): Matrix3 {
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       x, 0, 0,
       0, y, 0,
       0, 0, 1,
@@ -201,7 +201,7 @@ export class Matrix3 {
     const sx2 = x2 * quaternion.scalar;
 
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       1 - yy2 - zz2, xy2 + sz2, xz2 - sy2,
       xy2 - sz2, 1 - xx2 - zz2, yz2 + sx2,
       xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2,
@@ -223,7 +223,7 @@ export class Matrix3 {
 
   transpose(): Matrix3 {
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       this[0][0], this[1][0], this[2][0],
       this[0][1], this[1][1], this[2][1],
       this[0][2], this[1][2], this[2][2],
@@ -254,6 +254,35 @@ export class Matrix3 {
     return this[0][0] + this[1][1] + this[2][2];
   }
 
+  determinant(): number {
+    return (
+      this[0][0] * this[1][1] * this[2][2] +
+      this[0][1] * this[1][2] * this[2][0] +
+      this[0][2] * this[1][0] * this[2][1] -
+      this[0][0] * this[1][2] * this[2][1] -
+      this[0][1] * this[1][0] * this[2][2] -
+      this[0][2] * this[1][1] * this[2][0]
+    );
+  }
+
+  invert(): Matrix3 | undefined {
+    const det = this.determinant();
+    if (det !== 0) {
+      // deno-fmt-ignore
+      return Matrix3.from(
+        (this[1][1] * this[2][2] - this[1][2] * this[2][1]) / det,
+        (this[0][2] * this[2][1] - this[0][1] * this[2][2]) / det,
+        (this[0][1] * this[1][2] - this[0][2] * this[1][1]) / det,
+        (this[1][2] * this[2][0] - this[1][0] * this[2][2]) / det,
+        (this[0][0] * this[2][2] - this[0][2] * this[2][0]) / det,
+        (this[0][2] * this[1][0] - this[0][0] * this[1][2]) / det,
+        (this[1][0] * this[2][1] - this[1][1] * this[2][0]) / det,
+        (this[0][1] * this[2][0] - this[0][0] * this[2][1]) / det,
+        (this[0][0] * this[1][1] - this[0][1] * this[1][0]) / det,
+      );
+    }
+  }
+
   add(other: Matrix3): Matrix3 {
     return new Matrix3(
       this[0].add(other[0]),
@@ -272,7 +301,7 @@ export class Matrix3 {
 
   mul(other: Matrix3): Matrix3 {
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),
       this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]),
       this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]),
@@ -281,7 +310,7 @@ export class Matrix3 {
 
   toMatrix4(): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       this[0][0], this[0][1], this[0][2], 0,
       this[1][0], this[1][1], this[1][2], 0,
       this[2][0], this[2][1], this[2][2], 0,

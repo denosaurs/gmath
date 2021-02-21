@@ -63,7 +63,7 @@ export class Perspective {
     const c3r2 = -(2 * this.far * this.near) / (this.far - this.near);
     const c3r3 = 0;
 
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c0r0,
       c0r1,
       c0r2,
@@ -168,7 +168,7 @@ export class PerspectiveFov {
     const c3r2 = (2 * this.far * this.near) / (this.near - this.far);
     const c3r3 = 0;
 
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c0r0,
       c0r1,
       c0r2,
@@ -234,7 +234,7 @@ export class Orthographic {
     const c3r2 = -(this.far + this.near) / (this.far - this.near);
     const c3r3 = 1;
 
-    return Matrix4.fromCols(
+    return Matrix4.from(
       c0r0,
       c0r1,
       c0r2,

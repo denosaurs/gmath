@@ -40,7 +40,7 @@ export class Matrix2 {
 
   /** Constructs a Matrix2 from individual elements */
   // deno-fmt-ignore
-  static fromCols(
+  static from(
     c0r0: number, c0r1: number,
     c1r0: number, c1r1: number,
   ) {
@@ -50,7 +50,7 @@ export class Matrix2 {
   static fromAngle(theta: Angle): Matrix2 {
     const [s, c] = theta.sincos();
     // deno-fmt-ignore
-    return Matrix2.fromCols(
+    return Matrix2.from(
       c, s,
       -s, c
     );
@@ -58,7 +58,7 @@ export class Matrix2 {
 
   static identity(): Matrix2 {
     // deno-fmt-ignore
-    return Matrix2.fromCols(
+    return Matrix2.from(
       1, 0,
       0, 1,
     );
@@ -87,7 +87,7 @@ export class Matrix2 {
 
   transpose(): Matrix2 {
     // deno-fmt-ignore
-    return Matrix2.fromCols(
+    return Matrix2.from(
       this[0][0], this[1][0],
       this[0][1], this[1][1],
     );
@@ -117,6 +117,21 @@ export class Matrix2 {
     return this[0][0] + this[1][1];
   }
 
+  determinant(): number {
+    return this[0][0] * this[1][1] - this[1][0] * this[0][1];
+  }
+
+  invert(): Matrix2 | undefined {
+    const det = this.determinant();
+    if (det !== 0) {
+      // deno-fmt-ignore
+      return Matrix2.from(
+        this[1][1] / det, -this[0][1] / det,
+        -this[1][0] / det, this[0][0] / det,
+      );
+    }
+  }
+
   add(other: Matrix2): Matrix2 {
     return new Matrix2(
       this[0].add(other[0]),
@@ -133,7 +148,7 @@ export class Matrix2 {
 
   mul(other: Matrix2): Matrix2 {
     // deno-fmt-ignore
-    return Matrix2.fromCols(
+    return Matrix2.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]),
       this.row(0).dot(other[1]), this.row(1).dot(other[1]),
     );
@@ -141,7 +156,7 @@ export class Matrix2 {
 
   toMatrix3(): Matrix3 {
     // deno-fmt-ignore
-    return Matrix3.fromCols(
+    return Matrix3.from(
       this[0][0], this[0][1], 0,
       this[1][0], this[1][1], 0,
       0, 0, 1,
@@ -150,7 +165,7 @@ export class Matrix2 {
 
   toMatrix4(): Matrix4 {
     // deno-fmt-ignore
-    return Matrix4.fromCols(
+    return Matrix4.from(
       this[0][0], this[0][1], 0, 0,
       this[1][0], this[1][1], 0, 0,
       0, 0, 1, 0,
