@@ -1,6 +1,13 @@
 import { Vector3 } from "./vector3.ts";
 
-export class Vector4 {
+export interface Point4 {
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+}
+
+export class Vector4 implements Point4 {
   #internal = new Float32Array(4);
 
   get [0](): number {

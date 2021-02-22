@@ -1,6 +1,11 @@
 import { Rad } from "./angle.ts";
 
-export class Vector2 {
+export interface Point2 {
+  x: number;
+  y: number;
+}
+
+export class Vector2 implements Point2 {
   #internal = new Float32Array(2);
 
   get [0](): number {
