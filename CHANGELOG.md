@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.1] - 2021-02-22
+
+### Features
+
+- Point2, Point3 and Point4 interfaces ([`2d489b9`])
+
 ## [0.1.0] - 2021-02-21
 
 ### Features
@@ -91,6 +97,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.1]: https://github.com/denosaurs/gmath/compare/0.1.0...0.1.1
+[`2d489b9`]: https://github.com/denosaurs/gmath/commit/2d489b9e22953706149df0aea4d279a5ca852bc2
 [0.1.0]: https://github.com/denosaurs/gmath/compare/0.0.8...0.1.0
 [`1bde4f0`]: https://github.com/denosaurs/gmath/commit/1bde4f044a800cf522b1778d02f2e5b1a8ac9890
 [0.0.8]: https://github.com/denosaurs/gmath/compare/0.0.7...0.0.8
