@@ -1,4 +1,5 @@
 export * from "./src/angle.ts";
+export * from "./src/decomposed.ts";
 export * from "./src/matrix2.ts";
 export * from "./src/matrix3.ts";
 export * from "./src/matrix4.ts";

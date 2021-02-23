@@ -210,8 +210,10 @@ export class Matrix3 {
   }
 
   static fromDecomposed(decomposed: Decomposed2): Matrix3 {
-    let m = Matrix2.fromAngle(decomposed.rot);
-    m = m.mul(decomposed.scale).toMatrix3();
+    const m = Matrix2.fromAngle(decomposed.rot).mul(decomposed.scale)
+      .toMatrix3();
+    m.z = decomposed.disp.extend3(1);
+    return m;
   }
 
   constructor();
@@ -295,7 +297,7 @@ export class Matrix3 {
         this[0].add(other),
         this[1].add(other),
         this[2].add(other),
-      )
+      );
     }
 
     return new Matrix3(
@@ -311,7 +313,7 @@ export class Matrix3 {
         this[0].sub(other),
         this[1].sub(other),
         this[2].sub(other),
-      )
+      );
     }
 
     return new Matrix3(
@@ -327,9 +329,9 @@ export class Matrix3 {
         this[0].mul(other),
         this[1].mul(other),
         this[2].mul(other),
-      )
+      );
     }
-    
+
     // deno-fmt-ignore
     return Matrix3.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),

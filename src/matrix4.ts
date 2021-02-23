@@ -3,6 +3,7 @@ import { Vector3 } from "./vector3.ts";
 import { Perspective } from "./projection.ts";
 import { Angle } from "./angle.ts";
 import { Quaternion } from "./quaternion.ts";
+import { Decomposed3 } from "./decomposed.ts";
 import { Matrix3 } from "./matrix3.ts";
 
 export class Matrix4 {
@@ -278,6 +279,13 @@ export class Matrix4 {
       xz2 + sy2, yz2 - sx2, 1 - xx2 - yy2, 0,
       0, 0, 0, 1,
     );
+  }
+  
+  static fromDecomposed(decomposed: Decomposed3): Matrix4 {
+    const m = Matrix3.fromQuaternion(decomposed.rot).mul(decomposed.scale)
+      .toMatrix4();
+    m.w = decomposed.disp.extend(1);
+    return m;
   }
 
   constructor();

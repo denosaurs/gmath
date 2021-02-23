@@ -256,8 +256,14 @@ export class Vector3 implements Point3 {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
   }
 
+  /** Create a Vector4 using this x, y and z and the provided w */
+  extend(w: number): Vector4 {
+    return new Vector4(this.x, this.y, this.z, w);
+  }
+
+  /** Creates a new Vector4 using this x, y and z and setting w to 1 */
   toHomogeneous(): Vector4 {
-    return new Vector4(this.x, this.y, this.z, 1);
+    return this.extend(1);
   }
 
   /** Converts the Vector3 to a string */

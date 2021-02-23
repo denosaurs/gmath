@@ -1,4 +1,6 @@
 import { Rad } from "./angle.ts";
+import { Vector3 } from "./vector3.ts";
+import { Vector4 } from "./vector4.ts";
 
 export interface Point2 {
   x: number;
@@ -190,6 +192,16 @@ export class Vector2 implements Point2 {
   /** Checks if the Vector2 is finite */
   isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y);
+  }
+
+  /** Create a Vector3 using this x and y and the provided z */
+  extend3(z: number): Vector3 {
+    return new Vector3(this.x, this.y, z);
+  }
+
+  /** Create a Vector4 using this x and y and the provided z and w */
+  extend4(z: number, w: number): Vector4 {
+    return new Vector4(this.x, this.y, z, w);
   }
 
   /** Converts the Vector2 to a string */
