@@ -137,7 +137,7 @@ export class Matrix2 {
       return new Matrix2(
         this[0].add(other),
         this[1].add(other),
-      )
+      );
     }
 
     return new Matrix2(
@@ -151,7 +151,7 @@ export class Matrix2 {
       return new Matrix2(
         this[0].sub(other),
         this[1].sub(other),
-      )
+      );
     }
 
     return new Matrix2(
@@ -165,7 +165,7 @@ export class Matrix2 {
       return new Matrix2(
         this[0].mul(other),
         this[1].mul(other),
-      )
+      );
     }
 
     // deno-fmt-ignore

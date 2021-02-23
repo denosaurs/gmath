@@ -280,7 +280,7 @@ export class Matrix4 {
       0, 0, 0, 1,
     );
   }
-  
+
   static fromDecomposed(decomposed: Decomposed3): Matrix4 {
     const m = Matrix3.fromQuaternion(decomposed.rot).mul(decomposed.scale)
       .toMatrix4();
