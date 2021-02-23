@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.2] - 2021-02-23
+
+### Features
+
+- fromDecomposed and Decomposed2 and Decomposed3 interfaces ([`995e5b1`])
+- scalar arithmetic on matrices ([`0c8cee8`])
+
 ## [0.1.1] - 2021-02-22
 
 ### Features
@@ -97,6 +104,9 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.2]: https://github.com/denosaurs/gmath/compare/0.1.1...0.1.2
+[`995e5b1`]: https://github.com/denosaurs/gmath/commit/995e5b14c3b9b08f051c31b3da14cecacd9ed94b
+[`0c8cee8`]: https://github.com/denosaurs/gmath/commit/0c8cee8d1e21f57beffdc9d280f26bfddcd0e9eb
 [0.1.1]: https://github.com/denosaurs/gmath/compare/0.1.0...0.1.1
 [`2d489b9`]: https://github.com/denosaurs/gmath/commit/2d489b9e22953706149df0aea4d279a5ca852bc2
 [0.1.0]: https://github.com/denosaurs/gmath/compare/0.0.8...0.1.0
