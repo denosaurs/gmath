@@ -132,21 +132,42 @@ export class Matrix2 {
     }
   }
 
-  add(other: Matrix2): Matrix2 {
+  add(other: Matrix2 | number): Matrix2 {
+    if (typeof other === "number") {
+      return new Matrix2(
+        this[0].add(other),
+        this[1].add(other),
+      )
+    }
+
     return new Matrix2(
       this[0].add(other[0]),
       this[1].add(other[1]),
     );
   }
 
-  sub(other: Matrix2): Matrix2 {
+  sub(other: Matrix2 | number): Matrix2 {
+    if (typeof other === "number") {
+      return new Matrix2(
+        this[0].sub(other),
+        this[1].sub(other),
+      )
+    }
+
     return new Matrix2(
       this[0].sub(other[0]),
       this[1].sub(other[1]),
     );
   }
 
-  mul(other: Matrix2): Matrix2 {
+  mul(other: Matrix2 | number): Matrix2 {
+    if (typeof other === "number") {
+      return new Matrix2(
+        this[0].mul(other),
+        this[1].mul(other),
+      )
+    }
+
     // deno-fmt-ignore
     return Matrix2.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]),

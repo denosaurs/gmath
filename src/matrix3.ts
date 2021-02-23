@@ -4,6 +4,7 @@ import { Matrix2 } from "./matrix2.ts";
 import { Matrix4 } from "./matrix4.ts";
 import { Angle } from "./angle.ts";
 import { Quaternion } from "./quaternion.ts";
+import { Decomposed2 } from "./decomposed.ts";
 
 export class Matrix3 {
   #internal: [Vector3, Vector3, Vector3] = Object.seal([
@@ -208,6 +209,11 @@ export class Matrix3 {
     );
   }
 
+  static fromDecomposed(decomposed: Decomposed2): Matrix3 {
+    let m = Matrix2.fromAngle(decomposed.rot);
+    m = m.mul(decomposed.scale).toMatrix3();
+  }
+
   constructor();
   constructor(x: Vector3, y: Vector3, z: Vector3);
   constructor(x?: Vector3, y?: Vector3, z?: Vector3) {
@@ -283,7 +289,15 @@ export class Matrix3 {
     }
   }
 
-  add(other: Matrix3): Matrix3 {
+  add(other: Matrix3 | number): Matrix3 {
+    if (typeof other === "number") {
+      return new Matrix3(
+        this[0].add(other),
+        this[1].add(other),
+        this[2].add(other),
+      )
+    }
+
     return new Matrix3(
       this[0].add(other[0]),
       this[1].add(other[1]),
@@ -291,7 +305,15 @@ export class Matrix3 {
     );
   }
 
-  sub(other: Matrix3): Matrix3 {
+  sub(other: Matrix3 | number): Matrix3 {
+    if (typeof other === "number") {
+      return new Matrix3(
+        this[0].sub(other),
+        this[1].sub(other),
+        this[2].sub(other),
+      )
+    }
+
     return new Matrix3(
       this[0].sub(other[0]),
       this[1].sub(other[1]),
@@ -299,7 +321,15 @@ export class Matrix3 {
     );
   }
 
-  mul(other: Matrix3): Matrix3 {
+  mul(other: Matrix3 | number): Matrix3 {
+    if (typeof other === "number") {
+      return new Matrix3(
+        this[0].mul(other),
+        this[1].mul(other),
+        this[2].mul(other),
+      )
+    }
+    
     // deno-fmt-ignore
     return Matrix3.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),

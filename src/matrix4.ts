@@ -464,7 +464,16 @@ export class Matrix4 {
     }
   }
 
-  add(other: Matrix4): Matrix4 {
+  add(other: Matrix4 | number): Matrix4 {
+    if (typeof other === "number") {
+      return new Matrix4(
+        this[0].add(other),
+        this[1].add(other),
+        this[2].add(other),
+        this[3].add(other),
+      );
+    }
+
     return new Matrix4(
       this[0].add(other[0]),
       this[1].add(other[1]),
@@ -473,7 +482,16 @@ export class Matrix4 {
     );
   }
 
-  sub(other: Matrix4): Matrix4 {
+  sub(other: Matrix4 | number): Matrix4 {
+    if (typeof other === "number") {
+      return new Matrix4(
+        this[0].sub(other),
+        this[1].sub(other),
+        this[2].sub(other),
+        this[3].sub(other),
+      );
+    }
+
     return new Matrix4(
       this[0].sub(other[0]),
       this[1].sub(other[1]),
@@ -482,7 +500,16 @@ export class Matrix4 {
     );
   }
 
-  mul(other: Matrix4): Matrix4 {
+  mul(other: Matrix4 | number): Matrix4 {
+    if (typeof other === "number") {
+      return new Matrix4(
+        this[0].mul(other),
+        this[1].mul(other),
+        this[2].mul(other),
+        this[3].mul(other),
+      );
+    }
+
     // deno-fmt-ignore
     return Matrix4.from(
       this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]), this.row(3).dot(other[0]),
