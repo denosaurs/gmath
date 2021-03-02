@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.3] - 2021-03-02
+
+### Features
+
+- wasm accelerated matrices :D ([`61a730c`])
+
 ## [0.1.2] - 2021-02-23
 
 ### Features
@@ -104,6 +110,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.3]: https://github.com/denosaurs/gmath/compare/0.1.2...0.1.3
+[`61a730c`]: https://github.com/denosaurs/gmath/commit/61a730c065342371f37d1852853e9d9be64d7070
 [0.1.2]: https://github.com/denosaurs/gmath/compare/0.1.1...0.1.2
 [`995e5b1`]: https://github.com/denosaurs/gmath/commit/995e5b14c3b9b08f051c31b3da14cecacd9ed94b
 [`0c8cee8`]: https://github.com/denosaurs/gmath/commit/0c8cee8d1e21f57beffdc9d280f26bfddcd0e9eb
