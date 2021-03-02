@@ -1,3 +1,12 @@
+import {
+  alloc,
+  matrix3add,
+  matrix3determinant,
+  matrix3invert,
+  matrix3mul,
+  matrix3sub,
+  memory,
+} from "../wasm/mod.ts";
 import { Vector3 } from "./vector3.ts";
 import { Vector2 } from "./vector2.ts";
 import { Matrix2 } from "./matrix2.ts";
@@ -7,58 +16,67 @@ import { Quaternion } from "./quaternion.ts";
 import { Decomposed2 } from "./decomposed.ts";
 
 export class Matrix3 {
-  #internal: [Vector3, Vector3, Vector3] = Object.seal([
-    Vector3.zero(),
-    Vector3.zero(),
-    Vector3.zero(),
-  ]);
+  readonly ptr: number;
+  #internal: Float32Array;
 
-  get [0](): Vector3 {
-    return this.#internal[0];
+  get [0](): [number, number, number] {
+    return [this.#internal[0], this.#internal[1], this.#internal[2]];
   }
 
-  set [0](val: Vector3) {
-    this.#internal[0] = val;
+  set [0](val: [number, number, number]) {
+    this.#internal[0] = val[0];
+    this.#internal[1] = val[1];
+    this.#internal[2] = val[2];
   }
 
-  get [1](): Vector3 {
-    return this.#internal[1];
+  get [1](): [number, number, number] {
+    return [this.#internal[3], this.#internal[4], this.#internal[5]];
   }
 
-  set [1](val: Vector3) {
-    this.#internal[1] = val;
+  set [1](val: [number, number, number]) {
+    this.#internal[3] = val[0];
+    this.#internal[4] = val[1];
+    this.#internal[5] = val[2];
   }
 
-  get [2](): Vector3 {
-    return this.#internal[2];
+  get [2](): [number, number, number] {
+    return [this.#internal[6], this.#internal[7], this.#internal[8]];
   }
 
-  set [2](val: Vector3) {
-    this.#internal[2] = val;
+  set [2](val: [number, number, number]) {
+    this.#internal[6] = val[0];
+    this.#internal[7] = val[1];
+    this.#internal[8] = val[2];
   }
 
   get x(): Vector3 {
-    return this.#internal[0];
+    return new Vector3(...this[0]);
   }
 
   set x(val: Vector3) {
-    this.#internal[0] = val;
+    this.#internal[0] = val.x;
+    this.#internal[1] = val.y;
+    this.#internal[2] = val.z;
   }
 
   get y(): Vector3 {
-    return this.#internal[1];
+    return new Vector3(...this[1]);
   }
 
   set y(val: Vector3) {
-    this.#internal[1] = val;
+    this.#internal[3] = val.x;
+    this.#internal[4] = val.y;
+    this.#internal[5] = val.z;
   }
 
   get z(): Vector3 {
-    return this.#internal[2];
+    return new Vector3(...this[2]);
   }
 
   set z(val: Vector3) {
-    this.#internal[2] = val;
+    this.#internal[6] = val.x;
+    this.#internal[7] = val.y;
+    this.#internal[8] = val.z;
   }
 
   /** Constructs a Matrix3 from individual elements */
@@ -76,17 +94,11 @@ export class Matrix3 {
   }
 
   static identity(): Matrix3 {
-    // deno-fmt-ig
+    // deno-fmt-ignore
     return Matrix3.from(
-      1,
-      0,
-      0,
-      0,
-      1,
-      0,
-      0,
-      0,
-      1,
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1,
     );
   }
 
@@ -217,9 +229,13 @@ export class Matrix3 {
   }
 
   constructor();
+  constructor(ptr: number);
   constructor(x: Vector3, y: Vector3, z: Vector3);
-  constructor(x?: Vector3, y?: Vector3, z?: Vector3) {
-    this.x = x ?? Vector3.zero();
+  constructor(x?: Vector3 | number, y?: Vector3, z?: Vector3) {
+    this.ptr = typeof x === "number" ? x : alloc(36);
+    this.#internal = new Float32Array(memory.buffer, this.ptr, 9);
+
+    this.x = typeof x !== "number" && x !== undefined ? x : Vector3.zero();
     this.y = y ?? Vector3.zero();
     this.z = z ?? Vector3.zero();
   }
@@ -239,18 +255,26 @@ export class Matrix3 {
   }
 
   eq(other: Matrix3): boolean {
-    return this.x.eq(other.x) && this.y.eq(other.y) && this.z.eq(other.z);
+    return this[0][0] === other[0][0] &&
+      this[0][1] === other[0][1] &&
+      this[0][2] === other[0][2] &&
+      this[1][0] === other[1][0] &&
+      this[1][1] === other[1][1] &&
+      this[1][2] === other[1][2] &&
+      this[2][0] === other[2][0] &&
+      this[2][1] === other[2][1] &&
+      this[2][2] === other[2][2];
   }
 
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite() && this.z.isFinite();
   }
 
-  row(n: 0 | 1 | 2): Vector3 {
-    return new Vector3(this[0][n], this[1][n], this[2][n]);
+  row(n: 0 | 1 | 2): [number, number, number] {
+    return [this[0][n], this[1][n], this[2][n]];
   }
 
-  col(n: 0 | 1 | 2): Vector3 {
+  col(n: 0 | 1 | 2): [number, number, number] {
     return this[n];
   }
 
@@ -263,81 +287,47 @@ export class Matrix3 {
   }
 
   determinant(): number {
-    return (
-      this[0][0] * this[1][1] * this[2][2] +
-      this[0][1] * this[1][2] * this[2][0] +
-      this[0][2] * this[1][0] * this[2][1] -
-      this[0][0] * this[1][2] * this[2][1] -
-      this[0][1] * this[1][0] * this[2][2] -
-      this[0][2] * this[1][1] * this[2][0]
-    );
+    return matrix3determinant(this.ptr);
   }
 
-  invert(): Matrix3 | undefined {
-    const det = this.determinant();
-    if (det !== 0) {
-      // deno-fmt-ignore
-      return Matrix3.from(
-        (this[1][1] * this[2][2] - this[1][2] * this[2][1]) / det,
-        (this[0][2] * this[2][1] - this[0][1] * this[2][2]) / det,
-        (this[0][1] * this[1][2] - this[0][2] * this[1][1]) / det,
-        (this[1][2] * this[2][0] - this[1][0] * this[2][2]) / det,
-        (this[0][0] * this[2][2] - this[0][2] * this[2][0]) / det,
-        (this[0][2] * this[1][0] - this[0][0] * this[1][2]) / det,
-        (this[1][0] * this[2][1] - this[1][1] * this[2][0]) / det,
-        (this[0][1] * this[2][0] - this[0][0] * this[2][1]) / det,
-        (this[0][0] * this[1][1] - this[0][1] * this[1][0]) / det,
-      );
-    }
+  invert(): Matrix3 {
+    return new Matrix3(matrix3invert(this.ptr));
   }
 
   add(other: Matrix3 | number): Matrix3 {
     if (typeof other === "number") {
       return new Matrix3(
-        this[0].add(other),
-        this[1].add(other),
-        this[2].add(other),
+        this.x.add(other),
+        this.y.add(other),
+        this.z.add(other),
       );
     }
 
-    return new Matrix3(
-      this[0].add(other[0]),
-      this[1].add(other[1]),
-      this[2].add(other[2]),
-    );
+    return new Matrix3(matrix3add(this.ptr, other.ptr));
   }
 
   sub(other: Matrix3 | number): Matrix3 {
     if (typeof other === "number") {
       return new Matrix3(
-        this[0].sub(other),
-        this[1].sub(other),
-        this[2].sub(other),
+        this.x.sub(other),
+        this.y.sub(other),
+        this.z.sub(other),
       );
     }
 
-    return new Matrix3(
-      this[0].sub(other[0]),
-      this[1].sub(other[1]),
-      this[2].sub(other[2]),
-    );
+    return new Matrix3(matrix3sub(this.ptr, other.ptr));
   }
 
   mul(other: Matrix3 | number): Matrix3 {
     if (typeof other === "number") {
       return new Matrix3(
-        this[0].mul(other),
-        this[1].mul(other),
-        this[2].mul(other),
+        this.x.mul(other),
+        this.y.mul(other),
+        this.z.mul(other),
       );
     }
 
-    // deno-fmt-ignore
-    return Matrix3.from(
-      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]),
-      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]),
-      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]),
-    );
+    return new Matrix3(matrix3mul(this.ptr, other.ptr));
   }
 
   toMatrix4(): Matrix4 {
@@ -355,14 +345,10 @@ export class Matrix3 {
     [number, number, number],
     [number, number, number],
   ] {
-    return [this[0].toArray(), this[1].toArray(), this[2].toArray()];
+    return [this[0], this[1], this[2]];
   }
 
   toFloat32Array(): Float32Array {
-    return new Float32Array([
-      ...this[0].toFloat32Array(),
-      ...this[1].toFloat32Array(),
-      ...this[2].toFloat32Array(),
-    ]);
+    return this.#internal;
   }
 }

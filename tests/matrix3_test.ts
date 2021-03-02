@@ -26,26 +26,32 @@ Deno.test("Matrix3.isFinite", () => {
 });
 
 Deno.test("Matrix3.row", () => {
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(0).eq(new Vector3(1, 4, 7)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(0),
+    [1, 4, 7],
   );
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(1).eq(new Vector3(2, 5, 8)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(1),
+    [2, 5, 8],
   );
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(2).eq(new Vector3(3, 6, 9)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).row(2),
+    [3, 6, 9],
   );
 });
 
 Deno.test("Matrix3.col", () => {
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(0).eq(new Vector3(1, 2, 3)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(0),
+    [1, 2, 3],
   );
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(1).eq(new Vector3(4, 5, 6)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(1),
+    [4, 5, 6],
   );
-  assert(
-    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(2).eq(new Vector3(7, 8, 9)),
+  assertEquals(
+    Matrix3.from(1, 2, 3, 4, 5, 6, 7, 8, 9).col(2),
+    [7, 8, 9],
   );
 });
 

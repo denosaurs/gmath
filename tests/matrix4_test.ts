@@ -54,48 +54,54 @@ Deno.test("Matrix4.isFinite", () => {
 });
 
 Deno.test("Matrix4.row", () => {
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       0,
-    ).eq(new Vector4(1, 5, 9, 13)),
+    ),
+    [1, 5, 9, 13],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       1,
-    ).eq(new Vector4(2, 6, 10, 14)),
+    ),
+    [2, 6, 10, 14],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       2,
-    ).eq(new Vector4(3, 7, 11, 15)),
+    ),
+    [3, 7, 11, 15],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).row(
       3,
-    ).eq(new Vector4(4, 8, 12, 16)),
+    ),
+    [4, 8, 12, 16],
   );
 });
 
 Deno.test("Matrix4.col", () => {
-  assert(
-    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
-      0,
-    ).eq(new Vector4(1, 2, 3, 4)),
+  assertEquals(
+    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(0),
+    [1, 2, 3, 4],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       1,
-    ).eq(new Vector4(5, 6, 7, 8)),
+    ),
+    [5, 6, 7, 8],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       2,
-    ).eq(new Vector4(9, 10, 11, 12)),
+    ),
+    [9, 10, 11, 12],
   );
-  assert(
+  assertEquals(
     Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).col(
       3,
-    ).eq(new Vector4(13, 14, 15, 16)),
+    ),
+    [13, 14, 15, 16],
   );
 });
 

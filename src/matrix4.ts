@@ -1,3 +1,12 @@
+import {
+  alloc,
+  matrix4add,
+  matrix4determinant,
+  matrix4invert,
+  matrix4mul,
+  matrix4sub,
+  memory,
+} from "../wasm/mod.ts";
 import { Vector4 } from "./vector4.ts";
 import { Vector3 } from "./vector3.ts";
 import { Perspective } from "./projection.ts";
@@ -7,75 +16,115 @@ import { Decomposed3 } from "./decomposed.ts";
 import { Matrix3 } from "./matrix3.ts";
 
 export class Matrix4 {
-  #internal: [Vector4, Vector4, Vector4, Vector4] = Object.seal([
-    Vector4.zero(),
-    Vector4.zero(),
-    Vector4.zero(),
-    Vector4.zero(),
-  ]);
+  readonly ptr: number;
+  #internal: Float32Array;
 
-  get [0](): Vector4 {
-    return this.#internal[0];
+  get [0](): [number, number, number, number] {
+    return [
+      this.#internal[0],
+      this.#internal[1],
+      this.#internal[2],
+      this.#internal[3],
+    ];
   }
 
-  set [0](val: Vector4) {
-    this.#internal[0] = val;
+  set [0](val: [number, number, number, number]) {
+    this.#internal[0] = val[0];
+    this.#internal[1] = val[1];
+    this.#internal[2] = val[2];
+    this.#internal[3] = val[3];
   }
 
-  get [1](): Vector4 {
-    return this.#internal[1];
+  get [1](): [number, number, number, number] {
+    return [
+      this.#internal[4],
+      this.#internal[5],
+      this.#internal[6],
+      this.#internal[7],
+    ];
   }
 
-  set [1](val: Vector4) {
-    this.#internal[1] = val;
+  set [1](val: [number, number, number, number]) {
+    this.#internal[4] = val[0];
+    this.#internal[5] = val[1];
+    this.#internal[6] = val[2];
+    this.#internal[7] = val[3];
   }
 
-  get [2](): Vector4 {
-    return this.#internal[2];
+  get [2](): [number, number, number, number] {
+    return [
+      this.#internal[8],
+      this.#internal[9],
+      this.#internal[10],
+      this.#internal[11],
+    ];
   }
 
-  set [2](val: Vector4) {
-    this.#internal[2] = val;
+  set [2](val: [number, number, number, number]) {
+    this.#internal[8] = val[0];
+    this.#internal[9] = val[1];
+    this.#internal[10] = val[2];
+    this.#internal[11] = val[3];
   }
 
-  get [3](): Vector4 {
-    return this.#internal[3];
+  get [3](): [number, number, number, number] {
+    return [
+      this.#internal[12],
+      this.#internal[13],
+      this.#internal[14],
+      this.#internal[15],
+    ];
   }
 
-  set [3](val: Vector4) {
-    this.#internal[3] = val;
+  set [3](val: [number, number, number, number]) {
+    this.#internal[12] = val[0];
+    this.#internal[13] = val[1];
+    this.#internal[14] = val[2];
+    this.#internal[15] = val[3];
   }
 
   get x(): Vector4 {
-    return this.#internal[0];
+    return new Vector4(...this[0]);
   }
 
   set x(val: Vector4) {
-    this.#internal[0] = val;
+    this.#internal[0] = val.x;
+    this.#internal[1] = val.y;
+    this.#internal[2] = val.z;
+    this.#internal[3] = val.w;
   }
 
   get y(): Vector4 {
-    return this.#internal[1];
+    return new Vector4(...this[1]);
   }
 
   set y(val: Vector4) {
-    this.#internal[1] = val;
+    this.#internal[4] = val.x;
+    this.#internal[5] = val.y;
+    this.#internal[6] = val.z;
+    this.#internal[7] = val.w;
   }
 
   get z(): Vector4 {
-    return this.#internal[2];
+    return new Vector4(...this[2]);
   }
 
   set z(val: Vector4) {
-    this.#internal[2] = val;
+    this.#internal[8] = val.x;
+    this.#internal[9] = val.y;
+    this.#internal[10] = val.z;
+    this.#internal[11] = val.w;
   }
 
   get w(): Vector4 {
-    return this.#internal[3];
+    return new Vector4(...this[3]);
   }
 
   set w(val: Vector4) {
-    this.#internal[3] = val;
+    this.#internal[12] = val.x;
+    this.#internal[13] = val.y;
+    this.#internal[14] = val.z;
+    this.#internal[15] = val.w;
   }
 
   /** Constructs a Matrix4 from individual elements */
@@ -289,9 +338,13 @@ export class Matrix4 {
   }
 
   constructor();
+  constructor(ptr: number);
   constructor(x: Vector4, y: Vector4, z: Vector4, w: Vector4);
-  constructor(x?: Vector4, y?: Vector4, z?: Vector4, w?: Vector4) {
-    this.x = x ?? Vector4.zero();
+  constructor(x?: Vector4 | number, y?: Vector4, z?: Vector4, w?: Vector4) {
+    this.ptr = typeof x === "number" ? x : alloc(64);
+    this.#internal = new Float32Array(memory.buffer, this.ptr, 16);
+
+    this.x = typeof x !== "number" && x !== undefined ? x : Vector4.zero();
     this.y = y ?? Vector4.zero();
     this.z = z ?? Vector4.zero();
     this.w = w ?? Vector4.zero();
@@ -322,11 +375,11 @@ export class Matrix4 {
       this.w.isFinite();
   }
 
-  row(n: 0 | 1 | 2 | 3): Vector4 {
-    return new Vector4(this[0][n], this[1][n], this[2][n], this[3][n]);
+  row(n: 0 | 1 | 2 | 3): [number, number, number, number] {
+    return [this[0][n], this[1][n], this[2][n], this[3][n]];
   }
 
-  col(n: 0 | 1 | 2 | 3): Vector4 {
+  col(n: 0 | 1 | 2 | 3): [number, number, number, number] {
     return this[n];
   }
 
@@ -339,192 +392,50 @@ export class Matrix4 {
   }
 
   determinant(): number {
-    return (
-      this[0][3] * this[1][2] * this[2][1] * this[3][0] -
-      this[0][2] * this[1][3] * this[2][1] * this[3][0] -
-      this[0][3] * this[1][1] * this[2][2] * this[3][0] +
-      this[0][1] * this[1][3] * this[2][2] * this[3][0] +
-      this[0][2] * this[1][1] * this[2][3] * this[3][0] -
-      this[0][1] * this[1][2] * this[2][3] * this[3][0] -
-      this[0][3] * this[1][2] * this[2][0] * this[3][1] +
-      this[0][2] * this[1][3] * this[2][0] * this[3][1] +
-      this[0][3] * this[1][0] * this[2][2] * this[3][1] -
-      this[0][0] * this[1][3] * this[2][2] * this[3][1] -
-      this[0][2] * this[1][0] * this[2][3] * this[3][1] +
-      this[0][0] * this[1][2] * this[2][3] * this[3][1] +
-      this[0][3] * this[1][1] * this[2][0] * this[3][2] -
-      this[0][1] * this[1][3] * this[2][0] * this[3][2] -
-      this[0][3] * this[1][0] * this[2][1] * this[3][2] +
-      this[0][0] * this[1][3] * this[2][1] * this[3][2] +
-      this[0][1] * this[1][0] * this[2][3] * this[3][2] -
-      this[0][0] * this[1][1] * this[2][3] * this[3][2] -
-      this[0][2] * this[1][1] * this[2][0] * this[3][3] +
-      this[0][1] * this[1][2] * this[2][0] * this[3][3] +
-      this[0][2] * this[1][0] * this[2][1] * this[3][3] -
-      this[0][0] * this[1][2] * this[2][1] * this[3][3] -
-      this[0][1] * this[1][0] * this[2][2] * this[3][3] +
-      this[0][0] * this[1][1] * this[2][2] * this[3][3]
-    );
+    return matrix4determinant(this.ptr);
   }
 
-  invert(): Matrix4 | undefined {
-    const det = this.determinant();
-    if (det !== 0) {
-      const detInv = 1 / det;
-      return Matrix4.from(
-        (this[1][2] * this[2][3] * this[3][1] -
-          this[1][3] * this[2][2] * this[3][1] +
-          this[1][3] * this[2][1] * this[3][2] -
-          this[1][1] * this[2][3] * this[3][2] -
-          this[1][2] * this[2][1] * this[3][3] +
-          this[1][1] * this[2][2] * this[3][3]) * detInv,
-        (this[1][3] * this[2][2] * this[3][0] -
-          this[1][2] * this[2][3] * this[3][0] -
-          this[1][3] * this[2][0] * this[3][2] +
-          this[1][0] * this[2][3] * this[3][2] +
-          this[1][2] * this[2][0] * this[3][3] -
-          this[1][0] * this[2][2] * this[3][3]) * detInv,
-        (this[1][1] * this[2][3] * this[3][0] -
-          this[1][3] * this[2][1] * this[3][0] +
-          this[1][3] * this[2][0] * this[3][1] -
-          this[1][0] * this[2][3] * this[3][1] -
-          this[1][1] * this[2][0] * this[3][3] +
-          this[1][0] * this[2][1] * this[3][3]) * detInv,
-        (this[1][2] * this[2][1] * this[3][0] -
-          this[1][1] * this[2][2] * this[3][0] -
-          this[1][2] * this[2][0] * this[3][1] +
-          this[1][0] * this[2][2] * this[3][1] +
-          this[1][1] * this[2][0] * this[3][2] -
-          this[1][0] * this[2][1] * this[3][2]) * detInv,
-        (this[0][3] * this[2][2] * this[3][1] -
-          this[0][2] * this[2][3] * this[3][1] -
-          this[0][3] * this[2][1] * this[3][2] +
-          this[0][1] * this[2][3] * this[3][2] +
-          this[0][2] * this[2][1] * this[3][3] -
-          this[0][1] * this[2][2] * this[3][3]) * detInv,
-        (this[0][2] * this[2][3] * this[3][0] -
-          this[0][3] * this[2][2] * this[3][0] +
-          this[0][3] * this[2][0] * this[3][2] -
-          this[0][0] * this[2][3] * this[3][2] -
-          this[0][2] * this[2][0] * this[3][3] +
-          this[0][0] * this[2][2] * this[3][3]) * detInv,
-        (this[0][3] * this[2][1] * this[3][0] -
-          this[0][1] * this[2][3] * this[3][0] -
-          this[0][3] * this[2][0] * this[3][1] +
-          this[0][0] * this[2][3] * this[3][1] +
-          this[0][1] * this[2][0] * this[3][3] -
-          this[0][0] * this[2][1] * this[3][3]) * detInv,
-        (this[0][1] * this[2][2] * this[3][0] -
-          this[0][2] * this[2][1] * this[3][0] +
-          this[0][2] * this[2][0] * this[3][1] -
-          this[0][0] * this[2][2] * this[3][1] -
-          this[0][1] * this[2][0] * this[3][2] +
-          this[0][0] * this[2][1] * this[3][2]) * detInv,
-        (this[0][2] * this[1][3] * this[3][1] -
-          this[0][3] * this[1][2] * this[3][1] +
-          this[0][3] * this[1][1] * this[3][2] -
-          this[0][1] * this[1][3] * this[3][2] -
-          this[0][2] * this[1][1] * this[3][3] +
-          this[0][1] * this[1][2] * this[3][3]) * detInv,
-        (this[0][3] * this[1][2] * this[3][0] -
-          this[0][2] * this[1][3] * this[3][0] -
-          this[0][3] * this[1][0] * this[3][2] +
-          this[0][0] * this[1][3] * this[3][2] +
-          this[0][2] * this[1][0] * this[3][3] -
-          this[0][0] * this[1][2] * this[3][3]) * detInv,
-        (this[0][1] * this[1][3] * this[3][0] -
-          this[0][3] * this[1][1] * this[3][0] +
-          this[0][3] * this[1][0] * this[3][1] -
-          this[0][0] * this[1][3] * this[3][1] -
-          this[0][1] * this[1][0] * this[3][3] +
-          this[0][0] * this[1][1] * this[3][3]) * detInv,
-        (this[0][2] * this[1][1] * this[3][0] -
-          this[0][1] * this[1][2] * this[3][0] -
-          this[0][2] * this[1][0] * this[3][1] +
-          this[0][0] * this[1][2] * this[3][1] +
-          this[0][1] * this[1][0] * this[3][2] -
-          this[0][0] * this[1][1] * this[3][2]) * detInv,
-        (this[0][3] * this[1][2] * this[2][1] -
-          this[0][2] * this[1][3] * this[2][1] -
-          this[0][3] * this[1][1] * this[2][2] +
-          this[0][1] * this[1][3] * this[2][2] +
-          this[0][2] * this[1][1] * this[2][3] -
-          this[0][1] * this[1][2] * this[2][3]) * detInv,
-        (this[0][2] * this[1][3] * this[2][0] -
-          this[0][3] * this[1][2] * this[2][0] +
-          this[0][3] * this[1][0] * this[2][2] -
-          this[0][0] * this[1][3] * this[2][2] -
-          this[0][2] * this[1][0] * this[2][3] +
-          this[0][0] * this[1][2] * this[2][3]) * detInv,
-        (this[0][3] * this[1][1] * this[2][0] -
-          this[0][1] * this[1][3] * this[2][0] -
-          this[0][3] * this[1][0] * this[2][1] +
-          this[0][0] * this[1][3] * this[2][1] +
-          this[0][1] * this[1][0] * this[2][3] -
-          this[0][0] * this[1][1] * this[2][3]) * detInv,
-        (this[0][1] * this[1][2] * this[2][0] -
-          this[0][2] * this[1][1] * this[2][0] +
-          this[0][2] * this[1][0] * this[2][1] -
-          this[0][0] * this[1][2] * this[2][1] -
-          this[0][1] * this[1][0] * this[2][2] +
-          this[0][0] * this[1][1] * this[2][2]) * detInv,
-      );
-    }
+  invert(): Matrix4 {
+    return new Matrix4(matrix4invert(this.ptr));
   }
 
   add(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
-        this[0].add(other),
-        this[1].add(other),
-        this[2].add(other),
-        this[3].add(other),
+        this.x.add(other),
+        this.y.add(other),
+        this.z.add(other),
+        this.w.add(other),
       );
     }
 
-    return new Matrix4(
-      this[0].add(other[0]),
-      this[1].add(other[1]),
-      this[2].add(other[2]),
-      this[3].add(other[3]),
-    );
+    return new Matrix4(matrix4add(this.ptr, other.ptr));
   }
 
   sub(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
-        this[0].sub(other),
-        this[1].sub(other),
-        this[2].sub(other),
-        this[3].sub(other),
+        this.x.sub(other),
+        this.y.sub(other),
+        this.z.sub(other),
+        this.w.sub(other),
       );
     }
 
-    return new Matrix4(
-      this[0].sub(other[0]),
-      this[1].sub(other[1]),
-      this[2].sub(other[2]),
-      this[3].sub(other[3]),
-    );
+    return new Matrix4(matrix4sub(this.ptr, other.ptr));
   }
 
   mul(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
-        this[0].mul(other),
-        this[1].mul(other),
-        this[2].mul(other),
-        this[3].mul(other),
+        this.x.mul(other),
+        this.y.mul(other),
+        this.z.mul(other),
+        this.w.mul(other),
       );
     }
 
-    // deno-fmt-ignore
-    return Matrix4.from(
-      this.row(0).dot(other[0]), this.row(1).dot(other[0]), this.row(2).dot(other[0]), this.row(3).dot(other[0]),
-      this.row(0).dot(other[1]), this.row(1).dot(other[1]), this.row(2).dot(other[1]), this.row(3).dot(other[1]),
-      this.row(0).dot(other[2]), this.row(1).dot(other[2]), this.row(2).dot(other[2]), this.row(3).dot(other[2]),
-      this.row(0).dot(other[3]), this.row(1).dot(other[3]), this.row(2).dot(other[3]), this.row(3).dot(other[3]),
-    );
+    return new Matrix4(matrix4mul(this.ptr, other.ptr));
   }
 
   toArray(): [
@@ -534,19 +445,14 @@ export class Matrix4 {
     [number, number, number, number],
   ] {
     return [
-      this[0].toArray(),
-      this[1].toArray(),
-      this[2].toArray(),
-      this[3].toArray(),
+      this[0],
+      this[1],
+      this[2],
+      this[3],
     ];
   }
 
   toFloat32Array(): Float32Array {
-    return new Float32Array([
-      ...this[0].toFloat32Array(),
-      ...this[1].toFloat32Array(),
-      ...this[2].toFloat32Array(),
-      ...this[3].toFloat32Array(),
-    ]);
+    return this.#internal;
   }
 }

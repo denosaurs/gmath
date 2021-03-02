@@ -1,41 +1,55 @@
+import {
+  alloc,
+  matrix2add,
+  matrix2determinant,
+  matrix2invert,
+  matrix2mul,
+  matrix2sub,
+  memory,
+} from "../wasm/mod.ts";
 import { Angle } from "./angle.ts";
 import { Matrix3 } from "./matrix3.ts";
 import { Matrix4 } from "./matrix4.ts";
 import { Vector2 } from "./vector2.ts";
 
 export class Matrix2 {
-  #internal: [Vector2, Vector2] = Object.seal([Vector2.zero(), Vector2.zero()]);
+  readonly ptr: number;
+  #internal: Float32Array;
 
-  get [0](): Vector2 {
-    return this.#internal[0];
+  get [0](): [number, number] {
+    return [this.#internal[0], this.#internal[1]];
   }
 
-  set [0](val: Vector2) {
-    this.#internal[0] = val;
+  set [0](val: [number, number]) {
+    this.#internal[0] = val[0];
+    this.#internal[1] = val[1];
   }
 
-  get [1](): Vector2 {
-    return this.#internal[1];
+  get [1](): [number, number] {
+    return [this.#internal[2], this.#internal[3]];
   }
 
-  set [1](val: Vector2) {
-    this.#internal[1] = val;
+  set [1](val: [number, number]) {
+    this.#internal[2] = val[0];
+    this.#internal[3] = val[1];
   }
 
   get x(): Vector2 {
-    return this.#internal[0];
+    return new Vector2(...this[0]);
   }
 
   set x(val: Vector2) {
-    this.#internal[0] = val;
+    this.#internal[0] = val.x;
+    this.#internal[1] = val.y;
   }
 
   get y(): Vector2 {
-    return this.#internal[1];
+    return new Vector2(...this[1]);
   }
 
   set y(val: Vector2) {
-    this.#internal[1] = val;
+    this.#internal[2] = val.x;
+    this.#internal[3] = val.y;
   }
 
   /** Constructs a Matrix2 from individual elements */
@@ -74,9 +88,13 @@ export class Matrix2 {
   }
 
   constructor();
+  constructor(ptr: number);
   constructor(x: Vector2, y: Vector2);
-  constructor(x?: Vector2, y?: Vector2) {
-    this.x = x ?? Vector2.zero();
+  constructor(x?: Vector2 | number, y?: Vector2) {
+    this.ptr = typeof x === "number" ? x : alloc(16);
+    this.#internal = new Float32Array(memory.buffer, this.ptr, 4);
+
+    this.x = typeof x !== "number" && x !== undefined ? x : Vector2.zero();
     this.y = y ?? Vector2.zero();
   }
 
@@ -94,18 +112,19 @@ export class Matrix2 {
   }
 
   eq(other: Matrix2): boolean {
-    return this.x.eq(other.x) && this.y.eq(other.y);
+    return this[0][0] === other[0][0] && this[0][1] === other[0][1] &&
+      this[1][0] === other[1][0] && this[1][1] === other[1][1];
   }
 
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite();
   }
 
-  row(n: 0 | 1): Vector2 {
-    return new Vector2(this[0][n], this[1][n]);
+  row(n: 0 | 1): [number, number] {
+    return [this[0][n], this[1][n]];
   }
 
-  col(n: 0 | 1): Vector2 {
+  col(n: 0 | 1): [number, number] {
     return this[n];
   }
 
@@ -118,61 +137,44 @@ export class Matrix2 {
   }
 
   determinant(): number {
-    return this[0][0] * this[1][1] - this[1][0] * this[0][1];
+    return matrix2determinant(this.ptr);
   }
 
-  invert(): Matrix2 | undefined {
-    const det = this.determinant();
-    if (det !== 0) {
-      // deno-fmt-ignore
-      return Matrix2.from(
-        this[1][1] / det, -this[0][1] / det,
-        -this[1][0] / det, this[0][0] / det,
-      );
-    }
+  invert(): Matrix2 {
+    return new Matrix2(matrix2invert(this.ptr));
   }
 
   add(other: Matrix2 | number): Matrix2 {
     if (typeof other === "number") {
       return new Matrix2(
-        this[0].add(other),
-        this[1].add(other),
+        this.x.add(other),
+        this.y.add(other),
       );
     }
 
-    return new Matrix2(
-      this[0].add(other[0]),
-      this[1].add(other[1]),
-    );
+    return new Matrix2(matrix2add(this.ptr, other.ptr));
   }
 
   sub(other: Matrix2 | number): Matrix2 {
     if (typeof other === "number") {
       return new Matrix2(
-        this[0].sub(other),
-        this[1].sub(other),
+        this.x.sub(other),
+        this.y.sub(other),
       );
     }
 
-    return new Matrix2(
-      this[0].sub(other[0]),
-      this[1].sub(other[1]),
-    );
+    return new Matrix2(matrix2sub(this.ptr, other.ptr));
   }
 
   mul(other: Matrix2 | number): Matrix2 {
     if (typeof other === "number") {
       return new Matrix2(
-        this[0].mul(other),
-        this[1].mul(other),
+        this.x.mul(other),
+        this.y.mul(other),
       );
     }
 
-    // deno-fmt-ignore
-    return Matrix2.from(
-      this.row(0).dot(other[0]), this.row(1).dot(other[0]),
-      this.row(0).dot(other[1]), this.row(1).dot(other[1]),
-    );
+    return new Matrix2(matrix2mul(this.ptr, other.ptr));
   }
 
   toMatrix3(): Matrix3 {
@@ -195,13 +197,10 @@ export class Matrix2 {
   }
 
   toArray(): [[number, number], [number, number]] {
-    return [this[0].toArray(), this[1].toArray()];
+    return [this[0], this[1]];
   }
 
   toFloat32Array(): Float32Array {
-    return new Float32Array([
-      ...this[0].toFloat32Array(),
-      ...this[1].toFloat32Array(),
-    ]);
+    return this.#internal;
   }
 }

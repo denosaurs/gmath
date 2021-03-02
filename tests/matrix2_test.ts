@@ -1,6 +1,5 @@
 import { assert, assertEquals } from "./deps.ts";
 import { Matrix2 } from "../src/matrix2.ts";
-import { Vector2 } from "../src/vector2.ts";
 import { Matrix3 } from "../src/matrix3.ts";
 import { Matrix4 } from "../src/matrix4.ts";
 
@@ -21,13 +20,13 @@ Deno.test("Matrix2.isFinite", () => {
 });
 
 Deno.test("Matrix2.row", () => {
-  assert(Matrix2.from(1, 2, 3, 4).row(0).eq(new Vector2(1, 3)));
-  assert(Matrix2.from(1, 2, 3, 4).row(1).eq(new Vector2(2, 4)));
+  assertEquals(Matrix2.from(1, 2, 3, 4).row(0), [1, 3]);
+  assertEquals(Matrix2.from(1, 2, 3, 4).row(1), [2, 4]);
 });
 
 Deno.test("Matrix2.col", () => {
-  assert(Matrix2.from(1, 2, 3, 4).col(0).eq(new Vector2(1, 2)));
-  assert(Matrix2.from(1, 2, 3, 4).col(1).eq(new Vector2(3, 4)));
+  assertEquals(Matrix2.from(1, 2, 3, 4).col(0), [1, 2]);
+  assertEquals(Matrix2.from(1, 2, 3, 4).col(1), [3, 4]);
 });
 
 Deno.test("Matrix2.add", () => {
