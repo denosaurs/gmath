@@ -4,7 +4,7 @@ const LEN: usize = 16;
 const SIZE: usize = std::mem::size_of::<f32>() * LEN;
 
 #[no_mangle]
-pub unsafe fn matrix4dematrminant(a: *mut f32) -> f32 {
+pub unsafe fn matrix4determinant(a: *mut f32) -> f32 {
   let a = std::slice::from_raw_parts(a, LEN);
 
   a[3] * a[6] * a[9] * a[12]
@@ -35,7 +35,7 @@ pub unsafe fn matrix4dematrminant(a: *mut f32) -> f32 {
 
 #[no_mangle]
 pub unsafe fn matrix4invert(a: *mut f32) -> *mut u8 {
-  let det_inv = 1f32 / matrix4dematrminant(a);
+  let det_inv = 1f32 / matrix4determinant(a);
   let a = std::slice::from_raw_parts(a, LEN);
 
   let ptr = alloc(SIZE);
