@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.4] - 2021-03-02
+
+### Bug Fixes
+
+- matrix4determinant ([`eebe208`])
+
 ## [0.1.3] - 2021-03-02
 
 ### Features
@@ -110,6 +116,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.4]: https://github.com/denosaurs/gmath/compare/0.1.3...0.1.4
+[`eebe208`]: https://github.com/denosaurs/gmath/commit/eebe2087776541188035586dc0f428f8e9f67ca5
 [0.1.3]: https://github.com/denosaurs/gmath/compare/0.1.2...0.1.3
 [`61a730c`]: https://github.com/denosaurs/gmath/commit/61a730c065342371f37d1852853e9d9be64d7070
 [0.1.2]: https://github.com/denosaurs/gmath/compare/0.1.1...0.1.2
