@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.7] - 2021-03-03
+
+### Bug Fixes
+
+- return correct ptr after inversion ([`c4dc398`])
+
 ## [0.1.6] - 2021-03-03
 
 ### Bug Fixes
@@ -128,6 +134,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.7]: https://github.com/denosaurs/gmath/compare/0.1.6...0.1.7
+[`c4dc398`]: https://github.com/denosaurs/gmath/commit/c4dc398b237cabc5caf02457fa2af576c5b6003d
 [0.1.6]: https://github.com/denosaurs/gmath/compare/0.1.5...0.1.6
 [`bc47516`]: https://github.com/denosaurs/gmath/commit/bc47516706a7fc04c831cfbffe76d113a8359486
 [0.1.5]: https://github.com/denosaurs/gmath/compare/0.1.4...0.1.5
