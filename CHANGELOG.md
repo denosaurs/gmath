@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.8] - 2021-03-03
+
+### Bug Fixes
+
+- do invert in js for now ([`4243bb0`])
+
 ## [0.1.7] - 2021-03-03
 
 ### Bug Fixes
@@ -134,6 +140,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.8]: https://github.com/denosaurs/gmath/compare/0.1.7...0.1.8
+[`4243bb0`]: https://github.com/denosaurs/gmath/commit/4243bb0c029b9db96c1d329a8298b1827a924387
 [0.1.7]: https://github.com/denosaurs/gmath/compare/0.1.6...0.1.7
 [`c4dc398`]: https://github.com/denosaurs/gmath/commit/c4dc398b237cabc5caf02457fa2af576c5b6003d
 [0.1.6]: https://github.com/denosaurs/gmath/compare/0.1.5...0.1.6
