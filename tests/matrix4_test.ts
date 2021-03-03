@@ -1,8 +1,5 @@
 import { assert, assertEquals } from "./deps.ts";
-import { Vector3 } from "../src/vector3.ts";
-import { Matrix3 } from "../src/matrix3.ts";
 import { Matrix4 } from "../src/matrix4.ts";
-import { Vector4 } from "../src/vector4.ts";
 
 Deno.test("Matrix4.transpose", () => {
   assert(
@@ -32,23 +29,12 @@ Deno.test("Matrix4.isFinite", () => {
       .isFinite(),
   );
   assert(
+    // deno-fmt-ignore
     !Matrix4.from(
-      Infinity,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
+      Infinity, 2, 3, 4,
+      5, 6, 7, 8,
+      9, 10, 11, 12,
+      13, 14, 15, 16,
     ).isFinite(),
   );
 });
@@ -122,72 +108,51 @@ Deno.test("Matrix4.sub", () => {
 });
 
 Deno.test("Matrix4.mul", () => {
-  assert(
-    Matrix4.from(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).mul(
-      Matrix4.from(
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-      ),
-    ).eq(
-      Matrix4.from(
-        538,
-        612,
-        686,
-        760,
-        650,
-        740,
-        830,
-        920,
-        762,
-        868,
-        974,
-        1080,
-        874,
-        996,
-        1118,
-        1240,
-      ),
-    ),
+  // deno-fmt-ignore
+  const a = Matrix4.from(
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12,
+    13, 14, 15, 16
   );
-
-  assert(
-    Matrix4.from(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16).mul(
-      Matrix4.from(2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16, 5, 9, 13, 17),
-    ).eq(
-      Matrix4.from(
-        100,
-        228,
-        356,
-        484,
-        110,
-        254,
-        398,
-        542,
-        120,
-        280,
-        440,
-        600,
-        130,
-        306,
-        482,
-        658,
-      ),
-    ),
+  // deno-fmt-ignore
+  const b = Matrix4.from(
+    17, 18, 19, 20,
+    21, 22, 23, 24,
+    25, 26, 27, 28,
+    29, 30, 31, 32
   );
+  // deno-fmt-ignore
+  const c = Matrix4.from(
+    538, 612, 686, 760,
+    650, 740, 830, 920,
+    762, 868, 974, 1080,
+    874, 996, 1118, 1240
+  );
+  // deno-fmt-ignore
+  const d = Matrix4.from(
+    1, 5, 9, 13,
+    2, 6, 10, 14,
+    3, 7, 11, 15,
+    4, 8, 12, 16
+  );
+  // deno-fmt-ignore
+  const e = Matrix4.from(
+    2, 6, 10, 14,
+    3, 7, 11, 15,
+    4, 8, 12, 16,
+    5, 9, 13, 17
+  );
+  // deno-fmt-ignore
+  const f = Matrix4.from(
+    100, 228, 356, 484,
+    110, 254, 398, 542,
+    120, 280, 440, 600,
+    130, 306, 482, 658,
+  );
+  
+  assert(a.mul(b).eq(c));
+  assert(d.mul(e).eq(f));
 });
 
 Deno.test("Matrix4.toArray", () => {

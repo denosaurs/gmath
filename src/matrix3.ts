@@ -268,9 +268,11 @@ export class Matrix3 {
     this.ptr = typeof x === "number" ? x : alloc(36);
     this.#internal = new Float32Array(memory.buffer, this.ptr, 9);
 
-    this.x = typeof x !== "number" && x !== undefined ? x : Vector3.zero();
-    this.y = y ?? Vector3.zero();
-    this.z = z ?? Vector3.zero();
+    if (typeof x !== "number" && x !== undefined) {
+      this.x = x ?? Vector3.zero();
+      this.y = y ?? Vector3.zero();
+      this.z = z ?? Vector3.zero();
+    }
   }
 
   /** Creates a new Matrix3 with the same values */

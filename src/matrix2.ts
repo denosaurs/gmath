@@ -110,8 +110,10 @@ export class Matrix2 {
     this.ptr = typeof x === "number" ? x : alloc(16);
     this.#internal = new Float32Array(memory.buffer, this.ptr, 4);
 
-    this.x = typeof x !== "number" && x !== undefined ? x : Vector2.zero();
-    this.y = y ?? Vector2.zero();
+    if (typeof x !== "number" && x !== undefined) {
+      this.x = x ?? Vector2.zero();
+      this.y = y ?? Vector2.zero();
+    }
   }
 
   /** Creates a new Matrix2 with the same values */
