@@ -158,8 +158,12 @@ export class Matrix2 {
     return matrix2determinant(this.ptr);
   }
 
-  invert(): Matrix2 {
-    return new Matrix2(matrix2invert(this.ptr));
+  invert(): Matrix2 | undefined {
+    const ptr = matrix2invert(this.ptr);
+
+    if (ptr !== 0) {
+      return new Matrix2(ptr);
+    }
   }
 
   add(other: Matrix2 | number): Matrix2 {

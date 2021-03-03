@@ -325,8 +325,12 @@ export class Matrix3 {
     return matrix3determinant(this.ptr);
   }
 
-  invert(): Matrix3 {
-    return new Matrix3(matrix3invert(this.ptr));
+  invert(): Matrix3 | undefined {
+    const ptr = matrix3invert(this.ptr);
+
+    if (ptr !== 0) {
+      return new Matrix3(ptr);
+    }
   }
 
   add(other: Matrix3 | number): Matrix3 {

@@ -443,8 +443,12 @@ export class Matrix4 {
     return matrix4determinant(this.ptr);
   }
 
-  invert(): Matrix4 {
-    return new Matrix4(matrix4invert(this.ptr));
+  invert(): Matrix4 | undefined {
+    const ptr = matrix4invert(this.ptr);
+
+    if (ptr !== 0) {
+      return new Matrix4(ptr);
+    }
   }
 
   add(other: Matrix4 | number): Matrix4 {
