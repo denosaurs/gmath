@@ -150,7 +150,7 @@ Deno.test("Matrix4.mul", () => {
     120, 280, 440, 600,
     130, 306, 482, 658,
   );
-  
+
   assert(a.mul(b).eq(c));
   assert(d.mul(e).eq(f));
 });
