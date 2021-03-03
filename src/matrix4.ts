@@ -20,12 +20,20 @@ export class Matrix4 {
   #internal: Float32Array;
 
   get [0](): [number, number, number, number] {
-    return [
+    return new Proxy([
       this.#internal[0],
       this.#internal[1],
       this.#internal[2],
       this.#internal[3],
-    ];
+    ], {
+      set: (_target, prop, value) => {
+        if (prop === "0" || prop === "1" || prop === "2" || prop === "3") {
+          this.#internal[prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [0](val: [number, number, number, number]) {
@@ -36,12 +44,20 @@ export class Matrix4 {
   }
 
   get [1](): [number, number, number, number] {
-    return [
+    return new Proxy([
       this.#internal[4],
       this.#internal[5],
       this.#internal[6],
       this.#internal[7],
-    ];
+    ], {
+      set: (_target, prop, value) => {
+        if (prop === "0" || prop === "1" || prop === "2" || prop === "3") {
+          this.#internal[4 + prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [1](val: [number, number, number, number]) {
@@ -52,12 +68,20 @@ export class Matrix4 {
   }
 
   get [2](): [number, number, number, number] {
-    return [
+    return new Proxy([
       this.#internal[8],
       this.#internal[9],
       this.#internal[10],
       this.#internal[11],
-    ];
+    ], {
+      set: (_target, prop, value) => {
+        if (prop === "0" || prop === "1" || prop === "2" || prop === "3") {
+          this.#internal[8 + prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [2](val: [number, number, number, number]) {
@@ -68,12 +92,20 @@ export class Matrix4 {
   }
 
   get [3](): [number, number, number, number] {
-    return [
+    return new Proxy([
       this.#internal[12],
       this.#internal[13],
       this.#internal[14],
       this.#internal[15],
-    ];
+    ], {
+      set: (_target, prop, value) => {
+        if (prop === "0" || prop === "1" || prop === "2" || prop === "3") {
+          this.#internal[12 + prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [3](val: [number, number, number, number]) {

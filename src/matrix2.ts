@@ -17,7 +17,15 @@ export class Matrix2 {
   #internal: Float32Array;
 
   get [0](): [number, number] {
-    return [this.#internal[0], this.#internal[1]];
+    return new Proxy([this.#internal[0], this.#internal[1]], {
+      set: (_target, prop, value) => {
+        if (prop === "0" || prop === "1") {
+          this.#internal[prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [0](val: [number, number]) {
@@ -26,12 +34,20 @@ export class Matrix2 {
   }
 
   get [1](): [number, number] {
-    return [this.#internal[2], this.#internal[3]];
+    return new Proxy([this.#internal[2], this.#internal[3]], {
+      set: (_target, prop, value) => {
+        if (prop === "2" || prop === "3") {
+          this.#internal[2 + prop as unknown as number] = value;
+          return true;
+        }
+        return false;
+      },
+    });
   }
 
   set [1](val: [number, number]) {
-    this.#internal[2] = val[0];
-    this.#internal[3] = val[1];
+    this.#internal[3] = val[0];
+    this.#internal[4] = val[1];
   }
 
   get x(): Vector2 {

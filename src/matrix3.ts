@@ -20,7 +20,18 @@ export class Matrix3 {
   #internal: Float32Array;
 
   get [0](): [number, number, number] {
-    return [this.#internal[0], this.#internal[1], this.#internal[2]];
+    return new Proxy(
+      [this.#internal[0], this.#internal[1], this.#internal[2]],
+      {
+        set: (_target, prop, value) => {
+          if (prop === "0" || prop === "1" || prop === "2") {
+            this.#internal[prop as unknown as number] = value;
+            return true;
+          }
+          return false;
+        },
+      },
+    );
   }
 
   set [0](val: [number, number, number]) {
@@ -30,7 +41,18 @@ export class Matrix3 {
   }
 
   get [1](): [number, number, number] {
-    return [this.#internal[3], this.#internal[4], this.#internal[5]];
+    return new Proxy(
+      [this.#internal[3], this.#internal[4], this.#internal[5]],
+      {
+        set: (_target, prop, value) => {
+          if (prop === "0" || prop === "1" || prop === "2") {
+            this.#internal[3 + prop as unknown as number] = value;
+            return true;
+          }
+          return false;
+        },
+      },
+    );
   }
 
   set [1](val: [number, number, number]) {
@@ -40,7 +62,18 @@ export class Matrix3 {
   }
 
   get [2](): [number, number, number] {
-    return [this.#internal[6], this.#internal[7], this.#internal[8]];
+    return new Proxy(
+      [this.#internal[6], this.#internal[7], this.#internal[8]],
+      {
+        set: (_target, prop, value) => {
+          if (prop === "0" || prop === "1" || prop === "2") {
+            this.#internal[6 + prop as unknown as number] = value;
+            return true;
+          }
+          return false;
+        },
+      },
+    );
   }
 
   set [2](val: [number, number, number]) {
