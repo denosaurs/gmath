@@ -14,17 +14,14 @@ pub unsafe fn matrix2determinant(a: *mut f32) -> f32 {
 pub unsafe fn matrix2invert(a: *mut f32) -> *mut u8 {
   let a = std::slice::from_raw_parts(a, LEN);
 
-  // Unclear alloc call but seems to be needed for the following call not to return the previous ptr
-  alloc(0);
-  let ptr = alloc(SIZE);
-  let mut mat = Vec::from_raw_parts(ptr as *mut f32, LEN, LEN);
-
   let det = a[0] * a[3] - a[2] * a[1];
 
   if det == 0.0 {
     return std::ptr::null_mut();
   }
 
+  let ptr = alloc(SIZE);
+  let mut mat = Vec::from_raw_parts(ptr as *mut f32, LEN, LEN);
   let det = 1f32 / det;
 
   mat[0] = a[3] * det;

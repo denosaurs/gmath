@@ -16,11 +16,6 @@ pub unsafe fn matrix3determinant(a: *mut f32) -> f32 {
 pub unsafe fn matrix3invert(a: *mut f32) -> *mut u8 {
   let a = std::slice::from_raw_parts(a, LEN);
 
-  // Unclear alloc call but seems to be needed for the following call not to return the previous ptr
-  alloc(0);
-  let ptr = alloc(SIZE);
-  let mut mat = Vec::from_raw_parts(ptr as *mut f32, LEN, LEN);
-
   let b01 = a[8] * a[4] - a[5] * a[7];
   let b11 = -a[8] * a[3] + a[5] * a[6];
   let b21 = a[7] * a[3] - a[4] * a[6];
@@ -31,6 +26,8 @@ pub unsafe fn matrix3invert(a: *mut f32) -> *mut u8 {
     return std::ptr::null_mut();
   }
 
+  let ptr = alloc(SIZE);
+  let mut mat = Vec::from_raw_parts(ptr as *mut f32, LEN, LEN);
   let det = 1f32 / det;
 
   mat[0] = b01 * det;

@@ -2,7 +2,6 @@ import {
   alloc,
   matrix3add,
   matrix3determinant,
-  matrix3invert,
   matrix3mul,
   matrix3sub,
   memory,
@@ -326,11 +325,46 @@ export class Matrix3 {
   }
 
   invert(): Matrix3 | undefined {
-    const ptr = matrix3invert(this.ptr);
+    const b01 = this.#internal[8] * this.#internal[4] -
+      this.#internal[5] * this.#internal[7];
+    const b11 = -this.#internal[8] * this.#internal[3] +
+      this.#internal[5] * this.#internal[6];
+    const b21 = this.#internal[7] * this.#internal[3] -
+      this.#internal[4] * this.#internal[6];
 
-    if (ptr !== 0) {
-      return new Matrix3(ptr);
+    let det = this.#internal[0] * b01 + this.#internal[1] * b11 +
+      this.#internal[2] * b21;
+
+    if (det === 0) {
+      return undefined;
     }
+
+    const mat = new Matrix3();
+    det = 1 / det;
+
+    mat.#internal[0] = b01 * det;
+    mat.#internal[1] =
+      (-this.#internal[8] * this.#internal[1] +
+        this.#internal[2] * this.#internal[7]) * det;
+    mat.#internal[2] =
+      (this.#internal[5] * this.#internal[1] -
+        this.#internal[2] * this.#internal[4]) * det;
+    mat.#internal[3] = b11 * det;
+    mat.#internal[4] =
+      (this.#internal[8] * this.#internal[0] -
+        this.#internal[2] * this.#internal[6]) * det;
+    mat.#internal[5] =
+      (-this.#internal[5] * this.#internal[0] +
+        this.#internal[2] * this.#internal[3]) * det;
+    mat.#internal[6] = b21 * det;
+    mat.#internal[7] =
+      (-this.#internal[7] * this.#internal[0] +
+        this.#internal[1] * this.#internal[6]) * det;
+    mat.#internal[8] =
+      (this.#internal[4] * this.#internal[0] -
+        this.#internal[1] * this.#internal[3]) * det;
+
+    return mat;
   }
 
   add(other: Matrix3 | number): Matrix3 {

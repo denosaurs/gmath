@@ -2,7 +2,6 @@ import {
   alloc,
   matrix2add,
   matrix2determinant,
-  matrix2invert,
   matrix2mul,
   matrix2sub,
   memory,
@@ -159,11 +158,21 @@ export class Matrix2 {
   }
 
   invert(): Matrix2 | undefined {
-    const ptr = matrix2invert(this.ptr);
-
-    if (ptr !== 0) {
-      return new Matrix2(ptr);
+    let det = this.#internal[0] * this.#internal[3] -
+      this.#internal[2] * this.#internal[1];
+    if (det === 0) {
+      return undefined;
     }
+
+    const mat = new Matrix2();
+    det = 1 / det;
+
+    mat.#internal[0] = this.#internal[3] * det;
+    mat.#internal[1] = -this.#internal[1] * det;
+    mat.#internal[2] = -this.#internal[2] * det;
+    mat.#internal[3] = this.#internal[0] * det;
+
+    return mat;
   }
 
   add(other: Matrix2 | number): Matrix2 {
