@@ -1,6 +1,5 @@
 import { assert, assertEquals } from "./deps.ts";
 import { Deg, Rad } from "../src/angle.ts";
-import { Matrix2 } from "../src/matrix2.ts";
 
 Deno.test("Rad.sin", () => {
   assertEquals(new Rad(0).sin(), 0);

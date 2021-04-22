@@ -113,7 +113,9 @@ export class Vector3 implements Point3 {
   }
 
   constructor();
+  // deno-lint-ignore no-unused-vars
   constructor(x: number);
+  // deno-lint-ignore no-unused-vars
   constructor(x: number, y: number, z: number);
   constructor(x?: number, y?: number, z?: number) {
     if (x !== undefined) {

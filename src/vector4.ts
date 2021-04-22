@@ -95,7 +95,9 @@ export class Vector4 implements Point4 {
   }
 
   constructor();
+  // deno-lint-ignore no-unused-vars
   constructor(x: number);
+  // deno-lint-ignore no-unused-vars
   constructor(x: number, y: number, z: number, w: number);
   constructor(x?: number, y?: number, z?: number, w?: number) {
     if (x !== undefined) {

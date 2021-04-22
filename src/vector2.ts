@@ -83,7 +83,9 @@ export class Vector2 implements Point2 {
   }
 
   constructor();
+  // deno-lint-ignore no-unused-vars
   constructor(x: number);
+  // deno-lint-ignore no-unused-vars
   constructor(x: number, y: number);
   constructor(x?: number, y?: number) {
     if (x !== undefined) {
