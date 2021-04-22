@@ -12,9 +12,9 @@ export const dealloc = instance.exports.dealloc as (
 export const matrix2determinant = instance.exports.matrix2determinant as (
   a: number,
 ) => number;
-// export const matrix2invert = instance.exports.matrix2invert as (
-//   a: number,
-// ) => number;
+export const matrix2invert = instance.exports.matrix2invert as (
+  a: number,
+) => number;
 export const matrix2mul = instance.exports.matrix2mul as (
   a: number,
   b: number,
@@ -31,9 +31,9 @@ export const matrix2sub = instance.exports.matrix2sub as (
 export const matrix3determinant = instance.exports.matrix3determinant as (
   a: number,
 ) => number;
-// export const matrix3invert = instance.exports.matrix3invert as (
-//   a: number,
-// ) => number;
+export const matrix3invert = instance.exports.matrix3invert as (
+  a: number,
+) => number;
 export const matrix3mul = instance.exports.matrix3mul as (
   a: number,
   b: number,
@@ -50,9 +50,9 @@ export const matrix3sub = instance.exports.matrix3sub as (
 export const matrix4determinant = instance.exports.matrix4determinant as (
   a: number,
 ) => number;
-// export const matrix4invert = instance.exports.matrix4invert as (
-//   a: number,
-// ) => number;
+export const matrix4invert = instance.exports.matrix4invert as (
+  a: number,
+) => number;
 export const matrix4mul = instance.exports.matrix4mul as (
   a: number,
   b: number,

@@ -2,6 +2,7 @@ import {
   alloc,
   matrix4add,
   matrix4determinant,
+  matrix4invert,
   matrix4mul,
   matrix4sub,
   memory,
@@ -443,91 +444,11 @@ export class Matrix4 {
   }
 
   invert(): Matrix4 | undefined {
-    const b00 = this.#internal[0] * this.#internal[5] -
-      this.#internal[1] * this.#internal[4];
-    const b01 = this.#internal[0] * this.#internal[6] -
-      this.#internal[2] * this.#internal[4];
-    const b02 = this.#internal[0] * this.#internal[7] -
-      this.#internal[3] * this.#internal[4];
-    const b03 = this.#internal[1] * this.#internal[6] -
-      this.#internal[2] * this.#internal[5];
-    const b04 = this.#internal[1] * this.#internal[7] -
-      this.#internal[3] * this.#internal[5];
-    const b05 = this.#internal[2] * this.#internal[7] -
-      this.#internal[3] * this.#internal[6];
-    const b06 = this.#internal[8] * this.#internal[13] -
-      this.#internal[9] * this.#internal[12];
-    const b07 = this.#internal[8] * this.#internal[14] -
-      this.#internal[10] * this.#internal[12];
-    const b08 = this.#internal[8] * this.#internal[15] -
-      this.#internal[11] * this.#internal[12];
-    const b09 = this.#internal[9] * this.#internal[14] -
-      this.#internal[10] * this.#internal[13];
-    const b10 = this.#internal[9] * this.#internal[15] -
-      this.#internal[11] * this.#internal[13];
-    const b11 = this.#internal[10] * this.#internal[15] -
-      this.#internal[11] * this.#internal[14];
+    const ptr = matrix4invert(this.ptr);
 
-    let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 +
-      b05 * b06;
-
-    if (det === 0) {
-      return undefined;
+    if (ptr !== 0) {
+      return new Matrix4(ptr);
     }
-
-    const mat = new Matrix4();
-    det = 1 / det;
-
-    mat.#internal[0] =
-      (this.#internal[5] * b11 - this.#internal[6] * b10 +
-        this.#internal[7] * b09) * det;
-    mat.#internal[1] =
-      (this.#internal[2] * b10 - this.#internal[1] * b11 -
-        this.#internal[3] * b09) * det;
-    mat.#internal[2] =
-      (this.#internal[13] * b05 - this.#internal[14] * b04 +
-        this.#internal[15] * b03) * det;
-    mat.#internal[3] =
-      (this.#internal[10] * b04 - this.#internal[9] * b05 -
-        this.#internal[11] * b03) * det;
-    mat.#internal[4] =
-      (this.#internal[6] * b08 - this.#internal[4] * b11 -
-        this.#internal[7] * b07) * det;
-    mat.#internal[5] =
-      (this.#internal[0] * b11 - this.#internal[2] * b08 +
-        this.#internal[3] * b07) * det;
-    mat.#internal[6] =
-      (this.#internal[14] * b02 - this.#internal[12] * b05 -
-        this.#internal[15] * b01) * det;
-    mat.#internal[7] =
-      (this.#internal[8] * b05 - this.#internal[10] * b02 +
-        this.#internal[11] * b01) * det;
-    mat.#internal[8] =
-      (this.#internal[4] * b10 - this.#internal[5] * b08 +
-        this.#internal[7] * b06) * det;
-    mat.#internal[9] =
-      (this.#internal[1] * b08 - this.#internal[0] * b10 -
-        this.#internal[3] * b06) * det;
-    mat.#internal[10] =
-      (this.#internal[12] * b04 - this.#internal[13] * b02 +
-        this.#internal[15] * b00) * det;
-    mat.#internal[11] =
-      (this.#internal[9] * b02 - this.#internal[8] * b04 -
-        this.#internal[11] * b00) * det;
-    mat.#internal[12] =
-      (this.#internal[5] * b07 - this.#internal[4] * b09 -
-        this.#internal[6] * b06) * det;
-    mat.#internal[13] =
-      (this.#internal[0] * b09 - this.#internal[1] * b07 +
-        this.#internal[2] * b06) * det;
-    mat.#internal[14] =
-      (this.#internal[13] * b01 - this.#internal[12] * b03 -
-        this.#internal[14] * b00) * det;
-    mat.#internal[15] =
-      (this.#internal[8] * b03 - this.#internal[9] * b01 +
-        this.#internal[10] * b00) * det;
-
-    return mat;
   }
 
   add(other: Matrix4 | number): Matrix4 {
