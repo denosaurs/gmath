@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog], and this project adheres to
 [Semantic Versioning].
 
+## [0.1.10] - 2021-05-08
+
+### Bug Fixes
+
+- toFloat32Array buffer issue ([`1ab2a05`])
+
 ## [0.1.9] - 2021-04-22
 
 ## [0.1.8] - 2021-03-03
@@ -142,6 +148,8 @@ The format is based on [Keep a Changelog], and this project adheres to
 
 [keep a changelog]: https://keepachangelog.com/en/1.0.0/
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
+[0.1.10]: https://github.com/denosaurs/gmath/compare/0.1.9...0.1.10
+[`1ab2a05`]: https://github.com/denosaurs/gmath/commit/1ab2a05d1bbf9688e0ee2b6ee81b3b4179d5cc28
 [0.1.9]: https://github.com/denosaurs/gmath/compare/0.1.8...0.1.9
 [0.1.8]: https://github.com/denosaurs/gmath/compare/0.1.7...0.1.8
 [`4243bb0`]: https://github.com/denosaurs/gmath/commit/4243bb0c029b9db96c1d329a8298b1827a924387
