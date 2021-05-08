@@ -11,7 +11,7 @@ const wasm = await Deno.readFile(
 );
 const encoded = encode(wasm);
 const js = `// deno-fmt-ignore-file\n// deno-lint-ignore-file
-import { decode } from "https://deno.land/std@0.94.0/encoding/base64.ts";
+import { decode } from "https://deno.land/std@0.95.0/encoding/base64.ts";
 export const source = decode("${encoded}");`;
 
 await Deno.writeTextFile("wasm/wasm.js", js);
