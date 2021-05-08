@@ -390,6 +390,6 @@ export class Matrix3 {
   }
 
   toFloat32Array(): Float32Array {
-    return this.#internal;
+    return new Float32Array(this.#internal);
   }
 }
