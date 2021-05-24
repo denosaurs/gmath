@@ -370,9 +370,7 @@ export class Matrix4 {
   }
 
   constructor();
-  // deno-lint-ignore no-unused-vars
   constructor(ptr: number);
-  // deno-lint-ignore no-unused-vars
   constructor(x: Vector4, y: Vector4, z: Vector4, w: Vector4);
   constructor(x?: Vector4 | number, y?: Vector4, z?: Vector4, w?: Vector4) {
     this.ptr = typeof x === "number" ? x : alloc(64);

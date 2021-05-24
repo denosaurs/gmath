@@ -104,9 +104,7 @@ export class Matrix2 {
   }
 
   constructor();
-  // deno-lint-ignore no-unused-vars
   constructor(ptr: number);
-  // deno-lint-ignore no-unused-vars
   constructor(x: Vector2, y: Vector2);
   constructor(x?: Vector2 | number, y?: Vector2) {
     this.ptr = typeof x === "number" ? x : alloc(16);

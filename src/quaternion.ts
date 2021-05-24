@@ -115,7 +115,6 @@ export class Quaternion {
   }
 
   constructor();
-  // deno-lint-ignore no-unused-vars
   constructor(scalar: number, vector: Vector3);
   constructor(scalar?: number, vector?: Vector3) {
     this.scalar = scalar ?? 0;
