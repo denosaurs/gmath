@@ -11,16 +11,25 @@ pub mod matrix4;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+extern "C" {
+  fn panic(ptr: *mut u8, len: usize);
+}
+
 #[panic_handler]
 #[no_mangle]
-pub fn panic(_info: &core::panic::PanicInfo) -> ! {
-  core::intrinsics::abort();
+pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
+  let mut msg = alloc::format!("{}", info);
+  let ptr = msg.as_mut_ptr();
+  let len = msg.len();
+  unsafe { panic(ptr, len) };
+
+  loop {}
 }
 
 #[alloc_error_handler]
 #[no_mangle]
-pub fn oom(_layout: core::alloc::Layout) -> ! {
-  core::intrinsics::abort()
+pub fn oom_handler(layout: core::alloc::Layout) -> ! {
+  panic!("memory allocation of {} bytes failed", layout.size());
 }
 
 #[no_mangle]

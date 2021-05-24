@@ -1,4 +1,5 @@
-import { encode } from "https://deno.land/std@0.95.0/encoding/base64.ts";
+import { encode } from "https://deno.land/std@0.97.0/encoding/base64.ts";
+import { compress } from "https://deno.land/x/lz4@v0.1.2/mod.ts";
 
 const name = "gmath";
 
@@ -9,9 +10,10 @@ await Deno.run({
 const wasm = await Deno.readFile(
   `./target/wasm32-unknown-unknown/release/${name}.wasm`,
 );
-const encoded = encode(wasm);
+const encoded = encode(compress(wasm));
 const js = `// deno-fmt-ignore-file\n// deno-lint-ignore-file
-import { decode } from "https://deno.land/std@0.95.0/encoding/base64.ts";
-export const source = decode("${encoded}");`;
+import { decode } from "https://deno.land/std@0.97.0/encoding/base64.ts";
+import { decompress } from "https://deno.land/x/lz4@v0.1.2/mod.ts";
+export const source = decompress(decode("${encoded}"));`;
 
 await Deno.writeTextFile("wasm/wasm.js", js);
