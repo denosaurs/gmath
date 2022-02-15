@@ -97,12 +97,17 @@ export class Vector4 implements Point4 {
   constructor();
   constructor(x: number);
   constructor(x: number, y: number, z: number, w: number);
-  constructor(x?: number, y?: number, z?: number, w?: number) {
+  constructor(source: Float32Array);
+  constructor(x?: number | Float32Array, y?: number, z?: number, w?: number) {
     if (x !== undefined) {
-      this.x = x;
-      this.y = y ?? x;
-      this.z = z ?? x;
-      this.w = w ?? x;
+      if (typeof x === "number") {
+        this.x = x;
+        this.y = y ?? x;
+        this.z = z ?? x;
+        this.w = w ?? x;
+      } else {
+        this.#internal = x;
+      }
     }
   }
 

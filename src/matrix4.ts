@@ -248,15 +248,15 @@ export class Matrix4 {
   }
 
   static fromScale(scale: number): Matrix4 {
-    return this.fromNonuniformScale(scale, scale);
+    return this.fromNonuniformScale(scale, scale, scale);
   }
 
-  static fromNonuniformScale(x: number, y: number): Matrix4 {
+  static fromNonuniformScale(x: number, y: number, z: number): Matrix4 {
     // deno-fmt-ignore
     return Matrix4.from(
       x, 0, 0, 0,
       0, y, 0, 0,
-      0, 0, 1, 0,
+      0, 0, z, 0,
       0, 0, 0, 1,
     );
   }

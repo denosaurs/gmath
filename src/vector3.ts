@@ -115,16 +115,21 @@ export class Vector3 implements Point3 {
   constructor();
   constructor(x: number);
   constructor(x: number, y: number, z: number);
-  constructor(x?: number, y?: number, z?: number) {
+  constructor(source: Float32Array);
+  constructor(x?: number | Float32Array, y?: number, z?: number) {
     if (x !== undefined) {
-      this.x = x;
+      if (typeof x === "number") {
+        this.x = x;
 
-      if (y !== undefined && z !== undefined) {
-        this.y = y;
-        this.z = z;
+        if (y !== undefined && z !== undefined) {
+          this.y = y;
+          this.z = z;
+        } else {
+          this.y = x;
+          this.z = x;
+        }
       } else {
-        this.y = x;
-        this.z = x;
+        this.#internal = x;
       }
     }
   }

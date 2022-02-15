@@ -85,14 +85,19 @@ export class Vector2 implements Point2 {
   constructor();
   constructor(x: number);
   constructor(x: number, y: number);
-  constructor(x?: number, y?: number) {
+  constructor(source: Float32Array);
+  constructor(x?: number | Float32Array, y?: number) {
     if (x !== undefined) {
-      this.x = x;
+      if (typeof x === "number") {
+        this.x = x;
 
-      if (y !== undefined) {
-        this.y = y;
+        if (y !== undefined) {
+          this.y = y;
+        } else {
+          this.y = x;
+        }
       } else {
-        this.y = x;
+        this.#internal = x;
       }
     }
   }
