@@ -1,19 +1,20 @@
-import { encode } from "https://deno.land/std@0.125.0/encoding/base64.ts";
-import { compress } from "https://deno.land/x/lz4@v0.1.2/mod.ts";
+import { encodeBase64 } from "@std/encoding/base64";
+import { compress } from "@denosaurs/lz4";
 
 const name = "gmath";
 
-await Deno.run({
-  cmd: ["cargo", "build", "--release", "--target", "wasm32-unknown-unknown"],
-}).status();
+const cmd = new Deno.Command("cargo", {
+  args: ["build", "--release", "--target", "wasm32-unknown-unknown"],
+});
+console.assert((await cmd.spawn().status).success);
 
 const wasm = await Deno.readFile(
   `./target/wasm32-unknown-unknown/release/${name}.wasm`,
 );
-const encoded = encode(compress(wasm));
+const encoded = encodeBase64(compress(wasm));
 const js = `// deno-fmt-ignore-file\n// deno-lint-ignore-file
-import { decode } from "https://deno.land/std@0.125.0/encoding/base64.ts";
-import { decompress } from "https://deno.land/x/lz4@v0.1.2/mod.ts";
-export const source = decompress(decode("${encoded}"));`;
+import { decodeBase64 } from "@std/encoding/base64";
+import { decompress } from "@denosaurs/lz4";
+export const source = decompress(decodeBase64("${encoded}"));`;
 
 await Deno.writeTextFile("wasm/wasm.js", js);

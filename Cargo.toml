@@ -9,9 +9,6 @@ edition = "2021"
 crate-type = ["cdylib"]
 path = "wasm/lib.rs"
 
-[dependencies]
-wee_alloc = "0.4.5"
-
 [profile.release]
 panic = "abort"
 opt-level = 3

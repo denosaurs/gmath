@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "./deps.ts";
+import { assert, assertEquals } from "jsr:@std/assert";
 import { Matrix4 } from "../src/matrix4.ts";
 
 Deno.test("Matrix4.transpose", () => {

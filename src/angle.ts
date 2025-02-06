@@ -54,7 +54,7 @@ export abstract class Angle {
 }
 
 export class Rad extends Angle {
-  static turn = 2 * Math.PI;
+  static override turn = 2 * Math.PI;
 
   sin(): number {
     return Math.sin(this.value);
@@ -157,7 +157,7 @@ export class Rad extends Angle {
 }
 
 export class Deg extends Angle {
-  static turn = 360;
+  static override turn = 360;
 
   sin(): number {
     return this.toRad().sin();
