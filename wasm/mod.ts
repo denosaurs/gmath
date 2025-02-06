@@ -2,11 +2,8 @@ import { source } from "./wasm.js";
 
 const { instance } = await WebAssembly.instantiate(source, {
   env: {
-    panic: (ptr: number, len: number) => {
-      const msg = new TextDecoder().decode(
-        new Uint8Array(memory.buffer, ptr, len),
-      );
-      throw new Error(msg);
+    panic: () => {
+      throw new Error("GMath WASM backend panicked");
     },
   },
 });

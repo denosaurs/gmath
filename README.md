@@ -13,6 +13,12 @@
 
 Game/graphics maths library for deno.
 
+## Usage
+
+```typescript
+import * as gmath from "jsr:@denosaurs/gmath";
+```
+
 ## Maintainers
 
 - Elias Sjögreen ([@eliassjogreen](https://github.com/eliassjogreen))
@@ -31,4 +37,4 @@ Pull request, issues and feedback are very welcome. Code style is formatted with
 
 ### Licence
 
-Copyright 2021, the denosaurs team. All rights reserved. MIT license.
+Copyright 2021-2025, the denosaurs team. All rights reserved. MIT license.

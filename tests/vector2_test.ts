@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "./deps.ts";
+import { assert, assertEquals } from "jsr:@std/assert";
 import { Deg } from "../src/angle.ts";
 import { Vector2 } from "../src/vector2.ts";
 

@@ -1,5 +1,11 @@
+import type { Vector3 } from "./vector3.ts";
+import type { Perspective } from "./projection.ts";
+import type { Angle } from "./angle.ts";
+import type { Quaternion } from "./quaternion.ts";
+import type { Decomposed3 } from "./decomposed.ts";
 import {
   alloc,
+  dealloc,
   matrix4add,
   matrix4determinant,
   matrix4invert,
@@ -8,12 +14,12 @@ import {
   memory,
 } from "../wasm/mod.ts";
 import { Vector4 } from "./vector4.ts";
-import { Vector3 } from "./vector3.ts";
-import { Perspective } from "./projection.ts";
-import { Angle } from "./angle.ts";
-import { Quaternion } from "./quaternion.ts";
-import { Decomposed3 } from "./decomposed.ts";
 import { Matrix3 } from "./matrix3.ts";
+
+const SIZE = 64;
+const finalizer = new FinalizationRegistry<number>((ptr) => {
+  dealloc(ptr, SIZE);
+});
 
 export class Matrix4 {
   readonly ptr: number;
@@ -115,6 +121,9 @@ export class Matrix4 {
     this.#internal[15] = val[3];
   }
 
+  /**
+   * The x-axis of the matrix
+   */
   get x(): Vector4 {
     return new Vector4(...this[0]);
   }
@@ -126,6 +135,9 @@ export class Matrix4 {
     this.#internal[3] = val.w;
   }
 
+  /**
+   * The y-axis of the matrix
+   */
   get y(): Vector4 {
     return new Vector4(...this[1]);
   }
@@ -137,6 +149,9 @@ export class Matrix4 {
     this.#internal[7] = val.w;
   }
 
+  /**
+   * The z-axis of the matrix
+   */
   get z(): Vector4 {
     return new Vector4(...this[2]);
   }
@@ -148,6 +163,9 @@ export class Matrix4 {
     this.#internal[11] = val.w;
   }
 
+  /**
+   * The w-axis of the matrix
+   */
   get w(): Vector4 {
     return new Vector4(...this[3]);
   }
@@ -166,7 +184,7 @@ export class Matrix4 {
     c1r0: number, c1r1: number, c1r2: number, c1r3: number,
     c2r0: number, c2r1: number, c2r2: number, c2r3: number,
     c3r0: number, c3r1: number, c3r2: number, c3r3: number,
-  ) {
+  ): Matrix4 {
     return new Matrix4(
       new Vector4(c0r0, c0r1, c0r2, c0r3),
       new Vector4(c1r0, c1r1, c1r2, c1r3),
@@ -175,6 +193,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a Perspective
+   */
   static fromPerspective(perspective: Perspective): Matrix4 {
     if (perspective.left <= perspective.right) {
       throw new RangeError(
@@ -227,6 +248,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Identity matrix
+   */
   static identity(): Matrix4 {
     // deno-fmt-ignore
     return Matrix4.from(
@@ -237,6 +261,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a translation Vector3
+   */
   static fromTranslation(translation: Vector3): Matrix4 {
     // deno-fmt-ignore
     return Matrix4.from(
@@ -247,10 +274,16 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a scale factor
+   */
   static fromScale(scale: number): Matrix4 {
     return this.fromNonuniformScale(scale, scale, scale);
   }
 
+  /**
+   * Constructs a Matrix4 from nonuniform scale factors
+   */
   static fromNonuniformScale(x: number, y: number, z: number): Matrix4 {
     // deno-fmt-ignore
     return Matrix4.from(
@@ -261,6 +294,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Look to right-handed matrix
+   */
   static lookToRh(eye: Vector3, dir: Vector3, up: Vector3): Matrix4 {
     const f = dir.normal();
     const s = f.cross(up).normal();
@@ -275,18 +311,30 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Look to left-handed matrix
+   */
   static lookToLh(eye: Vector3, dir: Vector3, up: Vector3): Matrix4 {
     return Matrix4.lookToRh(eye, dir.neg(), up);
   }
 
+  /**
+   * Look at right-handed matrix
+   */
   static lookAtRh(eye: Vector3, center: Vector3, up: Vector3): Matrix4 {
     return Matrix4.lookToRh(eye, center.sub(eye), up);
   }
 
+  /**
+   * Look at left-handed matrix
+   */
   static lookAtLh(eye: Vector3, center: Vector3, up: Vector3): Matrix4 {
     return Matrix4.lookToLh(eye, center.sub(eye), up);
   }
 
+  /**
+   * Constructs a Matrix4 from a rotation angle around the x-axis
+   */
   static fromAngleX(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
@@ -299,6 +347,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a rotation angle around the y-axis
+   */
   static fromAngleY(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
@@ -311,6 +362,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a rotation angle around the z-axis
+   */
   static fromAngleZ(theta: Angle): Matrix4 {
     const [s, c] = theta.sincos();
 
@@ -323,6 +377,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a rotation angle around an arbitrary axis
+   */
   static fromAxisAngle(axis: Vector3, angle: Angle): Matrix4 {
     const [s, c] = angle.sincos();
     const c1 = 1 - c;
@@ -336,6 +393,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a Quaternion
+   */
   static fromQuaternion(quaternion: Quaternion): Matrix4 {
     const x2 = quaternion.vector.x + quaternion.vector.x;
     const y2 = quaternion.vector.y + quaternion.vector.y;
@@ -362,6 +422,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Constructs a Matrix4 from a Decomposed3
+   */
   static fromDecomposed(decomposed: Decomposed3): Matrix4 {
     const m = Matrix3.fromQuaternion(decomposed.rot).mul(decomposed.scale)
       .toMatrix4();
@@ -373,7 +436,7 @@ export class Matrix4 {
   constructor(ptr: number);
   constructor(x: Vector4, y: Vector4, z: Vector4, w: Vector4);
   constructor(x?: Vector4 | number, y?: Vector4, z?: Vector4, w?: Vector4) {
-    this.ptr = typeof x === "number" ? x : alloc(64);
+    this.ptr = typeof x === "number" ? x : alloc(SIZE);
     this.#internal = new Float32Array(memory.buffer, this.ptr, 16);
 
     if (typeof x !== "number" && x !== undefined) {
@@ -382,6 +445,8 @@ export class Matrix4 {
       this.z = z ?? Vector4.zero();
       this.w = w ?? Vector4.zero();
     }
+
+    finalizer.register(this, this.ptr);
   }
 
   /** Creates a new Matrix4 with the same values */
@@ -389,6 +454,9 @@ export class Matrix4 {
     return new Matrix4(this.x, this.y, this.z, this.w);
   }
 
+  /**
+   * Transposes the matrix
+   */
   transpose(): Matrix4 {
     // deno-fmt-ignore
     return Matrix4.from(
@@ -399,6 +467,9 @@ export class Matrix4 {
     );
   }
 
+  /**
+   * Compares two matrices for equality
+   */
   eq(other: Matrix4): boolean {
     return this[0][0] === other[0][0] &&
       this[0][1] === other[0][1] &&
@@ -418,31 +489,52 @@ export class Matrix4 {
       this[3][3] === other[3][3];
   }
 
+  /**
+   * Whether the matrix is finite
+   */
   isFinite(): boolean {
     return this.x.isFinite() && this.y.isFinite() && this.z.isFinite() &&
       this.w.isFinite();
   }
 
+  /**
+   * Gets the row of the matrix
+   */
   row(n: 0 | 1 | 2 | 3): [number, number, number, number] {
     return [this[0][n], this[1][n], this[2][n], this[3][n]];
   }
 
+  /**
+   * Gets the column of the matrix
+   */
   col(n: 0 | 1 | 2 | 3): [number, number, number, number] {
     return this[n];
   }
 
+  /**
+   * Gets the diagonal of the matrix
+   */
   diag(): [number, number, number, number] {
     return [this[0][0], this[1][1], this[2][2], this[3][3]];
   }
 
+  /**
+   * Gets the trace of the matrix
+   */
   trace(): number {
     return this[0][0] + this[1][1] + this[2][2] + this[3][3];
   }
 
+  /**
+   * Gets the determinant of the matrix
+   */
   determinant(): number {
     return matrix4determinant(this.ptr);
   }
 
+  /**
+   * Inverts the matrix
+   */
   invert(): Matrix4 | undefined {
     const ptr = matrix4invert(this.ptr);
 
@@ -451,6 +543,9 @@ export class Matrix4 {
     }
   }
 
+  /**
+   * Adds a matrix or scalar to the matrix
+   */
   add(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
@@ -464,6 +559,9 @@ export class Matrix4 {
     return new Matrix4(matrix4add(this.ptr, other.ptr));
   }
 
+  /**
+   * Subtracts a matrix or scalar from the matrix
+   */
   sub(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
@@ -477,6 +575,9 @@ export class Matrix4 {
     return new Matrix4(matrix4sub(this.ptr, other.ptr));
   }
 
+  /**
+   * Multiplies a matrix or scalar with the matrix
+   */
   mul(other: Matrix4 | number): Matrix4 {
     if (typeof other === "number") {
       return new Matrix4(
@@ -490,6 +591,9 @@ export class Matrix4 {
     return new Matrix4(matrix4mul(this.ptr, other.ptr));
   }
 
+  /**
+   * Converts the matrix to an array
+   */
   toArray(): [
     [number, number, number, number],
     [number, number, number, number],
@@ -504,7 +608,14 @@ export class Matrix4 {
     ];
   }
 
+  /**
+   * Converts the matrix to a Float32Array
+   */
   toFloat32Array(): Float32Array {
     return new Float32Array(this.#internal);
+  }
+
+  [Symbol.dispose]() {
+    dealloc(this.ptr, SIZE);
   }
 }

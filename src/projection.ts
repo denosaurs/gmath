@@ -1,4 +1,4 @@
-import { Angle, Rad } from "./angle.ts";
+import { type Angle, Rad } from "./angle.ts";
 import { Matrix4 } from "./matrix4.ts";
 import { absDiffEq } from "./util.ts";
 
@@ -26,6 +26,9 @@ export class Perspective {
     this.far = far;
   }
 
+  /**
+   * Returns a Matrix4 representation of this perspective projection.
+   */
   toMatrix4(): Matrix4 {
     if (this.left > this.right) {
       throw new RangeError(
@@ -104,6 +107,9 @@ export class PerspectiveFov {
     this.far = far;
   }
 
+  /**
+   * Returns a Perspective representation of this perspective projection.
+   */
   toPerspective(): Perspective {
     const angle = this.fovy.div(2);
     const ymax = this.near * angle.tan();
@@ -112,6 +118,9 @@ export class PerspectiveFov {
     return new Perspective(-xmax, xmax, -ymax, ymax, this.near, this.far);
   }
 
+  /**
+   * Returns a Matrix4 representation of this perspective projection.
+   */
   toMatrix4(): Matrix4 {
     if (this.fovy.value < 0) {
       throw new RangeError(
@@ -213,6 +222,9 @@ export class Orthographic {
     this.far = far;
   }
 
+  /**
+   * Returns a Matrix4 representation of this orthographic projection.
+   */
   toMatrix4(): Matrix4 {
     const c0r0 = 2 / (this.right - this.left);
     const c0r1 = 0;

@@ -1,35 +1,27 @@
 #![no_std]
-#![feature(core_intrinsics, lang_items, alloc_error_handler)]
+#![feature(int_roundings)]
 
 extern crate alloc;
-extern crate wee_alloc;
 
 pub mod matrix2;
 pub mod matrix3;
 pub mod matrix4;
 
+mod heap;
+use heap::Heap;
+
 #[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+static ALLOC: Heap = Heap::new();
 
 extern "C" {
-  fn panic(ptr: *mut u8, len: usize);
+  fn panic();
 }
 
 #[panic_handler]
 #[no_mangle]
-pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
-  let mut msg = alloc::format!("{}", info);
-  let ptr = msg.as_mut_ptr();
-  let len = msg.len();
-  unsafe { panic(ptr, len) };
-
+pub fn panic_handler(_info: &core::panic::PanicInfo) -> ! {
+  unsafe { panic() };
   loop {}
-}
-
-#[alloc_error_handler]
-#[no_mangle]
-pub fn oom_handler(layout: core::alloc::Layout) -> ! {
-  panic!("memory allocation of {} bytes failed", layout.size());
 }
 
 #[no_mangle]

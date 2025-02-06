@@ -1,0 +1,15 @@
+{
+  "name": "@denosaurs/gmath",
+  "version": "0.2.0",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "tasks": {
+    "build": "deno run -A scripts/build.ts"
+  },
+  "lock": false,
+  "imports": {
+    "@denosaurs/lz4": "jsr:@denosaurs/lz4@^0.1.4",
+    "@std/encoding": "jsr:@std/encoding@^1.0.7"
+  }
+}

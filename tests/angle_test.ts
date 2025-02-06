@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "./deps.ts";
+import { assert, assertEquals } from "jsr:@std/assert";
 import { Deg, Rad } from "../src/angle.ts";
 
 Deno.test("Rad.sin", () => {

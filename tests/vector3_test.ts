@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "./deps.ts";
+import { assert, assertEquals } from "jsr:@std/assert";
 import { Vector3 } from "../src/vector3.ts";
 
 Deno.test("Vector3.clone", () => {
